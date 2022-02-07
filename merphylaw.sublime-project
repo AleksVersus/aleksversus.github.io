@@ -1,0 +1,14 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+		},
+	],
+	"settings":
+	{
+		"color_scheme": "Packages/Color Scheme - AVS/Monokai Bright.tmTheme",
+		"theme": "Adaptive.sublime-theme",
+		"word_wrap": "true",
+	},
+}
