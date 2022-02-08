@@ -1268,3 +1268,7 @@ body.retina .skin-button-cover
     	width:95%;
     	padding:1em;
     	overflow-y:auto;}
+
+[data-one]::before {
+	content: attr(data-one) " ";
+}

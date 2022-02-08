@@ -519,6 +519,15 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "game/game.cfg",
+			"settings":
+			{
+				"buffer_size": 389,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -556,7 +565,8 @@
 	},
 	"expanded_folders":
 	[
-		"/D/my/GameDev/QuestSoftPlayer/games/книги-игры/qSpiderMerphyLaw"
+		"/D/my/GameDev/QuestSoftPlayer/games/книги-игры/qSpiderMerphyLaw",
+		"/D/my/GameDev/QuestSoftPlayer/games/книги-игры/qSpiderMerphyLaw/game"
 	],
 	"file_history":
 	[
@@ -1014,6 +1024,36 @@
 		{
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "game/game.cfg",
+					"selected": true,
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 389,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				}
 			]
 		}
 	],

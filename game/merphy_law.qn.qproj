@@ -99,6 +99,8 @@
       <Location name="world.new"/>
       <Location name="mv"/>
       <Location name="war.txt"/>
+      <Location name="konami"/>
+      <Location name="карта"/>
     </Folder>
     <Folder name="базы">
       <Location name="base.txt"/>
