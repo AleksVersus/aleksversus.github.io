@@ -31,9 +31,9 @@ $args['screen']+='<font color=#dddd00>ОЛЬГА ГОЛОТВИНА<br><font siz
 
 '+$args['s.2']+'<a href="exec:goto ''page.-1''" title="переход к началу игры" class="plain">Начать игру</a>
 
-<a href="exec:goto ''[0.1_gameplay]''" title="переход к описанию правил игры через гиперссылку" class="plain">Об игре</a>
+<a href="exec:goto ''[1.1_gameplay]''" title="переход к описанию правил игры через гиперссылку" class="plain">Об игре</a>
 
-<a href="exec:goto ''[0.0_about]''" title="переход к описанию игры через гиперссылку" class="plain">О текущей версии</a>'+$args['s.3']
+<a href="exec:goto ''[1.0_about]''" title="переход к описанию игры через гиперссылку" class="plain">О текущей версии</a>'+$args['s.3']
 *p $args['screen']
 showinput 1
 ! ВСЕМУ СООБЩЕСТВУ QSP, людям из quest-book, и просто проходившим мимо СПАСИБО !

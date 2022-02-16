@@ -1,4 +1,4 @@
-# [0.1_gameplay]
+# [1.1_gameplay]
 ! локация, рассказывающая о текущей версии порта книги-игры
 $fname = "Times New Roman"
 if $AVS_PLAYERTYPE['size']="MINI":
@@ -174,4 +174,4 @@ end
  
  
 </font></p>'+$args['table.bottom']+'<a href="exec:goto ''[start]''" title="переход к начальной локации" class="plain">В главное меню</a>'+$args['table.bottom2']+$args['gameplay']+$args['table.end']+'<a href="exec:goto ''[start]''" title="переход к начальной локации" class="plain">В главное меню</a>'+$args['table.end2']+'</center>'
---- [0.1_gameplay] ---------------------------------
+--- [1.1_gameplay] ---------------------------------
