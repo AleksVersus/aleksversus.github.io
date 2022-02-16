@@ -6,7 +6,13 @@ $GAME_VALUE['interface']=''
 $save['game.number']=$func('#rndstr#',4,'буквы и цифры')
 ! разделяем типы, чтобы не заморачиваться с функциями instr
 if instr($AVS_PLAYERTYPE,"[MINI]")<>0: $AVS_PLAYERTYPE['size']="MINI" else $AVS_PLAYERTYPE['size']=""
-if instr($AVS_PLAYERTYPE,"[QN]")<>0: $AVS_PLAYERTYPE['type']="QN" else $AVS_PLAYERTYPE['type']=""
+if instr($AVS_PLAYERTYPE,"[QN]")<>0:
+	$AVS_PLAYERTYPE['type']="QN"
+elseif instr($AVS_PLAYERTYPE,"[qSpider]")<>0:
+	$AVS_PLAYERTYPE['type']="qSpider"
+else
+	$AVS_PLAYERTYPE['type']=""
+end
 ! настраиваем экран:
 gosub 'set.Screen','обложка.чёрный'	&	!	переход на локацию с передачей аргумента и возврат к следующей строке
 ! Выводим на экран необходимый текст:

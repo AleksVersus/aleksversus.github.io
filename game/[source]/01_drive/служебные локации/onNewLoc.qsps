@@ -95,5 +95,7 @@ if instr($tvar['костыль.заголовок'],'<checkpoint>')!0 and checkp
 	gosub 'avs.save',999
 end
 time['goto']=0
+
+!@ отладочный код:
 showstat 1 & clr & pl $replace($maintxt,'<','&lt;')
 --- onNewLoc ---------------------------------

@@ -36,7 +36,8 @@ end
 killvar 'tort' & killvar 't'
 else:
 	!@ если это плеер версии 5.8.0, то мы имеем дело либо с классическим, либо с qSpider
-	$args['result']='[qSpider]'
+	!$args['result']='[qSpider]'
+	$args['result']='[QN]'
 end
 $result=$args['result']
 
