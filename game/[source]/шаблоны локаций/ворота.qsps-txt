@@ -1,3 +1,5 @@
+QSP-Game Шаблон локации с воротами
+
 # ворота
 if здесь_был[$curloc]=0:
 	gosub 'crt.obj','выход_27','','<knew>',0,1,'KNOWLEDGE'

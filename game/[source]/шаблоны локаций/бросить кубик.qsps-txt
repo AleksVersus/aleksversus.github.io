@@ -1,20 +1,22 @@
+QSP-Game Шаблон локации с броском кубика
+
 # бросить кубик
 $lvar['заголовок']={6}
 if здесь_был[$curloc]=0:
 	cube=rand(1,6)
 end
 ! 123-456
-$lvar['исходник']="<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=#004400><i>Кубик брошен, выпало <<cube>>, а значит вам <DIN1:if cube=1 or cube=2 or cube=3:
+$lvar['исходник']="<qhtml><p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=#004400><i>Кубик брошен, выпало <<cube>>, а значит вам <DIN1:if cube=1 or cube=2 or cube=3:
 	$result='[page=258]сюда[/page]'
 else
 	$result='[page=466]сюда[/page]'
-end:1DIN>.</i></font></p>"
+end:1DIN>.</i></font></p></qhtml>"
 ! 246-135
-$lvar['исходник']="<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=#004400><i>Кубик брошен, выпало <<cube>>. <DIN1:if cube=2 or cube=4 or cube=6:
+$lvar['исходник']="<qhtml><p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=#004400><i>Кубик брошен, выпало <<cube>>. <DIN1:if cube=2 or cube=4 or cube=6:
 	$result='Это чётное число, а значит вам [page=290]сюда[/page]'
 else
 	$result='Это нечётное число, а значит вам [page=178]сюда[/page]'
-end:1DIN>.</i></font></p>"
+end:1DIN>.</i></font></p></qhtml>"
 ! 14-25-36
 $lvar['исходник']="<qhtml><p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=#004400><i>Кубик брошен, выпало <<cube>>, а значит вам <DIN1:if cube=1 or cube=4:
 	$result='[page=366]сюда[/page]'

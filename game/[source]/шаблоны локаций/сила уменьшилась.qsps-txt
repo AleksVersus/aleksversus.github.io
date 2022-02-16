@@ -1,6 +1,7 @@
+QSP-Game шаблон текста изменения силы
 # сила уменьшилась
 $lvar['заголовок']={2222222222222222222}
-$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Звери убиты, нуменьшилась на единицу...</font></i>)<avs-insert></avs-insert>.</p>}
+$lvar['исходник']={<qhtml><p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Звери убиты, нуменьшилась на единицу...</font></i>)<avs-insert></avs-insert>.</p></qhtml>}
 if здесь_был[$curloc]=0:
 	gosub 'power',-1
 end
