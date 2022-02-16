@@ -3,8 +3,8 @@
   <Structure>
     <Location name="[launcher]"/>
     <Location name="[start]"/>
-    <Location name="[0.0_about]"/>
-    <Location name="[0.1_gameplay]"/>
+    <Location name="[1.0_about]"/>
+    <Location name="[1.1_gameplay]"/>
     <Folder name="служебные локации">
       <Location name="onNewLoc"/>
       <Location name="onObjClick"/>
@@ -109,14 +109,7 @@
       <Location name="base.body"/>
       <Location name="base.knew"/>
     </Folder>
-    <Folder name="шаблоны локаций">
-      <Location name="заряд бластера"/>
-      <Location name="сила уменьшилась"/>
-      <Location name="противник"/>
-      <Location name="бросить кубик"/>
-      <Location name="удача"/>
-      <Location name="ворота"/>
-    </Folder>
+    <Folder name="шаблоны локаций"/>
     <Folder name="удалённые разделы">
       <Location name="page.75"/>
       <Location name="page.130"/>
@@ -860,7 +853,6 @@
       <Location name="#rounddiv#"/>
       <Location name="#+#"/>
       <Location name="#*#"/>
-      <Location name="#:#"/>
       <Location name="#sim#"/>
       <Location name="#sqrt#"/>
       <Location name="#invert#"/>
