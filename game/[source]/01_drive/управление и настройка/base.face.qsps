@@ -1,0 +1,404 @@
+# base.face
+! формируем адресную строку
+$args['address.string']+=" <a href=""exec:gosub 'face.floor',''"" class=""plain"">&gt;</a> "
+$GAME_INTERFACE['screen.settings']=''
+:адресная_строка
+if args['i']<arrsize('$floor'):
+	$args['address.text']=$func('base.face.text',$floor[args['i']])
+	$args['address.string']+=" <a href=""exec:gosub 'face.floor','<<$floor[args['i']]>>'"" class=""plain""><<$args['address.text']>></a> "
+	args['i']+=1
+	$args['address.string']+='&gt;'
+	jump 'адресная_строка'
+end
+! формируем название
+$args['settings.name']=$func('base.face.text',$floor[])
+! формируем экран настроек из базы
+if $floor[]="":
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','main'"">"+$func('base.face.text','main')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','maintxt'"">"+$func('base.face.text','maintxt')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','head'"">"+$func('base.face.text','head')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','objLoc'"">"+$func('base.face.text','objLoc')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','colon'"">"+$func('base.face.text','colon')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','back'"">"+$func('base.face.text','back')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','next'"">"+$func('base.face.text','next')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','stats'"">"+$func('base.face.text','stats')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','note'"">"+$func('base.face.text','note')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','inv'"">"+$func('base.face.text','inv')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','print'"">"+$func('base.face.text','print')+"</a><br>"
+	if $GAME_INTERFACE['hide.maintext']='':
+		$args['h.sets']='hide'
+		$args['h.text']='Скрыть общий вид окна'
+	else
+		$args['h.sets']=''
+		$args['h.text']='Показать общий вид окна'
+	end
+	$args['settings.screen']+="<a href=""exec:$GAME_INTERFACE['hide.maintext']='<<$args['h.sets']>>' & gosub 'avs.face.refresh'""><<$args['h.text']>></a><br>"
+else
+	jump $floor[]
+end
+:main
+if $floor[]='main':
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','main.bgcolor'"">"+$func('base.face.text','main.bgcolor')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','main.text.color'"">"+$func('base.face.text','main.text.color')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','href.inText.color'"">"+$func('base.face.text','href.inText.color')+"</a><br>"
+end
+	:main.bgcolor
+	if $floor[]='main.bgcolor':
+		$args['settings.screen']+=$func("avs.sets.color","main","bg")
+	end
+	:main.text.color
+	if $floor[]='main.text.color':
+		$args['settings.screen']+=$func("avs.sets.color","main.text","","notattrib")
+	end
+	:href.inText.color
+	if $floor[]='href.inText.color':
+		$args['settings.screen']+=$func("avs.sets.color","href.inText","","for.classic notattrib")
+	end
+:maintxt
+if $floor[]='maintxt':
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','maintxt.bgcolor'"">"+$func('base.face.text','maintxt.bgcolor')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','maintxt.text'"">"+$func('base.face.text','maintxt.text')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','print.stat'"">"+$func('base.face.text','print.stat')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','print.noit'"">"+$func('base.face.text','print.noit')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','print.ysit'"">"+$func('base.face.text','print.ysit')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','print.prov'"">"+$func('base.face.text','print.prov')+"</a><br>"
+end
+	:maintxt.text
+	if $floor[]='maintxt.text':
+		$args['settings.screen']+=$func("avs.sets.color","maintxt.text","","")
+	end
+	:maintxt.bgcolor
+	if $floor[]='maintxt.bgcolor':
+		$args['settings.screen']+=$func("avs.sets.color","maintxt","bg")
+	end
+	:print.stat
+	if $floor[]='print.stat':
+		$args['settings.screen']+=$func("avs.sets.color","print.stat","")
+	end
+	:print.noit
+	if $floor[]='print.noit':
+		$GAME_INTERFACE['screen.settings']+='<font color=#'+$GAME_INTERFACE['print.noit.color']+'>'+$GAME_INTERFACE['print.noit.attrib']+'Тебовалось навыка 99. Ваш навык 88.'+$GAME_INTERFACE['/print.noit.attrib']+'</font>'
+		$args['settings.screen']+=$func("avs.sets.color","print.noit","")
+	end
+	:print.ysit
+	if $floor[]='print.ysit':
+		$GAME_INTERFACE['screen.settings']+='<font color=#'+$GAME_INTERFACE['print.ysit.color']+'>'+$GAME_INTERFACE['print.ysit.attrib']+'Тебовалось навыка 88. Ваш навык 99.'+$GAME_INTERFACE['/print.ysit.attrib']+'</font>'
+		$args['settings.screen']+=$func("avs.sets.color","print.ysit","")
+	end
+	:print.prov
+	if $floor[]='print.prov':
+		$GAME_INTERFACE['screen.settings']+='<font color=#'+$GAME_INTERFACE['print.prov.color']+'>'+$GAME_INTERFACE['print.prov.attrib']+'ПРОВЕРЬТЕ СВОЙ НАВЫК'+$GAME_INTERFACE['/print.prov.attrib']+'</font>.'
+		$args['settings.screen']+=$func("avs.sets.color","print.prov","")
+	end
+:head
+if $floor[]='head':
+	$args['settings.screen']+="<a href=""exec:gosub 'face.variants','head.variants',5"">"+$func('base.face.text','head.variants')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','head.simpl'"">"+$func('base.face.text','head.simpl')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','head.chpnt'"">"+$func('base.face.text','head.chpnt')+"</a><br>"
+end
+	:head.simpl
+	if $floor[]='head.simpl':
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','head.simpl.bgcolor'"">"+$func('base.face.text','head.simpl.bgcolor')+"</a><br>"
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','head.simpl.text'"">"+$func('base.face.text','head.simpl.text')+"</a><br>"
+	end
+		:head.simpl.bgcolor
+		if $floor[]='head.simpl.bgcolor':
+			$args['settings.screen']+=$func("avs.sets.color","head.simpl","bg")
+		end
+		:head.simpl.text
+		if $floor[]='head.simpl.text':
+			$args['settings.screen']+=$func("avs.sets.color","head.simpl","")
+		end
+	:head.chpnt
+	if $floor[]='head.chpnt':
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','head.chpnt.bgcolor'"">"+$func('base.face.text','head.chpnt.bgcolor')+"</a><br>"
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','head.chpnt.text'"">"+$func('base.face.text','head.chpnt.text')+"</a><br>"
+	end
+		:head.chpnt.bgcolor
+		if $floor[]='head.chpnt.bgcolor':
+			$args['settings.screen']+=$func("avs.sets.color","head.chpnt","bg")
+		end
+		:head.chpnt.text
+		if $floor[]='head.chpnt.text':
+			$args['settings.screen']+=$func("avs.sets.color","head.chpnt","")
+		end
+:objLoc
+if $floor[]='objLoc':
+	$args['settings.screen']+="<a href=""exec:gosub 'face.variants','objLoc.variants',2"">"+$func('base.face.text','objLoc.variants')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','objLoc.bgcolor'"">"+$func('base.face.text','objLoc.bgcolor')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','href.objLoc'"">"+$func('base.face.text','href.objLoc')+"</a><br>"
+end
+	:objLoc.bgcolor
+	if $floor[]='objLoc.bgcolor':
+		$args['settings.screen']+=$func("avs.sets.color","objLoc","bg")
+	end
+	:href.objLoc
+	if $floor[]='href.objLoc':
+		$args['settings.screen']+=$func("avs.sets.color","href.objLoc","")
+	end
+:colon
+if $floor[]='colon':
+	$args['settings.screen']+="<a href=""exec:gosub 'face.variants','colontitle.variants',2"">"+$func('base.face.text','colontitle.variants')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','colontitle.bgcolor'"">"+$func('base.face.text','colontitle.bgcolor')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','colontitle.text'"">"+$func('base.face.text','colontitle.text')+"</a><br>"
+end
+	:colontitle.bgcolor
+	if $floor[]='colontitle.bgcolor':
+		$args['settings.screen']+=$func("avs.sets.color","colontitle","bg")
+	end
+	:colontitle.text
+	if $floor[]='colontitle.text':
+		$args['settings.screen']+=$func("avs.sets.color","colontitle","")
+	end
+:back
+if $floor[]='back':
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','href.back.bgcolor'"">"+$func('base.face.text','href.back.bgcolor')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','href.back.text'"">"+$func('base.face.text','href.back.text')+"</a><br>"
+end
+	:href.back.bgcolor
+	if $floor[]='href.back.bgcolor':
+		$args['settings.screen']+=$func("avs.sets.color","href.back","bg")
+	end
+	:href.back.text
+	if $floor[]='href.back.text':
+		$args['settings.screen']+=$func("avs.sets.color","href.back","")
+	end	
+:next
+if $floor[]='next':
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','href.next.bgcolor'"">"+$func('base.face.text','href.next.bgcolor')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','href.back.text'"">"+$func('base.face.text','href.next.text')+"</a><br>"
+end
+	:href.next.bgcolor
+	if $floor[]='href.next.bgcolor':
+		$args['settings.screen']+=$func("avs.sets.color","href.next","bg")
+	end
+	:href.next.text
+	if $floor[]='href.next.text':
+		$args['settings.screen']+=$func("avs.sets.color","href.next","")
+	end	
+:stats
+if $floor[]='stats':
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','stat.fast'"">"+$func('base.face.text','stat.fast')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','stat.power'"">"+$func('base.face.text','stat.power')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','stat.social'"">"+$func('base.face.text','stat.social')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','stat.luck'"">"+$func('base.face.text','stat.luck')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','stat.unluck'"">"+$func('base.face.text','stat.unluck')+"</a><br>"
+end
+	:stat.fast
+	if $floor[]='stat.fast':
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','stat.fast.bgcolor'"">"+$func('base.face.text','stat.fast.bgcolor')+"</a><br>"
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','stat.fast.text'"">"+$func('base.face.text','stat.fast.text')+"</a><br>"
+	end
+		:stat.fast.bgcolor
+		if $floor[]='stat.fast.bgcolor':
+			$args['settings.screen']+=$func("avs.sets.color","stat.fast","bg")
+		end
+		:stat.fast.text
+		if $floor[]='stat.fast.text':
+			$args['settings.screen']+=$func("avs.sets.color","stat.fast","")
+		end
+	:stat.power
+	if $floor[]='stat.power':
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','stat.power.bgcolor'"">"+$func('base.face.text','stat.power.bgcolor')+"</a><br>"
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','stat.power.text'"">"+$func('base.face.text','stat.power.text')+"</a><br>"
+	end
+		:stat.power.bgcolor
+		if $floor[]='stat.power.bgcolor':
+			$args['settings.screen']+=$func("avs.sets.color","stat.power","bg")
+		end
+		:stat.power.text
+		if $floor[]='stat.power.text':
+			$args['settings.screen']+=$func("avs.sets.color","stat.power","")
+		end
+	:stat.social
+	if $floor[]='stat.social':
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','stat.social.bgcolor'"">"+$func('base.face.text','stat.social.bgcolor')+"</a><br>"
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','stat.social.text'"">"+$func('base.face.text','stat.social.text')+"</a><br>"
+	end
+		:stat.social.bgcolor
+		if $floor[]='stat.social.bgcolor':
+			$args['settings.screen']+=$func("avs.sets.color","stat.social","bg")
+		end
+		:stat.social.text
+		if $floor[]='stat.social.text':
+			$args['settings.screen']+=$func("avs.sets.color","stat.social","")
+		end
+	:stat.luck
+	if $floor[]='stat.luck':
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','stat.luck.bgcolor'"">"+$func('base.face.text','stat.luck.bgcolor')+"</a><br>"
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','stat.luck.text'"">"+$func('base.face.text','stat.luck.text')+"</a><br>"
+	end
+		:stat.luck.bgcolor
+		if $floor[]='stat.luck.bgcolor':
+			$args['settings.screen']+=$func("avs.sets.color","stat.luck","bg")
+		end
+		:stat.luck.text
+		if $floor[]='stat.luck.text':
+			$args['settings.screen']+=$func("avs.sets.color","stat.luck","")
+		end
+	:stat.unluck
+	if $floor[]='stat.unluck':
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','stat.unluck.bgcolor'"">"+$func('base.face.text','stat.unluck.bgcolor')+"</a><br>"
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','stat.unluck.text'"">"+$func('base.face.text','stat.unluck.text')+"</a><br>"
+	end
+		:stat.unluck.bgcolor
+		if $floor[]='stat.unluck.bgcolor':
+			$args['settings.screen']+=$func("avs.sets.color","stat.unluck","bg")
+		end
+		:stat.unluck.text
+		if $floor[]='stat.unluck.text':
+			$args['settings.screen']+=$func("avs.sets.color","stat.unluck","")
+		end
+:note
+if $floor[]='note':
+	$args['settings.screen']+="<a href=""exec:gosub 'face.variants','note.variants',2"">"+$func('base.face.text','note.variants')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','note.even.bgcolor'"">"+$func('base.face.text','note.even.bgcolor')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','note.odd.bgcolor'"">"+$func('base.face.text','note.odd.bgcolor')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','note.new'"">"+$func('base.face.text','note.new')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','note.fin'"">"+$func('base.face.text','note.fin')+"</a><br>"
+end
+	:note.even.bgcolor
+	if $floor[]='note.even.bgcolor':
+		$args['settings.screen']+=$func("avs.sets.color","note.even","bg")
+	end
+	:note.odd.bgcolor
+	if $floor[]='note.odd.bgcolor':
+		$args['settings.screen']+=$func("avs.sets.color","note.odd","bg")
+	end
+	:note.new
+	if $floor[]='note.new':
+		$args['settings.screen']+=$func("avs.sets.color","note.new","")
+	end
+	:note.fin
+	if $floor[]='note.fin':
+		$args['settings.screen']+=$func("avs.sets.color","note.fin","")
+	end
+:inv
+if $floor[]='inv':
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','obj.quest'"">"+$func('base.face.text','obj.quest')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','obj.active'"">"+$func('base.face.text','obj.active')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','obj.unactive'"">"+$func('base.face.text','obj.unactive')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','obj.space'"">"+$func('base.face.text','obj.space')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','obj.charge'"">"+$func('base.face.text','obj.charge')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','obj.sets'"">"+$func('base.face.text','obj.sets')+"</a><br>"
+end
+	:obj.sets
+	if $floor[]='obj.sets':
+		$args['settings.screen']+=$func("avs.sets.color","obj.sets","")
+	end
+	:obj.quest
+	if $floor[]='obj.quest':
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','obj.quest.bgcolor'"">"+$func('base.face.text','obj.quest.bgcolor')+"</a><br>"
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','obj.quest.text'"">"+$func('base.face.text','obj.quest.text')+"</a><br>"
+	end
+		:obj.quest.bgcolor
+		if $floor[]='obj.quest.bgcolor':
+			$args['settings.screen']+=$func("avs.sets.color","obj.quest","bg")
+		end
+		:obj.quest.text
+		if $floor[]='obj.quest.text':
+			$args['settings.screen']+=$func("avs.sets.color","obj.quest","")
+		end
+	:obj.active
+	if $floor[]='obj.active':
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','obj.active.bgcolor'"">"+$func('base.face.text','obj.active.bgcolor')+"</a><br>"
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','obj.active.text'"">"+$func('base.face.text','obj.active.text')+"</a><br>"
+	end
+		:obj.active.bgcolor
+		if $floor[]='obj.active.bgcolor':
+			$args['settings.screen']+=$func("avs.sets.color","obj.active","bg")
+		end
+		:obj.active.text
+		if $floor[]='obj.active.text':
+			$args['settings.screen']+=$func("avs.sets.color","obj.active","")
+		end
+	:obj.unactive
+	if $floor[]='obj.unactive':
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','obj.unactive.bgcolor'"">"+$func('base.face.text','obj.unactive.bgcolor')+"</a><br>"
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','obj.unactive.text'"">"+$func('base.face.text','obj.unactive.text')+"</a><br>"
+	end
+		:obj.unactive.bgcolor
+		if $floor[]='obj.unactive.bgcolor':
+			$args['settings.screen']+=$func("avs.sets.color","obj.unactive","bg")
+		end
+		:obj.unactive.text
+		if $floor[]='obj.unactive.text':
+			$args['settings.screen']+=$func("avs.sets.color","obj.unactive","")
+		end
+	:obj.space
+	if $floor[]='obj.space':
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','obj.space.bgcolor'"">"+$func('base.face.text','obj.space.bgcolor')+"</a><br>"
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','obj.space.text'"">"+$func('base.face.text','obj.space.text')+"</a><br>"
+	end
+		:obj.space.bgcolor
+		if $floor[]='obj.space.bgcolor':
+			$args['settings.screen']+=$func("avs.sets.color","obj.space","bg")
+		end
+		:obj.space.text
+		if $floor[]='obj.space.text':
+			$args['settings.screen']+=$func("avs.sets.color","obj.space","")
+		end
+	:obj.charge
+	if $floor[]='obj.charge':
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','obj.charge.now.text'"">"+$func('base.face.text','obj.charge.now.text')+"</a><br>"
+		$args['settings.screen']+="<a href=""exec:gosub 'face.floor','obj.charge.max.text'"">"+$func('base.face.text','obj.charge.max.text')+"</a><br>"
+	end
+		:obj.charge.now.text
+		if $floor[]='obj.charge.now.text':
+			$args['settings.screen']+=$func("avs.sets.color","obj.charge","")
+		end
+		:obj.charge.max.text
+		if $floor[]='obj.charge.max.text':
+			$args['settings.screen']+=$func("avs.sets.color","obj.maxcharge","")
+		end
+:print
+if $floor[]='print':
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','print.main.bgcolor'"">"+$func('base.face.text','print.main.bgcolor')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','print.main'"">"+$func('base.face.text','print.main')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','print.nope'"">"+$func('base.face.text','print.nope')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','print.save'"">"+$func('base.face.text','print.save')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','print.take'"">"+$func('base.face.text','print.take')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','print.put'"">"+$func('base.face.text','print.put')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','print.used'"">"+$func('base.face.text','print.used')+"</a><br>"
+	$args['settings.screen']+="<a href=""exec:gosub 'face.floor','print.stup'"">"+$func('base.face.text','print.stup')+"</a><br>"
+end
+	:print.main.bgcolor
+	if $floor[]='print.main.bgcolor':
+		$args['settings.screen']+=$func("avs.sets.color","print.main","bg")
+	end
+	:print.main
+	if $floor[]='print.main':
+		$args['settings.screen']+=$func("avs.sets.color","print.main","")
+	end
+	:print.nope
+	if $floor[]='print.nope':
+		$args['settings.screen']+=$func("avs.sets.color","print.nope","")
+	end
+	:print.save
+	if $floor[]='print.save':
+		$args['settings.screen']+=$func("avs.sets.color","print.save","")
+	end
+	:print.take
+	if $floor[]='print.take':
+		$args['settings.screen']+=$func("avs.sets.color","print.take","")
+	end
+	:print.put
+	if $floor[]='print.put':
+		$args['settings.screen']+=$func("avs.sets.color","print.put","")
+	end
+	:print.used
+	if $floor[]='print.used':
+		$args['settings.screen']+=$func("avs.sets.color","print.used","")
+	end
+	:print.stup
+	if $floor[]='print.stup':
+		$args['settings.screen']+=$func("avs.sets.color","print.stup","")
+	end
+$args['settings.table']='<table width=720 cellpadding=10 border=1><tr><td align=left>'
+$args['settings.table']+=$args['address.string']+'</td></tr>'
+$args['settings.table']+='<tr><td align=center>'+$args['settings.name']+'</td></tr>'
+if $GAME_INTERFACE['screen.settings']!'': $args['settings.table']+='<tr><td align=center valign=middle>'+$GAME_INTERFACE['screen.settings']+'</td></tr>'
+if instr($args['settings.screen'],'name="setsTable"')!0: $args['align']='center' else $args['align']='left'
+$args['settings.table']+='<tr><td align='+$args['align']+'>'+$args['settings.screen']+'</td></tr></table>'
+$result = $args['settings.table']
+--- base.face ---------------------------------

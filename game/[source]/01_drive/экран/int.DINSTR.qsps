@@ -1,0 +1,112 @@
+# int.DINSTR
+! интерпретатор строки с точным тегом
+$args[0] = $args[0]	&	!	строка
+if instr($args[0],'[cur]')=1:
+! если вхождение подстроки [cur] в строку начинается с первого символа, значит это гиперссылка на текущую локацию.
+	$args['t']=$replace($replace($args[0],'[cur]'),'[/cur]')
+	$args[666]=TRIM($func('get.word.inPos',$args['t'],2))
+	$args['t']=TRIM($func('get.word.inPos',$args['t'],1))
+	$args['res']='<a href="exec:goto ''<<$curloc>>'',''<<$args[666]>>''" title="возврат на текущую локацию с указанием параметра сброс" class="plain">'+$args['t']+'</a>'
+	if power['now']<1: $args['res']='<i>'+$args['t']+'</i>'
+end
+if instr($args[0],'[obj]')=1:
+! если вхождение подстроки [obj] в строку начинается с первого символа, значит это гиперссылка подъёма предмета с локации.
+	$args['string']=$replace($replace($args[0],'[obj]'),'[/obj]')
+	$args['id']=TRIM($func('get.word.inPos',$args['string'],1))		&	!	идентификатор предмета
+	$args['onLoc']=$func('get.word.inPos',$args['string'],2)	&	!	надпись, выводимая, пока предмет находится на локации
+	$args['outLoc']=$func('get.word.inPos',$args['string'],3)	&	!	надпись, выводимая, когда предмета нет на локации
+	args['pit.obj']=arrpos('$id_array',$args['id'])				&	!	номер строки предмета в общей таблице объектов
+	if $position_array[args['pit.obj']] = $curloc and power['now']>0:
+	! если предмет расположен в текущей локации, выводим гиперссылку подъёма
+		$args['res']='<a href="exec:gosub ''add.obj'',''<<$args["id"]>>''" title="добавление предмета" class="plain">'+$args['onLoc']+'</a>'
+	else
+	! если предмета нет на текущей локации, выводим обычный текст
+		$args['res']='<i>'+$args['outLoc']+'</i>'
+	end
+end
+if instr($args[0],'[knew]')=1:
+! если вхождение подстроки [obj] в строку начинается с первого символа, значит это гиперссылка подъёма предмета с локации.
+	$args['string']=$replace($replace($args[0],'[knew]'),'[/knew]')
+	$args['id']=TRIM($func('get.word.inPos',$args['string'],1))		&	!	идентификатор вида
+	$args['onLoc']=$func('get.word.inPos',$args['string'],2)		&	!	надпись, выводимая, когда вы обладаете знанием
+	$args['outLoc']=$func('get.word.inPos',$args['string'],3)		&	!	надпись, выводимая, когда вы не обладаете знанием
+	$args['pit.knew']=$func('prv.obj.inBag',$args['id'],'<KNOWLEDGE>')				&	!	идентификатор знания
+	if $args['pit.knew']!'' and power['now']>0:
+	! если знание есть
+		$args['res']=$args['onLoc']
+	else
+	! если знания нет
+		$args['res']=$args['outLoc']
+	end
+	$args['res']=$args['res']
+end
+if instr($args[0],'[blaster]')=1:
+! если вхождение подстроки [obj] в строку начинается с первого символа, значит это гиперссылка подъёма предмета с локации.
+	$args['string']=$replace($replace($args[0],'[blaster]'),'[/blaster]')
+	args['charge']=val(TRIM($func('get.word.inPos',$args['string'],1)))		&	!	заряд, который требуется, чтобы выполнить действие
+	$args['blst.charge']=$func('get.word.inPos',$args['string'],2)			&	!	надпись, выводимая если бластер заряжен
+	$args['b.discharge']=$func('get.word.inPos',$args['string'],3)			&	!	надпись, выводимая, если бластер разряжен
+	$args['b.halfcharg']=$func('get.word.inPos',$args['string'],4)			&	!	надпись, выводимая, если бластер частично заряжен
+	! ФОМРИРУЕМ надпись
+		$args['pos.bl']=$func('prv.obj.inBag','бластер')						&	!	ищем бластер в сумке
+		args['pit']=arrpos('$id_array',$args['pos.bl'])							&	!	позиция бластера в таблице объектов
+		! проверяем заряды
+		if $args['pos.bl']!"" and charge_array[args['pit']]>=args['charge']:
+		! если бластер есть и зарядов в нём достаточно на выполнение действия
+			$args['res']=$args['blst.charge']
+		elseif $args['pos.bl']!"" and charge_array[args['pit']]<args['charge'] and charge_array[args['pit']]>0:
+		! если бластер есть, заряды в нём есть, но недостаточно
+			$args['res']=$args['b.halfcharg']
+		else
+		! во всех остальных случаях
+			$args['res']=$args['b.discharge']
+		end
+end
+if instr($args[0],'[usebl]')=1:
+	$args['string']=$replace($replace($args[0],'[usebl]'),'[/usebl]')
+	args['charge']=val(TRIM($func('get.word.inPos',$args['string'],1)))		&	!	заряд, который требуется, чтобы выполнить действие
+	args['page']=val(TRIM($func('get.word.inPos',$args['string'],2)))		&	!	страница, на которую перемещаемся при выполнении действия
+	$args['b.charge']=$func('get.word.inPos',$args['string'],3)				&	!	текст ссылки
+	$args['res']='<a href="exec:gosub ''blast.charge'',-<<args["charge"]>> & time[''goto'']=1 & goto ''page.<<args["page"]>>''" class="plain">'+$args['b.charge']+'</a>'
+end
+if instr($args[0],'[pow]')=1:
+	args['p']=val($replace($replace($args[0],'[pow]'),'[/pow]'))
+	$args['res']=$func('base.txt','pow',args['p'])
+end
+if instr($args[0],'[lovk]')=1:
+	args['p']=val($replace($replace($args[0],'[lovk]'),'[/lovk]'))
+	$args['res']=$func('base.txt','lovk',args['p'])
+end
+if instr($args[0],'[upluck]')=1:
+	$args['p']=$replace($replace($args[0],'[upluck]'),'[/upluck]')
+	$args['res']=$func('upluck')
+	if $args['res']!'&nbsp;': $args['res']='<br><br><br><center><font color=#004400>'+$args['p']+'</font><br>'+$args['res']+'</center><br><br>'
+end
+if instr($args[0],'[social]')=1:
+	$args['string']=$replace($replace($args[0],'[social]'),'[/social]')
+	$args['yep']=TRIM($func('get.word.inPos',$args['string'],1))
+	$args['nop']=TRIM($func('get.word.inPos',$args['string'],2))
+	$args['res']=$func('social','href',val($args['yep']),val($args['nop']))
+end
+if instr($args[0],'[powernow]')=1:
+	$args['string']=$replace($replace($args[0],'[powernow]'),'[/powernow]')
+	if power['now']>0:
+		$args['res']=TRIM($func('get.word.inPos',$args['string'],1))
+	else
+		$args['res']=TRIM($func('get.word.inPos',$args['string'],2))
+	end
+end
+if instr($args[0],'[step]')=1:
+	$args['string']=$replace($replace($args[0],'[step]'),'[/step]')
+	args['yep']=val(TRIM($func('get.word.inPos',$args['string'],1)))
+	$args['nop']=TRIM($func('get.word.inPos',$args['string'],2))
+	$args['res']='[page='+$func('world.new',args['yep'])+']'+$args['nop']+'[/page]'
+end
+if instr($args[0],'[fast]')=1:
+	$args['string']=$replace($replace($args[0],'[fast]'),'[/fast]')
+	$args['yep']=TRIM($func('get.word.inPos',$args['string'],1))
+	$args['nop']=TRIM($func('get.word.inPos',$args['string'],2))
+	$args['res']=$func('fast','href',val($args['yep']),val($args['nop']))
+end
+$result=$args['res']
+--- int.DINSTR ---------------------------------

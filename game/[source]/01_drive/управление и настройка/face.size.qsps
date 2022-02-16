@@ -1,0 +1,13 @@
+# face.size
+$args[9]=$GAME_INTERFACE[$args[0]+'.size']
+args[10]=val($replace($args[9],'size='))
+if $args[1]='left':
+	args[10]-=1
+	if args[10]<1: args[10]=1
+else
+	args[10]+=1
+	if args[10]>7: args[10]=7
+end
+$GAME_INTERFACE[$args[0]+'.size']='size='+str(args[10])
+gosub 'avs.face.refresh'
+--- face.size ---------------------------------

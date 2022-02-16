@@ -1,0 +1,57 @@
+# int.war
+! интерпретатор боя
+if $GAME_WAR['thiswar.'+$curloc]!'':
+	if instr($GAME_WAR['DIN.'+$curloc],'!war.round!')!0:
+		gosub 'run.dynamic.script','!war.round!','//run.this.dynamic//',$GAME_WAR['DIN.'+$curloc]
+	end
+end
+if $GAME_WAR['thiswar.'+$curloc]='':
+! если это первый вызов интерпретатора на данной локации
+	!получаем исходники чего только можно:
+	gosub $curloc
+	! запоминаем исходники
+	$GAME_WAR['заголовок.'+$curloc]=$lvar['заголовок']
+	if $lvar['исходник']!'':
+		$GAME_WAR['исходник.'+$curloc]=$lvar['исходник']
+	else
+		$GAME_WAR['исходник.'+$curloc]=$strfind($maintxt,'<avs-main>([\s\S]*)<\/avs-main>',1)
+	end
+	$GAME_WAR['exit.'+$curloc]=$lvar['exit']			&	!	перейти на локацию такую-то в случае победы
+	$GAME_WAR['DIN.'+$curloc]=$lvar['динамический код']	&	!	перейти на локацию такую-то в случае победы
+	$GAME_WAR['thiswar.'+$curloc]='war'					&	!	состояние боя
+	! штрафы и бонусы герою
+	GAME_WAR['hero.fast']=lvar['штраф.ловк']
+	!
+	killvar '$lvar'
+	! получаем список рэтчей:
+	gosub 'get.daughter.obj',$curloc,'<ratch>','$temp_id'
+	GAME_WAR['enemy.count']=arrsize('$temp_id')
+	args['i']=0
+	:full_ratch
+	if arrsize('$temp_id')>0:
+		$args['ratch.body']=$object_array[arrpos('$id_array',$temp_id[0])]
+		GAME_WAR['ratch.power.'+$temp_id[0]]=func('get.tag.num',$args['ratch.body'],'power')
+		GAME_WAR['ratch.power.max.'+$temp_id[0]]=GAME_WAR['ratch.power.'+$temp_id[0]]
+		GAME_WAR['ratch.fast.'+$temp_id[0]]=func('get.tag.num',$args['ratch.body'],'fast')
+		GAME_WAR['ratch.fast.max.'+$temp_id[0]]
+		args['blow']=func('get.tag.num',$args['ratch.body'],'blow')
+		if args['blow']=0: args['blow']=2
+		GAME_WAR['ratch.blow.'+$temp_id[0]]=args['blow']
+		args['i']+=1
+		killvar '$temp_id',0
+		jump 'full_ratch'
+	end
+	killvar '$temp_id'
+	! обновляем экран соответственно новым установкам
+	gosub 'int.war.screen',$curloc
+elseif $GAME_WAR['thiswar.'+$curloc]='war':
+	gosub 'int.war.screen',$curloc
+elseif $GAME_WAR['thiswar.'+$curloc]='victory':
+	gosub 'int.war.screen',$curloc,"victory"
+elseif $GAME_WAR['thiswar.'+$curloc]='lose':
+	gosub 'int.war.screen',$curloc,"lose"
+elseif $GAME_WAR['thiswar.'+$curloc]='prelose':
+	gosub 'int.war.screen',$curloc,"prelose"
+end
+
+--- int.war ---------------------------------

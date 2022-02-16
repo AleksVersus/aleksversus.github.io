@@ -1,0 +1,9 @@
+# onGameLoad
+if $save['type']='quick':
+	$print[]=$func('base.txt','qckload')
+elseif $save['type']='auto':
+	$print[]=$func('base.txt','chpload')
+end
+killvar "$GAME_HELP"	&	!	подсказки выводятся снова
+gosub 'true.goto'
+--- onGameLoad ---------------------------------

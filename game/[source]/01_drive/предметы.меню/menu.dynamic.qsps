@@ -1,0 +1,8 @@
+# menu.dynamic
+! локация выполняет динамическое меню
+if $args[0] = '': $args[0] = $OOC['id']
+gosub 'run.dynamic.script','!menu.run!',$args[0],'','',args[0]
+:ext
+time['goto']=1
+gosub 'true.goto'
+--- menu.dynamic ---------------------------------

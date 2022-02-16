@@ -1,0 +1,35 @@
+# get.daughter.obj
+! Функция получает все дочерние объекты для данного ай-ди.
+! Результатом является true - есть дочерние, false - нет дочерних
+! так же заполняется массив $temp_id
+! $args[0] - ай-ди родительского объекта
+! $args[1] - регулярное выражение по которому производится дополнительная фильтрация
+$args[0] = $args[0]
+$args[1] = $args[1]
+if $args[2] = '': $args[2] = '$temp_id'	&	!	массив, в который вносятся ай-ди дочерних объектов.
+if instr($args[2],'$')!1: $args[2] = '$'+$args[2]
+$args[3] = $args[3]	&	!	дополнительная проверка.
+! регулярное выражение по которому производится дополнительная фильтрация. Сортировка идёт по данным в массиве $run_array[]
+$args['gdo']='false'
+args['pos']=-1
+:for
+if $AVS_PLAYERTYPE['type']="QN":
+	args['pos']=arrpos('$position_array',$args[0],args['pos']+1)
+else
+	args['pos']=arrpos(args['pos']+1,'$position_array',$args[0])
+end
+if args['pos']!-1 and args['i']!args['pos']:
+	args['i']=args['pos']
+	if $args[1]='' or $strfind($object_array[args['pos']],$args[1])!'':
+		if $args[3]='' or $strfind($run_array[args['pos']],$args[3])!'':
+			$args['gdo']='true'
+			dynamic "<<$args[2]>>[arrsize('<<$args[2]>>')]=$id_array[args[0]]",args['pos']
+		end
+	end
+	jump 'for'
+end
+$result=$args['gdo']
+! ВНИМАНИЕ. Первый объект, созданный в игре,
+! должен находиться вне области поиска дочерних объектов.
+! Т.е. нельзя создавать первым объект, помещённый в другой объект.
+--- get.daughter.obj ---------------------------------

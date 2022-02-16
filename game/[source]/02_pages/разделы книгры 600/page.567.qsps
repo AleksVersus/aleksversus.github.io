@@ -1,0 +1,12 @@
+# page.567
+$lvar['заголовок']={Мир Стрекоз}
+if здесь_был[$curloc]=0:
+	cube=rand(1,6)
+end
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DIN1:$args[999]=$func('prv.obj.inBag','шар')
+if cube=1 or cube=2 or cube=3:
+	$result='C любопытством вы осматриваете свою <a href="exec:gosub ''put.obj'','''+$args[999]+''',''//nope.goto//'' & time[''goto'']=1 & goto ''page.159''" class="plain">находку</a>. Чтож, могло попасться и что похуже.'
+else
+	$result='С сомнением вы осматриваете свою <a href="exec:gosub ''put.obj'','''+$args[999]+''',''//nope.goto//'' & time[''goto'']=1 & goto ''page.511''" class="plain">находку</a>. Конечно? раз на раз не приходится. Могло попасться и что получше. Но, ничего не поделать.'
+end:1DIN>.</p>}
+--- page.567 ---------------------------------

@@ -1,0 +1,34 @@
+# [launcher]
+killall
+usehtml=1	&	! включаем html
+$onnewloc='onNewLoc'	&	!	устанавливаем обработчик перехода на новую локацию.
+$onobjsel='onObjSel'	&	!	устанавливаем обработчик выделения предмета.
+$ongsave='onGameSave'	&	!	устанавливает обработчик сохранения состояния игры.
+$ongload='onGameLoad'	&	!	устанавливает обработчик событий после загрузки состояния игры
+$usercom='uc'	&	!	устанавливаем обработчик строки ввода
+debug=1
+fsize=12
+showinput 0
+
+! проверка плеера (теперь нам не нужно определять Quest Navigator или классика).
+$AVS_PLAYERTYPE+=$func('player.prv')
+
+gosub 'set.Screen','обложка.чёрный'	&	!	переход на локацию с передачей аргумента и возврат к следующей строке
+'<span style="font-family:GoodVibesPro;color:#ff0000;font-size:4em;">Пока что игра не адаптирована для qSpider. Может иногда вылетать в молоко.</span>'
+'<iframe width="560" height="315" src="https://www.youtube.com/embed/aEdgMuqTlH8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+'<center><table border=0><tr name=заголовок><td align=center><font color=#dddd00>ОЛЬГА ГОЛОТВИНА<br><font size=+3>ВЕРЕНИЦА МИРОВ</font><br>или<br><font size=+3>ВЫВОДЫ ИЗ ЗАКОНА МЕРФИ</font></font><br><font size=-3>Книга-игра</font></td></tr><tr name=text><td align=right>
+
+<center><font color=#008888>Каким плеером вы пользуетесь?</font></center>
+</td></tr><tr name=link><td align=center><a href="exec:goto ''[start]''" class="plain">«Классический» QSP или Quest Navigator</a>
+<sup><font size=-3 color=#003300>(Версия для компьютера)</font></sup>
+
+<a href="exec: $AVS_PLAYERTYPE+=''[MINI]'' & goto ''[start]''" class="plain">Quest Player Fork</a>
+<sup><font size=-3 color=#003300>(Версия для Android)</font></sup></td></tr></table></center>
+'
+
+! работа со скриптами в QN{
+<a href="javascript:alert('Yo');">Выведет на экран надпись по щелчку на ссылке</a>
+EXEC('JS:alert("Yo");') 	&	!	независимо выведет надпись.
+}
+
+--- [launcher] ---------------------------------

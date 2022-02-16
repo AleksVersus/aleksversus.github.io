@@ -1,0 +1,20 @@
+# page.455
+$lvar['заголовок']={Мир Стрекоз}
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[powernow]<a l:href="#n_571">Валуны</a>|Валуны[/powernow] защищают от ветра, но не спасают от холода. <avs-insert></avs-insert></p>}
+$args['плащ']=$func('prv.bag','\[плащ\]','regexp')
+if $args['плащ']!'' and instr($object_array[arrpos('$id_array',$args['плащ'])],'[:плечи:]')!0:
+	args['плащ одет']=1
+else
+	args['плащ одет']=-1
+end
+$args['d']=$strfind($lvar['исходник'],'<avs-insert>[\s\S]*?<\/avs-insert>')
+if args['плащ одет']=1:
+	$args['текст замена']='На вас тёплый плащ, можете выспаться спокойно ([pow]1[/pow]).'
+else
+	$args['текст замена']='[powernow]На вас не надет тёплый плащ, а значит пришлось всю ночь лязгать зубами|На вас не был надет тёплый плащ. Пролязгав зубами всю ночь, к утру вы всё же смогли уснуть, но не проснуться[/powernow] ([pow]-1[/pow]).'
+end
+$lvar['исходник']=$replace($lvar['исходник'],$args['d'],$args['текст замена'])
+if здесь_был[$curloc]=0:
+	gosub 'power',args['плащ одет']
+end
+--- page.455 ---------------------------------

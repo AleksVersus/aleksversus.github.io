@@ -1,0 +1,11 @@
+# int.war.prove
+! локация проверки победы/поражения
+gosub 'get.daughter.obj',$curloc,'<ratch>','$temp_id'
+if GAME_WAR['enemy.count']<=GAME_WAR['death.enemy']:
+	$GAME_WAR['thiswar.'+$curloc]='victory'
+elseif power['now']<1:
+	$GAME_WAR['thiswar.'+$curloc]='lose'
+	$GAME_VALUE['power.lose']='poweroff'
+end
+killvar '$temp_id'
+--- int.war.prove ---------------------------------

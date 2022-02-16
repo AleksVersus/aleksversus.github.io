@@ -1,0 +1,23 @@
+# page.660
+$lvar['заголовок']={Мир Легенд}
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;«Ну, ещё раз! — войдя в азарт, предлагает ваш партнер. — Можешь оставить прежний заклад, а я ставлю вот это...» И жестом фокусника он извлекает откуда-то большую серебряную монету, на которой отчеканены корона и роза.
+     Хотите <DIN2:gosub 'get.daughter.obj',$curloc
+if arrsize('$temp_id')>0:
+	$result='<a l:href="#n_119">сыграть</a><lock.put>'
+	$GAME_VALUE['obj.inGame']=$temp_id[0]
+else
+	$result='сыграть'
+end
+killvar '$temp_id':2DIN>? Или распрощаетесь с незнакомцем и отправитесь <a l:href="#n_240">спать</a>?
+     
+     <DIN3:gosub 'get.daughter.obj',$curloc
+if arrsize('$temp_id')=0:
+	$result=$func('base.txt','help.putobj')
+else
+	$result=''
+end
+killvar '$temp_id':3DIN></p>}
+if здесь_был[$curloc]=0:
+	if $GAME_VALUE['obj.inGame']!'': $position_array[arrpos('$id_array',$GAME_VALUE['obj.inGame'])]=$curloc
+end
+--- page.660 ---------------------------------

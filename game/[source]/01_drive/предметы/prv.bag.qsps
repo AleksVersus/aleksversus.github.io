@@ -1,0 +1,29 @@
+# prv.bag
+! проверка инвентаря на наличие/отсутствие предмета. В качестве результата возвращается первый идентификатор части тела с нужным предметом
+! сначала получаем список частей тела, потом проверяем их на наличие предмета
+$args[0] = $args[0]	&	!	идентиффикатор/регулярное выражение/строка
+$args[1] = $args[1]	&	!	"тип проверки:
+id - проверяем идентификатор
+regexp - проверяем тело объекта по регэкспу
+regrun - проверяем содержимое run_array на регэксп
+
+если не указан тип проверки и идентификатор, значит ищем первую пустую ячейку рюкзака"
+$args[2] = $args[2]	&	!	дополнительная проверка части тела на наличие метки (короткого слова)
+gosub 'get.daughter.obj','INVENTORY','<body>'
+:for
+if arrsize('$temp_id')>0:
+	args['pit']=arrpos('$id_array',$temp_id[0])			&	! получаем строку части тела
+	args['pos']=arrpos('$position_array',$temp_id[0])	&	! получаем строку предмета, который лежит в данной позиции
+	if $args[2] = '' or instr($object_array[args['pit']],'[:'+$args[2]+':]'):
+		if $args[1]='id' and $id_array[args['pos']]=$args[0]: jump 'exit'
+		if $args[1]='regexp' and $strfind($object_array[args['pos']],$args[0])!'': jump 'exit'
+		if $args[1]='regrun' and $strfind($run_array[args['pos']],$args[0])!'': jump 'exit'
+		if $args[0]='' and $args[1]='' and args['pos']=-1: jump 'exit'
+	end
+	killvar '$temp_id',0
+	jump 'for'
+end
+:exit
+$result=$temp_id[0]
+killvar '$temp_id'
+--- prv.bag ---------------------------------

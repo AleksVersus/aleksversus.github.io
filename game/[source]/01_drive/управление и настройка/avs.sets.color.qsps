@@ -1,0 +1,150 @@
+# avs.sets.color
+!локация отрисовывает небольшое окошко, которое настраивает цвет фона или стилистику шрифта
+$args[9]=$args[9]
+if instr($args[2],"for.classic")!0 and $AVS_PLAYERTYPE['type']="QN":
+	$args['table.sets']='<font color=#880000>Данная настройка пока не доступна в Quest Navigator</font>'
+	jump 'endandexit'
+end
+if $GAME_INTERFACE[$args[0]+'.size']!'' and instr($args[2],'notattrib')=0:
+	$args['size']=$GAME_INTERFACE[$args[0]+'.size']
+	$args['size.arrow.left']="<a href=""exec:gosub 'face.size','<<$args[0]>>','left'"" class=""plain"">&lt;</a>"
+	$args['size.arrow.right']="<a href=""exec:gosub 'face.size','<<$args[0]>>','right'"" class=""plain"">&gt;</a>"
+	$args['reset.size']="<a href=""exec:gosub 'face.reset','<<$args[0]>>.size'"" class=""plain"">reset size</a>"
+else
+	$args['size']="<font color=#888888>size</font>"
+	$args['size.arrow.left']="<font color=#888888>&lt;</font>"
+	$args['size.arrow.right']="<font color=#888888>&gt;</font>"
+	$args['reset.size']="<font color=#888888>reset size</font>"
+end
+if $args[1]!'bg' and instr($args[2],'notattrib')=0:
+	if instr($GAME_INTERFACE[$args[0]+'.attrib'],'<i>')!0: $args['italic']="<b>I</b>" else $args['italic']="I"
+	if instr($GAME_INTERFACE[$args[0]+'.attrib'],'<b>')!0: $args['bold']="<b>B</b>" else $args['bold']="B"
+	if instr($GAME_INTERFACE[$args[0]+'.attrib'],'<u>')!0: $args['under']="<b>U</b>" else $args['under']="U"
+	$args['italic']="<a href=""exec:gosub 'face.attrib','<<$args[0]>>','i'"" class=""plain"">"+$args['italic']+"</a>"
+	$args['bold']="<a href=""exec:gosub 'face.attrib','<<$args[0]>>','b'"" class=""plain"">"+$args['bold']+"</a>"
+	$args['under']="<a href=""exec:gosub 'face.attrib','<<$args[0]>>','u'"" class=""plain"">"+$args['under']+"</a>"
+	$args['reset']="<a href=""exec:gosub 'face.reset','<<$args[0]>>.attrib'"" class=""plain"">R</a>"
+else
+	$args['italic']="<font color=#888888>I</font>"
+	$args['bold']="<font color=#888888>B</font>"
+	$args['under']="<font color=#888888>U</font>"
+	$args['reset']="<font color=#888888>R</font>"
+end
+$args['reset.color']="<a href=""exec:gosub 'face.reset','<<$args[0]>>.<<$args[1]>>color'"" class=""plain"">reset color</a>"
+$args['ввести вручную']="<a href=""exec:gosub 'face.input','<<$args[0]>>.<<$args[1]>>color'"" class=""plain"">input</a>"
+$args['color']=$GAME_INTERFACE['<<$args[0]>>.<<$args[1]>>color']
+if $args['color']='': $args['color']='empty'
+
+! ссылки изменения цвета
+$args['upRF']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','0f0000'"" class=""plain"">&#9650;</a>"
+$args['upR8']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','080000'"" class=""plain"">&#9650;</a>"
+$args['upR1']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','010000'"" class=""plain"">&#9650;</a>"
+$args['upGF']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','000f00'"" class=""plain"">&#9650;</a>"
+$args['upG8']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','000800'"" class=""plain"">&#9650;</a>"
+$args['upG1']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','000100'"" class=""plain"">&#9650;</a>"
+$args['upBF']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','00000f'"" class=""plain"">&#9650;</a>"
+$args['upB8']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','000008'"" class=""plain"">&#9650;</a>"
+$args['upB1']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','000001'"" class=""plain"">&#9650;</a>"
+$args['downRF']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','-0f0000'"" class=""plain"">&#9660;</a>"
+$args['downR8']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','-080000'"" class=""plain"">&#9660;</a>"
+$args['downR1']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','-010000'"" class=""plain"">&#9660;</a>"
+$args['downGF']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','-000f00'"" class=""plain"">&#9660;</a>"
+$args['downG8']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','-000800'"" class=""plain"">&#9660;</a>"
+$args['downG1']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','-000100'"" class=""plain"">&#9660;</a>"
+$args['downBF']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','-00000f'"" class=""plain"">&#9660;</a>"
+$args['downB8']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','-000008'"" class=""plain"">&#9660;</a>"
+$args['downB1']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','-000001'"" class=""plain"">&#9660;</a>"
+$args['left1']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','-010101'"" class=""plain"">&lt;</a>"
+$args['left8']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','-080808'"" class=""plain"">&lt;</a>"
+$args['leftF']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','-0f0f0f'"" class=""plain"">&lt;</a>"
+$args['right1']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','010101'"" class=""plain"">&gt;</a>"
+$args['right8']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','080808'"" class=""plain"">&gt;</a>"
+$args['rightF']="<a href=""exec:gosub 'face.color','<<$args[0]>>.<<$args[1]>>color','0f0f0f'"" class=""plain"">&gt;</a>"
+
+$args['table.sets']={<table cellpadding="0" border="0" name="setsTable">}
+$args['table.sets']+={<tr>}
+$args['table.sets']+={<td name="attribCell" align="center" valign="middle">}
+$args['table.sets']+={<table name="attribTable" cellpadding="0" cellspacing="0" border="1" width="150">}
+$args['table.sets']+={<tr>}
+$args['table.sets']+={<td align="center">}+$args['italic']+{</td><td align="center">}+$args['bold']+{</td>}
+$args['table.sets']+={</tr>}
+$args['table.sets']+={<tr>}
+$args['table.sets']+={<td align="center">}+$args['under']+{</td><td align="center">}+$args['reset']+{</td>}
+$args['table.sets']+={</tr>}
+$args['table.sets']+={</table>}
+$args['table.sets']+={</td>}
+$args['table.sets']+={<td align="center" valign="bottom" name="upArrowCell" width="210">}
+$args['table.sets']+={<table name="upArrow" cellpadding="0" width="210">}
+$args['table.sets']+={<tr name="upF"><td align="center" name="upRF">}+$args['upRF']+{</td><td align="center" name="upGF">}+$args['upGF']+{</td><td align="center" name="upBF">}+$args['upBF']+{</td></tr>}
+$args['table.sets']+={<tr name="up8"><td align="center" name="upR8">}+$args['upR8']+{</td><td align="center" name="upG8">}+$args['upG8']+{</td><td align="center" name="upB8">}+$args['upB8']+{</td></tr>}
+$args['table.sets']+={<tr name="up1"><td align="center" name="upR1">}+$args['upR1']+{</td><td align="center" name="upG1">}+$args['upG1']+{</td><td align="center" name="upB1">}+$args['upB1']+{</td></tr>}
+$args['table.sets']+={</table>}
+$args['table.sets']+={</td>}
+$args['table.sets']+={<td name="sizeCell" align="center" valign="middle">}
+$args['table.sets']+={<table cellspacing="0" cellpadding="0" border="1" width="150">}
+$args['table.sets']+={<tr>}
+$args['table.sets']+={<td align="center" colspan="2">}
+$args['table.sets']+=$args['size']
+$args['table.sets']+={</td>}
+$args['table.sets']+={</tr>}
+$args['table.sets']+={<tr>}
+$args['table.sets']+={<td name="arrowLeftSize" align="center">}+$args['size.arrow.left']+{</td>}
+$args['table.sets']+={<td name="arrowRightSize" align="center">}+$args['size.arrow.right']+{</td>}
+$args['table.sets']+={</tr>}
+$args['table.sets']+={</table>}
+$args['table.sets']+={</td>}
+$args['table.sets']+={</tr>}
+$args['table.sets']+={<tr>}
+$args['table.sets']+={<td align="right" valign="middle">}
+$args['table.sets']+={<table width="210">}
+$args['table.sets']+={<tr name="left">}
+$args['table.sets']+={<td name="leftF" align="center">}+$args['leftF']+{</td>}
+$args['table.sets']+={<td name="left8" align="center">}+$args['left8']+{</td>}
+$args['table.sets']+={<td name="left1" align="center">}+$args['left1']+{</td>}
+$args['table.sets']+={</tr>}
+$args['table.sets']+={</table>}
+$args['table.sets']+={</td>}
+$args['table.sets']+={<td valign="middle">}
+$args['table.sets']+={<table width="210">}
+$args['table.sets']+={<tr>}
+$args['table.sets']+={<td align="center"><span style="color:red; font-size:20">RR</span></td>}
+$args['table.sets']+={<td align="center"><span style="color:green; font-size:20">GG</span></td>}
+$args['table.sets']+={<td align="center"><span style="color:blue; font-size:20">BB</span></td>}
+$args['table.sets']+={</tr>}
+$args['table.sets']+={</table>}
+$args['table.sets']+={</td>}
+$args['table.sets']+={<td align="left" valign="middle">}
+$args['table.sets']+={<table width="210">}
+$args['table.sets']+={<tr name="right">}
+$args['table.sets']+={<td name="right1" align="center">}+$args['right1']+{</td>}
+$args['table.sets']+={<td name="right8" align="center">}+$args['right8']+{</td>}
+$args['table.sets']+={<td name="rightF" align="center">}+$args['rightF']+{</td>}
+$args['table.sets']+={</tr>}
+$args['table.sets']+={</table>}
+$args['table.sets']+={</td>}
+$args['table.sets']+={</tr>}
+$args['table.sets']+={<tr>}
+$args['table.sets']+={<td align="center" valign="middle">}
+$args['table.sets']+={<table width="210" border="1">}
+$args['table.sets']+={<tr><td align="center">}+$args['reset.size']+{</td></tr>}
+$args['table.sets']+={<tr><td align="center">}+$args['reset.color']+{</td></tr>}
+$args['table.sets']+={</table>}
+$args['table.sets']+={</td>}
+$args['table.sets']+={<td align="center" valign="top" name="downArrowCell" width="210">}
+$args['table.sets']+={<table name="downArrow" cellpadding="0" width="210">}
+$args['table.sets']+={<tr name="down1"><td align="center" name="downR1">}+$args['downR1']+{</td><td align="center" name="downG1">}+$args['downG1']+{</td><td align="center" name="downB1">}+$args['downB1']+{</td></tr>}
+$args['table.sets']+={<tr name="down8"><td align="center" name="downR8">}+$args['downR8']+{</td><td align="center" name="downG8">}+$args['downG8']+{</td><td align="center" name="downB8">}+$args['downB8']+{</td></tr>}
+$args['table.sets']+={<tr name="downF"><td align="center" name="downRF">}+$args['downRF']+{</td><td align="center" name="downGF">}+$args['downGF']+{</td><td align="center" name="downBF">}+$args['downBF']+{</td></tr>}
+$args['table.sets']+={</table>}
+$args['table.sets']+={</td>}
+$args['table.sets']+={<td align="center" valign="middle">}
+$args['table.sets']+={<table width="150" border="1" cellspacing="0" >}
+$args['table.sets']+={<tr><td align="center">}+$args['Ввести вручную']+{</td></tr>}
+$args['table.sets']+={<tr><td align="center">}+$args['color']+{</td></tr>}
+$args['table.sets']+={</table>}
+$args['table.sets']+={</td>}
+$args['table.sets']+={</tr>}
+$args['table.sets']+={</table>}
+:endandexit
+$result = $args['table.sets']
+--- avs.sets.color ---------------------------------

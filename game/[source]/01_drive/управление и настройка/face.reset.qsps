@@ -1,0 +1,4 @@
+# face.reset
+gosub 'set.newgame',$args[0]
+gosub 'avs.face.refresh'
+--- face.reset ---------------------------------

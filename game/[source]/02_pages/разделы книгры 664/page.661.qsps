@@ -1,0 +1,12 @@
+# page.661
+$lvar['заголовок']={Мир Стрекоз}
+if здесь_был[$curloc]=0:
+	cube=rand(1,6)
+end
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Судьба вознаграждает вас за неприятности: рука нащупывает меж корней что-то крепкое и круглое.</p>}
+$lvar['исходник']+="<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=#004400><i>Кубик брошен, выпало <<cube>>. <DIN1:if cube=2 or cube=4 or cube=6:
+	$result='Это чётное число, а значит вы нашли [page=27]это[/page]'
+else
+	$result='Это нечётное число, а значит вы нашли [page=340]это[/page]'
+end:1DIN>.</i></font></p>"
+--- page.661 ---------------------------------

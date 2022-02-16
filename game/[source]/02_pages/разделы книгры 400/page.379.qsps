@@ -1,0 +1,14 @@
+# page.379
+$lvar['заголовок']={Мир Стрекоз}
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Стоит вам сделать несколько шагов, как жуки замечают вас и, прекратив поединок, яростно бросаются на вас. <DIN1:$args['pos.bl']=$func('prv.obj.inBag','бластер')
+		! проверяем заряды
+		if $args['pos.bl']!"" and charge_array[arrpos('$id_array',$args['pos.bl'])]>1:
+			$result='В бластере есть два заряда — <a href="exec:charge_array[<<arrpos("$id_array",$args["pos.bl"])>>]-=2 & time[''goto'']=1 & goto ''page.515''" class="plain">стреляйте</a>, не раздумывая.'
+		elseif $args['pos.bl']!"" and charge_array[arrpos('$id_array',$args['pos.bl'])]=1:
+			$result='<font color=#004400><i>В вашем бластере недостаточно зарядов, а это значит - вы обречены: даже если застрелите одного из противников, другой уничтожит вас.</i></font>'
+			$lvar['заголовок']+='<avs-death>'
+		else
+			$result='<font color=#004400><i>Ваш бластер разряжен, а это значит - вы обречены.</i></font>'
+			$lvar['заголовок']+='<avs-death>'
+		end:1DIN> Нож не поможет в схватке с бронированным чудовищем.</p>}
+--- page.379 ---------------------------------

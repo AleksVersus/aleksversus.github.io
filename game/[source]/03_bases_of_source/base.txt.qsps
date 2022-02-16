@@ -1,0 +1,593 @@
+# base.txt
+! выводит нужный текст
+$args[0] = $args[0]	&	!	какой текст выбрать
+$args[1] = $args[1]	&	!	модификации текста
+$args[9] = $args[9]
+if $args[0] = 'table.mainsets':
+	if $AVS_PLAYERTYPE['size']="MINI":
+		$args['res']=''
+		$args[$args[1]]='<font color=#aaaa00>'
+		$args['1:'+$args[1]]='</font>'
+		$args['2.2']='&nbsp;'
+		$args['2.3']='&nbsp;'
+		$args['2.4']='&nbsp;'
+		$args['2.5']='&nbsp;'
+		$args['2.6']='&nbsp;'
+		$args['2.7']='&nbsp;'
+		$args['2.8']='&nbsp;'
+		$args['2.9']='&nbsp;'
+		$args['2.10']='&nbsp;'
+		$args['2.11']='&nbsp;'
+		$args['2.12']='&nbsp;'
+		$args['2.'+$args[1]]='&gt;'
+		$args['c']='Варианты:'
+		$args['1.2']='[cur]&nbsp;2|2[/cur]'
+		$args['1.3']='[cur]&nbsp;3|3[/cur]'
+		$args['1.4']='[cur]&nbsp;4|4[/cur]'
+		$args['1.5']='[cur]&nbsp;5|5[/cur]'
+		$args['1.6']='[cur]&nbsp;6|6[/cur]'
+		$args['1.7']='[cur]&nbsp;7|7[/cur]'
+		$args['1.8']='[cur]&nbsp;8|8[/cur]'
+		$args['1.9']='[cur]&nbsp;9|9[/cur]'
+		$args['1.10']='[cur]10|10[/cur]'
+		$args['1.11']='[cur]11|11[/cur]'
+		$args['1.12']='[cur]12|12[/cur]'
+		$args['res']+='ЛОВКОСТЬ|СИЛА|ОБАЯНИЕ<br>'
+		$args['res']+='<h3>'+$args['2']+$args['2.2']+$args['1.2']+'&nbsp;8|22|8&nbsp; &nbsp;'+$args['1:2']+$args['8']+$args['2.8']+$args['1.8']+'10|16|7'+$args['1:8']+'</h3>'
+		$args['res']+='<h3>'+$args['3']+$args['2.3']+$args['1.3']+'10|20|6&nbsp; &nbsp;'+$args['1:3']+$args['9']+$args['2.9']+$args['1.9']+'&nbsp;8|24|7'+$args['1:9']+'</h3>'
+		$args['res']+='<h3>'+$args['4']+$args['2.4']+$args['1.4']+'12|16|5&nbsp; &nbsp;'+$args['1:4']+$args['10']+$args['2.10']+$args['1.10']+'&nbsp;9|22|6'+$args['1:10']+'</h3>'
+		$args['res']+='<h3>'+$args['5']+$args['2.5']+$args['1.5']+'&nbsp;9|18|8&nbsp; &nbsp;'+$args['1:5']+$args['11']+$args['2.11']+$args['1.11']+'10|18|7'+$args['1:11']+'</h3>'
+		$args['res']+='<h3>'+$args['6']+$args['2.6']+$args['1.6']+'11|20|6&nbsp; &nbsp;'+$args['1:6']+$args['12']+$args['2.12']+$args['1.12']+'11|20|5'+$args['1:12']+'</h3>'
+		$args['res']+='<h3>'+$args['7']+$args['2.7']+$args['1.7']+'&nbsp;9|20|7&nbsp; &nbsp;'+$args['1:7']+'</h3>'
+	else
+		$args['res']='<table border=1 cellpadding=5 width=100%>'
+		$args[$args[1]]=' bgcolor=#ffffbb'
+		if $args[1]='':
+			$args['c']='На кубиках:'
+			$args['1.2']='2'
+			$args['1.3']='3'
+			$args['1.4']='4'
+			$args['1.5']='5'
+			$args['1.6']='6'
+			$args['1.7']='7'
+			$args['1.8']='8'
+			$args['1.9']='9'
+			$args['1.10']='10'
+			$args['1.11']='11'
+			$args['1.12']='12'
+		else
+			$args['c']='Варианты:'
+			$args['1.2']='[cur]2|2[/cur]'
+			$args['1.3']='[cur]3|3[/cur]'
+			$args['1.4']='[cur]4|4[/cur]'
+			$args['1.5']='[cur]5|5[/cur]'
+			$args['1.6']='[cur]6|6[/cur]'
+			$args['1.7']='[cur]7|7[/cur]'
+			$args['1.8']='[cur]8|8[/cur]'
+			$args['1.9']='[cur]9|9[/cur]'
+			$args['1.10']='[cur]10|10[/cur]'
+			$args['1.11']='[cur]11|11[/cur]'
+			$args['1.12']='[cur]12|12[/cur]'
+		end
+		$args['res']+='<tr name=mainsets><td align=center width=25%>'+$args['c']+'</td><td align=center width=25%>ЛОВКОСТЬ</td><td align=center width=25%>СИЛА</td><td align=center width=25%>ОБАЯНИЕ</td></tr>'
+		$args['res']+='<tr '+$args['2']+'><td align=center >'+$args['1.2']+'</td><td align=center>8</td><td align=center>22</td><td align=center>8</td></tr>'
+		$args['res']+='<tr '+$args['3']+'><td align=center >'+$args['1.3']+'</td><td align=center>10</td><td align=center>20</td><td align=center>6</td></tr>'
+		$args['res']+='<tr '+$args['4']+'><td align=center >'+$args['1.4']+'</td><td align=center>12</td><td align=center>16</td><td align=center>5</td></tr>'
+		$args['res']+='<tr '+$args['5']+'><td align=center >'+$args['1.5']+'</td><td align=center>9</td><td align=center>18</td><td align=center>8</td></tr>'
+		$args['res']+='<tr '+$args['6']+'><td align=center >'+$args['1.6']+'</td><td align=center>11</td><td align=center>20</td><td align=center>6</td></tr>'
+		$args['res']+='<tr '+$args['7']+'><td align=center >'+$args['1.7']+'</td><td align=center>9</td><td align=center>20</td><td align=center>7</td></tr>'
+		$args['res']+='<tr '+$args['8']+'><td align=center >'+$args['1.8']+'</td><td align=center>10</td><td align=center>16</td><td align=center>7</td></tr>'
+		$args['res']+='<tr '+$args['9']+'><td align=center >'+$args['1.9']+'</td><td align=center>8</td><td align=center>24</td><td align=center>7</td></tr>'
+		$args['res']+='<tr '+$args['10']+'><td align=center >'+$args['1.10']+'</td><td align=center>9</td><td align=center>22</td><td align=center>6</td></tr>'
+		$args['res']+='<tr '+$args['11']+'><td align=center >'+$args['1.11']+'</td><td align=center>10</td><td align=center>18</td><td align=center>7</td></tr>'
+		$args['res']+='<tr '+$args['12']+'><td align=center >'+$args['1.12']+'</td><td align=center>11</td><td align=center>20</td><td align=center>5</td></tr>'
+		$args['res']+='</table>'
+	end
+end
+if $args[0]='table.numbers':
+	args['i']=0
+	:numluck
+	if args['i']<arrsize('$num_luck') and args['i']<6:
+		$args['luck']+=$num_luck[args['i']]
+		args['i']+=1
+		if args['i']<arrsize('$num_luck'): $args['luck']+=',&nbsp;'
+		jump 'numluck'
+	end
+	args['i']=0
+	:unluck
+	if args['i']<arrsize('$num_unluck') and args['i']<6:
+		$args['unluck']+='<s>'+$num_unluck[args['i']]+'</s>'
+		args['i']+=1
+		if args['i']<arrsize('$num_unluck'): $args['unluck']+=',&nbsp;'
+		jump 'unluck'
+	end
+	if $AVS_PLAYERTYPE['type']="QN":
+		$args['res']='<table cellspacing=0 class="avs_game_stat_table">'
+	else
+		if $AVS_PLAYERTYPE['size']="MINI":
+			$args['res']='<table width=100% cellspacing=0>'
+		else
+			$args['res']='<table width=280 cellspacing=0>'
+		end
+	end
+	$args['res']+='<tr name=luck bgcolor=#'+$GAME_INTERFACE['stat.luck.bgcolor']+'><td align=left><font color=#'+$GAME_INTERFACE['stat.luck.color']+'>'+$GAME_INTERFACE['stat.luck.attrib']+'Числа удачи:'+$GAME_INTERFACE['/stat.luck.attrib']+'</font></td><td align=center><font color=#'+$GAME_INTERFACE['stat.luck.color']+'>'+$GAME_INTERFACE['stat.luck.attrib']+'<b>'+$args['luck']+'</b>'+$GAME_INTERFACE['/stat.luck.attrib']+'</font></td></tr>'
+	$args['res']+='<tr name=unluck bgcolor=#'+$GAME_INTERFACE['stat.unluck.bgcolor']+'><td align=left><font color=#'+$GAME_INTERFACE['stat.unluck.color']+'>'+$GAME_INTERFACE['stat.unluck.attrib']+'Числа неудачи:'+$GAME_INTERFACE['/stat.unluck.attrib']+'</font></td><td align=center><font color=#'+$GAME_INTERFACE['stat.unluck.color']+'>'+$GAME_INTERFACE['stat.unluck.attrib']+$args['unluck']+$GAME_INTERFACE['/stat.unluck.attrib']+'</font></td></tr>'
+	$args['res']+='</table>'
+end
+if $args[0] = 'table.char':
+	if $AVS_PLAYERTYPE['type']="QN":
+		$args['res']='<table cellspacing=0 class="avs_game_stat_table">'
+	else
+		if $AVS_PLAYERTYPE['size']="MINI":
+			$args['res']='<table width=100% cellspacing=0>'
+		else
+			$args['res']='<table width=280 cellspacing=0>'
+		end
+	end
+	$args['res']+='<tr name=fst bgcolor=#'+$GAME_INTERFACE['stat.fast.bgcolor']+'><td align=left><font color=#'+$GAME_INTERFACE['stat.fast.color']+'>Ловкость:</font></td><td align=right><font color=#'+$GAME_INTERFACE['stat.fast.color']+'>'+$GAME_INTERFACE['stat.fast.attrib']+'<<fast["now"]>>/<b><<fast["start"]>></b>'+$GAME_INTERFACE['/stat.fast.attrib']+'</font></td></tr>'
+	$args['res']+='<tr name=pwr bgcolor=#'+$GAME_INTERFACE['stat.power.bgcolor']+'><td align=left><font color=#'+$GAME_INTERFACE['stat.power.color']+'>Сила:</font></td><td align=right><font color=#'+$GAME_INTERFACE['stat.power.color']+'>'+$GAME_INTERFACE['stat.power.attrib']+'<<power["now"]>>/<b><<power["start"]>></b>'+$GAME_INTERFACE['/stat.power.attrib']+'</font></td></tr>'
+	$args['res']+='<tr name=scl bgcolor=#'+$GAME_INTERFACE['stat.social.bgcolor']+'><td align=left><font color=#'+$GAME_INTERFACE['stat.social.color']+'>Обаяние:</font></td><td align=right><font color=#'+$GAME_INTERFACE['stat.social.color']+'>'+$GAME_INTERFACE['stat.social.attrib']+'<<social["now"]>>/<b><<social["start"]>></b>'+$GAME_INTERFACE['/stat.social.attrib']+'</font></td></tr>'
+	$args['res']+='</table>'
+end
+if $args[0] = 'table.blast':
+	if $AVS_PLAYERTYPE['type']="QN":
+		$args['res']='<table class="avs_game_objs_table">'
+	else
+		if $AVS_PLAYERTYPE['size']="MINI":
+			$args['res']='<table width=100% cellspacing=0>'
+		else
+			$args['res']='<table width=280 cellspacing=0>'
+		end
+	end
+	gosub 'get.daughter.obj','INVENTORY','','$temp_id'
+	:blast
+	if arrsize('$temp_id')>0:
+		! строка объекта часть тела
+		args['pos.body']=arrpos('$id_array',$temp_id[0])
+		! строка дочернего объекта
+		args['pos.obj']=arrpos('$position_array',$temp_id[0])
+		! если дочерний объект есть, выводим его
+		$args['hide']='false'
+		if args['pos.obj']!-1:
+			if instr($object_array[args['pos.obj']],'[hide.inInv]')!0: $args['hide']='true'
+			if instr($object_array[args['pos.obj']],'[quest]')!0:
+			! подсветка квестового предмета
+				$args['color']=$GAME_INTERFACE['obj.quest.color']
+				$args['attrib']=$GAME_INTERFACE['obj.quest.attrib']
+				$args['/attrib']=$GAME_INTERFACE['/obj.quest.attrib']
+				$args['bgcolor']=$GAME_INTERFACE['obj.quest.bgcolor']
+			elseif instr($object_array[args['pos.body']],'[:место_в_рюкзаке:]')=0:
+			! подсветка активного предмета
+				$args['color']=$GAME_INTERFACE['obj.active.color']
+				$args['attrib']=$GAME_INTERFACE['obj.active.attrib']
+				$args['/attrib']=$GAME_INTERFACE['/obj.active.attrib']
+				$args['bgcolor']=$GAME_INTERFACE['obj.active.bgcolor']
+			else
+			! подсветка неактивного предмета
+				$args['color']=$GAME_INTERFACE['obj.unactive.color']
+				$args['attrib']=$GAME_INTERFACE['obj.unactive.attrib']
+				$args['/attrib']=$GAME_INTERFACE['/obj.unactive.attrib']
+				$args['bgcolor']=$GAME_INTERFACE['obj.unactive.bgcolor']
+			end
+			$args['name']='<a href="exec:gosub ''onObjClick'',''<<$id_array[args["pos.obj"]]>>''" title="вызов обработчика предмета" class="plain">'
+			$args['name']+='<font color=#'+$args['color']+'>'+$args['attrib']
+			$args['name']+=$func('get.word.padez',$func('get.tag.cont',$object_array[args['pos.obj']],'name'),'И')
+			$args['name']+=$args['/attrib']+'</font></a>'
+			args['charge']=charge_array[args['pos.obj']]
+			args['maxcharge']=func('get.tag.num',$object_array[args['pos.obj']],'maxchrg')
+			if instr($object_array[args['pos.obj']],'[maxchrg:')!0 and args['maxcharge']=0:
+				$args['ch']="<font color=#"+$GAME_INTERFACE['obj.charge.color']+'>'+$GAME_INTERFACE['obj.charge.attrib']+str(args['charge'])+$GAME_INTERFACE['/obj.charge.attrib']+'</font><font color=#'+$GAME_INTERFACE['obj.maxcharge.color']+'>'+$GAME_INTERFACE['obj.maxcharge.attrib']+'/<font size=+1>∞</font>'+$GAME_INTERFACE['/obj.maxcharge.attrib']+'</font>'
+			elseif instr($object_array[args['pos.obj']],'[maxchrg:')!0 and args['maxcharge']!0:
+				$args['ch']="<font color=#"+$GAME_INTERFACE['obj.charge.color']+'>'+$GAME_INTERFACE['obj.charge.attrib']+str(args['charge'])+$GAME_INTERFACE['/obj.charge.attrib']+'</font><font color=#'+$GAME_INTERFACE['obj.maxcharge.color']+'>'+$GAME_INTERFACE['obj.maxcharge.attrib']+'/'+str(args['maxcharge'])+$GAME_INTERFACE['/obj.maxcharge.attrib']+'</font>'
+			else
+				$args['ch']='&nbsp;'
+			end
+		else
+			if instr($object_array[args['pos.body']],'[hide.inInv]')!0: $args['hide']='true'
+			$args['color']=$GAME_INTERFACE['obj.space.color']
+			$args['attrib']=$GAME_INTERFACE['obj.space.attrib']
+			$args['/attrib']=$GAME_INTERFACE['/obj.space.attrib']
+			$args['name']='<font color=#'+$args['color']+'>'+$args['attrib']
+			$args['name']+=$func('get.tag.cont',$object_array[args['pos.body']],'name')
+			$args['name']+=$args['/attrib']+'</font>'
+			$args['bgcolor']=$GAME_INTERFACE['obj.space.bgcolor']
+			$args['ch']='&nbsp;'
+		end
+		if $args['hide']='false':
+			$args['res']+='<tr name=blastobj bgcolor=#'+$args['bgcolor']+'><td align=left>'+$args['name']+'</td><td align=right>'+$args['ch']+'</td></tr>'
+		end
+		killvar 'temp_id',0
+		jump 'blast'
+	end
+	$args['res']+='</table>'
+end
+if $args[0]='table.mlast':
+	if $AVS_PLAYERTYPE['type']="QN":
+		$args['res']='<table class="avs_game_objs_table">'
+	else
+		if $AVS_PLAYERTYPE['size']="MINI":
+			$args['res']='<table width=100% cellspacing=0>'
+		else
+			$args['res']='<table width=280 cellspacing=0>'
+		end
+	end
+		args['i']=0
+		:table_mlyad
+		if args['i']<11:
+			$args['ch']='&nbsp;'
+			if args['i']<3:
+				$args['color']=$GAME_INTERFACE['obj.quest.color']
+				$args['attrib']=$GAME_INTERFACE['obj.quest.attrib']
+				$args['/attrib']=$GAME_INTERFACE['/obj.quest.attrib']
+				$args['bgcolor']=$GAME_INTERFACE['obj.quest.bgcolor']
+				$args['obj']='Квестовый предмет'
+				if args['i']=2:
+					$args['ch']="<font color=#"+$GAME_INTERFACE['obj.charge.color']+'>'+$GAME_INTERFACE['obj.charge.attrib']+str(5)+$GAME_INTERFACE['/obj.charge.attrib']+'</font><font color=#'+$GAME_INTERFACE['obj.maxcharge.color']+'>'+$GAME_INTERFACE['obj.maxcharge.attrib']+'/<font size=+1>∞</font>'+$GAME_INTERFACE['/obj.maxcharge.attrib']+'</font>'
+				elseif args['i']=1:
+					$args['ch']="<font color=#"+$GAME_INTERFACE['obj.charge.color']+'>'+$GAME_INTERFACE['obj.charge.attrib']+str(4)+$GAME_INTERFACE['/obj.charge.attrib']+'</font><font color=#'+$GAME_INTERFACE['obj.maxcharge.color']+'>'+$GAME_INTERFACE['obj.maxcharge.attrib']+'/'+str(8)+$GAME_INTERFACE['/obj.maxcharge.attrib']+'</font>'
+				end
+			elseif args['i']<5:
+				$args['color']=$GAME_INTERFACE['obj.active.color']
+				$args['attrib']=$GAME_INTERFACE['obj.active.attrib']
+				$args['/attrib']=$GAME_INTERFACE['/obj.active.attrib']
+				$args['bgcolor']=$GAME_INTERFACE['obj.active.bgcolor']
+				$args['obj']='Активный предмет'
+			elseif args['i']<8:
+				$args['color']=$GAME_INTERFACE['obj.unactive.color']
+				$args['attrib']=$GAME_INTERFACE['obj.unactive.attrib']
+				$args['/attrib']=$GAME_INTERFACE['/obj.unactive.attrib']
+				$args['bgcolor']=$GAME_INTERFACE['obj.unactive.bgcolor']
+				$args['obj']='Неактивный предмет'
+			else
+				$args['color']=$GAME_INTERFACE['obj.space.color']
+				$args['attrib']=$GAME_INTERFACE['obj.space.attrib']
+				$args['/attrib']=$GAME_INTERFACE['/obj.space.attrib']
+				$args['bgcolor']=$GAME_INTERFACE['obj.space.bgcolor']
+				$args['obj']='Место в рюкзаке'
+			end
+			$args['name']='<font color=#'+$args['color']+'>'+$args['attrib']
+			$args['name']+=$args['obj']
+			$args['name']+=$args['/attrib']+'</font>'
+			$args['res']+='<tr name=blastobj bgcolor=#'+$args['bgcolor']+'><td align=left>'+$args['name']+'</td><td align=right>'+$args['ch']+'</td></tr>'
+			args['i']+=1
+			jump 'table_mlyad'
+		end
+	$args['res']+='</table>'
+end
+:невозможные_действия
+if $args[0]='f':
+	if $args[1]='место_в_рюкзаке': $args['res']='Вы не можете взять это. Рюкзак полон.'
+	if $args[1]='пояс': $args['res']='Вы не можете надеть на себя два пояса.'
+	if $args[1]='лицо': $args['res']='Вы не можете надеть ещё одну маску на лицо.'
+	if $args[1]='голова': $args['res']='Вы не можете надеть ещё один головной убор.'
+	if $args[1]='пояс_фляга': $args['res']='У вас уже есть фляга.'
+end
+if $args[0]='невозможное_действие':
+	$args['res']="Пример невозможного действия."
+end
+if $args[0]='empt':
+	$args['res']='Сосуд пуст.'
+end
+if $args[0]='n':
+	$args['res']='Нельзя выбросить этот предмет. Возможно он необходим для выполнения задания.'
+end
+if $args[0]='notspec':
+	$args['res']='Нет подходящих условий для использования предмета.'
+end
+if $args[0]='notput':
+	$args['res']='Здесь и сейчас вы не можете выбросить этот предмет.'
+end
+if $args[0]='discharge':
+	$args['res']='Этим предметом больше нельзя воспользоваться.'
+end
+if $args[0]='gift.no':
+	$args['res']='К сожалению, в кошельке больше не осталось монет.'
+end
+if $args[0]='f' or $args[0]='n' or $args[0]='notspec' or $args[0]='notput' or $args[0]='discharge' or $args[0]='невозможное_действие':
+	$args['add.colors and attributes']='nope'
+end
+:одевание
+if $args[0]='used':
+	if $args[1]='лицо': $args['res']='Вы надели '+$args[2]+'.'
+	if $args[1]='пояс': $args['res']='Вы надели '+$args[2]+'.'
+	if $args[1]='голова': $args['res']='Вы надели '+$args[2]+'.'
+	$args['add.colors and attributes']='used'
+end
+if $args[0]='одевание':
+	$args['res']="Пример действия надевания."
+	$args['add.colors and attributes']='used'
+end
+:взять
+if $args[0]='взять':
+	$args['res']="Пример действия подъёма."
+end
+if $args[0]='add':
+	$args['name']=$func('get.word.padez',$func('get.tag.cont',$object_array[arrpos('$id_array',$args[1])],'name'),'В')
+	$args['res']='Вы взяли '+$args['name']+'.'
+end
+if $args[0]='get':
+	$args['name']=$func('get.word.padez',$func('get.tag.cont',$object_array[arrpos('$id_array',$args[1])],'name'),'И')
+	$args['res']='Получены '+$args['name']+'.'
+end
+if $args[0]='add' or $args[0]='get' or $args[0]='взять':
+	$args['add.colors and attributes']='take'
+end
+:выбросить
+if $args[0]='выбросить':
+	$args['res']="Пример действия выбрасывания."
+end
+if $args[0]='put':
+	$args['name']=$func('get.word.padez',$func('get.tag.cont',$object_array[arrpos('$id_array',$args[1])],'name'),'В')
+	$args['res']='Вы выбросили '+$args['name']+'.'
+end
+if $args[0]='gift':
+	$args['name']=$func('get.word.padez',$func('get.tag.cont',$object_array[arrpos('$id_array',$args[1])],'name'),'В')
+	$args['res']='Вы отдали '+$args['name']+'.'
+end
+if $args[0]='s':
+	$args['name']=$func('get.word.padez',$func('get.tag.cont',$object_array[arrpos('$id_array',$args[1])],'name'),'В')
+	$args['res']='Вы продали '+$args['name']+'.'
+end
+if $args[0]='put' or $args[0]='gift' or $args[0]='s' or $args[0]='выбросить':
+	$args['add.colors and attributes']='put'
+end
+if $args[0]='war':
+	$args['res']='<avs-enemy><br><br><br><center><a href="exec:gosub ''int.war''" title="вызов обработчика боя" class="plain"><font size=+1>Сражаться</font></a></center></avs-enemy>
+'
+end
+if $args[0]='sell':
+	$args['res']='<br><br><br><center>Чтобы продать предмет, нужно щёлкнуть по его названию и в появившемся меню выбрать пункт "Продать".</center>'
+	$args['add.colors and attributes']='stat'
+end
+if $args[0]='ed':
+	args['rand']=rand(1,10)
+	$args['res']='<font color=#998888>'
+	if $args[1]='female':
+		if args['rand']=1: $args['res']+='Уснула навеки...'
+		if args['rand']=2: $args['res']+='Покойся с миром...'
+		if args['rand']=3: $args['res']+='Пала в смертельной схватке...'
+		if args['rand']=4: $args['res']+='Не выдержала напряжения...'
+		if args['rand']=5: $args['res']+='Погибла в этом бою...'
+		if args['rand']=6: $args['res']+='Отправилась к праотцам...'
+		if args['rand']=7: $args['res']+='Больше не поднимется...'
+		if args['rand']=8: $args['res']+='Обрела вечный покой...'
+		if args['rand']=9: $args['res']+='Теперь не угрожает вашей безопасности...'
+		if args['rand']=10: $args['res']+='Ей уже ничего не нужно...'
+	else
+		if args['rand']=1: $args['res']+='Уснул навеки...'
+		if args['rand']=2: $args['res']+='Покоится с миром...'
+		if args['rand']=3: $args['res']+='Пал в смертельной схватке...'
+		if args['rand']=4: $args['res']+='Не выдержал напряжения...'
+		if args['rand']=5: $args['res']+='Погиб в этом бою...'
+		if args['rand']=6: $args['res']+='Отправился к праотцам...'
+		if args['rand']=7: $args['res']+='Больше не поднимется...'
+		if args['rand']=8: $args['res']+='Обрёл вечный покой...'
+		if args['rand']=9: $args['res']+='Теперь не угрожает вашей безопасности...'
+		if args['rand']=10: $args['res']+='Ему уже ничего не нужно...'
+	end
+	$args['res']+='</font>'
+end
+if $args[0]='attack':
+	$args['res']='<a href="exec:gosub ''int.war.attack'',''<<$args[1]>>''"><font color=#886600>Сражаться</font></a>'
+end
+if $args[0]='eo':
+	$args['res']='<font color=#888899>Вы сражаетесь с другим противником.</font>'
+end
+if $args[0]='eea':
+	if $args[2]='female': $args['sex']='её' else $args['sex']='его'
+	$args['res']='<font color=#888800>'+$args[1]+' атакует вас, но '+$args['sex']+' удар слишком слаб, чтобы причинить вам неудобства.</font>'
+end
+if $args[0]='wehn':
+	$args['res']='<font color=#888800>Удар '+$args[1]+' был встречен вашим могучим ударом. Силы оказались равны.</font>'
+end
+if $args[0]='ef':
+	$args['res']='<font color=#880000>'+$args[1]+' наносит вам удар. Ваша жизненная сила уменьшается.</font>
+	<font size=-1 color=#880000>[<<power["now"]>> = <<power["now"]+args[2]>> - <<args[2]>>]</font>'
+end
+if $args[0]='hf':
+	if $args[2]='female': $args['sex']='её' else $args['sex']='его'
+	$args['res']='<font color=#008800>Вы наносите удар '+$args[1]+', и вам удаётся ранить '+$args['sex']+'.</font>
+	<font size=-1 color=#008800>[<<args[3]>> = <<args[3]+2>> - 2]</font>'
+end
+if $args[0]='hve':
+	$args['res']='<font color=#008888>Вы одолели '+$args[1]+'.</font>'
+end
+if $args[0]='hveb':
+	$args['res']='<font color=#008888>Вы выхватываете бластер и одним выстрелом испепеляете '+$args[1]+'.</font>'
+end
+if $args[0]='blaster-attack':
+	$args['res']='<a href="exec:gosub ''int.war.blaster'',''<<$args[1]>>''"><font color=#995500>Застрелить&nbsp;из&nbsp;бластера</font></a>'
+end
+if $args[0]='wv':
+	if $args[2]!'': $args['res']='<center><font size=+1>'+$args[2]+'</font></center><br>'
+	$args['res']+='<center><font size=+1><a href="exec:time[''goto'']=1 & goto ''<<$args[1]>>''" class="plain" title="wv">Вы победили!!!</a></font></center>'
+end
+if $args[0]='wp':
+	if $args[2]!'': $args['res']='<center><font size=+1>'+$args[2]+'</font></center><br>'
+	$args['res']+='<center><font size=+1><a href="exec:time[''goto'']=1 & goto ''<<$args[1]>>''" class="plain">Вы проиграли!!!</a></font></center>'
+end
+if $args[0]='wl':
+	$args['res']='<br><br><center><font size=+1><a href="exec:goto ''[start]''" class="plain">Вы проиграли.
+Начать с начала</a></font></center>'
+end
+:GAME_OVER
+if $args[0]='go':
+! ПОБЕДА В ИГРЕ !!!
+	$args['res']='<br><br><center><a href="exec:goto ''[start]''" class="plain"><font size=+1>Победа!!! Игра пройдена.</font>
+<font size=-1>(вернуться в главное меню)</font></a></center>'
+end
+if $args[0]='off':
+	$args['res']='<br><br><center><font size=+1>Силы покинули вас.</font></center>'
+end
+if $args[0]='pow':
+	if args[1]<0:	$args['res']='СИЛА уменьшается на <<-args[1]>>'
+	if args[1]>0:	$args['res']='СИЛА увеличивается на <<args[1]>>'
+	if args[1]=0:	$args['res']='СИЛА неизменна'
+end
+if $args[0]='lovk':
+	if args[1]<0:	$args['res']='ЛОВКОСТЬ уменьшается на <<-args[1]>>'
+	if args[1]>0:	$args['res']='ЛОВКОСТЬ увеличивается на <<args[1]>>'
+	if args[1]=0:	$args['res']='ЛОВКОСТЬ неизменна'
+end
+if $args[0]='pow' or $args[0]='lovk':
+	$args['add.colors and attributes']='stat'
+end
+if $args[0]='powup':
+	if args[1]<0:	$args['res']='СИЛА уменьшается: <<args[1]>>'
+	if args[1]>0:	$args['res']='СИЛА увеличивается: +<<args[1]>>'
+	if args[1]=0:	$args['res']='СИЛА не изменилась.'
+end
+if $args[0]='lovkup':
+	if args[1]<0:	$args['res']='ЛОВКОСТЬ уменьшается: <<args[1]>>'
+	if args[1]>0:	$args['res']='ЛОВКОСТЬ увеличивается: +<<args[1]>>'
+	if args[1]=0:	$args['res']='ЛОВКОСТЬ не изменилась.'
+end
+if $args[0]='изменение_стата':
+	$args['res']='Изменение состояния.'
+end
+if $args[0]='powup' or $args[0]='lovkup' or $args[0]='изменение_стата':
+	$args['add.colors and attributes']='stup'
+end
+if $args[0]='soc':
+	$args['res']='Требовалось обаяния <<args[1]>>. Ваше обаяние <<args[2]>>.'
+end
+:ловкость
+if $args[0]='fst':
+	$args['res']='Требовалось ловкости <<args[1]>>. Ваша ловкость <<args[2]>>.'
+end
+if $args[0]='fst' or $args[0]='soc':
+	if args[1]>args[2]: $args['add.colors and attributes']='noit' else $args['add.colors and attributes']='ysit'
+end
+:выводим знания
+if $args[0] = 'table.knew':
+	$args['res']='<br><br><table cellspacing=0 width=100%>'
+	if $GAME_INTERFACE['note.variants']!'2': $args['res']+='<tr name=note bgcolor=#'+$GAME_INTERFACE['note.even.bgcolor']+'><td align=left>Ваши записи:</td></tr>'
+	if $args[1]!'test':
+		gosub 'get.daughter.obj','KNOWLEDGE','','$temp_id'
+		args['b']=arrsize('$temp_id')
+	else
+		args['b']=5
+	end
+	args['t']=0
+	:knew
+	if arrsize('$temp_id')>0 or (args['i']<=args['b'] and $args[1]='test'):
+		! строка объекта часть тела
+		if args['i'] mod 2 =0: $args['color']=$GAME_INTERFACE['note.even.bgcolor'] else $args['color']=$GAME_INTERFACE['note.odd.bgcolor']
+		args['pos.obj']=arrpos('$id_array',$temp_id[0])
+		$args['name']=$func('get.tag.cont',$object_array[args['pos.obj']],'name')
+		if $args[1]='test':
+			if args['i']=0: $args['name']='Образец чётной записи. Номер ноль!'
+			if args['i']=1: $args['name']='Образец нечётной записи. Номер один!'
+			if args['i']=2: $args['name']='Ещё один образец записи.'
+			if args['i']=3: $args['name']='Записи могут быть длинными-длинными, например такие, как эта. На самом деле не важно, как длинна запись, она всё равно будет отображаться на экране.'
+			if args['i']=4: $args['name']='Скрытые заметки не отображаются.'
+			if args['i']=5: $args['name']='Образец записи, которая помогла вам в пути. Выполненное задание или совет, которому вы последовали.'
+		end
+		if instr($object_array[args['pos.obj']],'[выполнено]')!0 or ($args[1]='test' and args['i']=5):
+			$args['fc']=$GAME_INTERFACE['note.fin.color']
+			$args['fc.attrib']=$GAME_INTERFACE['note.fin.attrib']
+			$args['/fc.attrib']=$GAME_INTERFACE['/note.fin.attrib']
+			$args['fin']=' (Сделано)'
+		else
+			$args['fc']=$GAME_INTERFACE['note.new.color']
+			$args['fc.attrib']=$GAME_INTERFACE['note.new.attrib']
+			$args['/fc.attrib']=$GAME_INTERFACE['/note.new.attrib']
+			$args['fin']=''
+		end
+		if instr($object_array[args['pos.obj']],'[hide]')=0 or $args[1]='test':
+			$args['res']+='<tr name=notetext bgcolor=#'+$args['color']+'><td align=left><font color=#'+$args['fc']+'>'+$args['fc.attrib']+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+$args['name']+$args['fin']+$args['/fc.attrib']+'</font></td></tr>'
+			args['t']+=1
+		end
+		killvar 'temp_id',0
+		args['i']+=1
+		jump 'knew'
+	end
+	$args['res']+='</table>'
+	if args['b']=0 or args['t']=0: $args['res']=''
+end
+:game
+if $args[0]='game.enemy':
+	$args['win']=$func('get.word.inPos',$args[1],1)
+	$args['lose']=$func('get.word.inPos',$args[1],2)
+	tvar['cube.hero']=tvar['cube.hero.1']+tvar['cube.hero.2']
+	tvar['cube.enemy']=tvar['cube.enemy.1']+tvar['cube.enemy.2']
+	$args['ссылка бросить']='<a href="exec:tvar[''cube.hero.1'']=rand(1,6) & tvar[''cube.hero.2'']=rand(1,6) & tvar[''cube.enemy.1'']=rand(1,6) & tvar[''cube.enemy.2'']=rand(1,6) & goto $curloc" class="plain">'
+	$args['выпало']="Вам выпало <<tvar['cube.hero.1']>> и <<tvar['cube.hero.2']>>, вашему противнику <<tvar['cube.enemy.1']>> и <<tvar['cube.enemy.2']>>."
+	if tvar['cube.hero']=0:
+		$args['res']=$args['ссылка бросить']+'Бросить кубики</a>'
+	elseif tvar['cube.hero']=tvar['cube.enemy']:
+		$args['res']=$args['выпало']+'<br>Суммы выпавших очков равны.<br>'+$args['ссылка бросить']+'Бросить кубики ещё раз</a>'
+	elseif tvar['cube.hero']>tvar['cube.enemy']:
+		$args['res']=$args['выпало']+'<br>У вас выпало больше очков, чем у противника.<br>[page='+$args['win']+']Вы выиграли![/page]'
+		$GAME_VALUE['game.cube.result']='win'
+		GAME_VALUE['game.cube.party']+=1
+	else
+		$GAME_VALUE['game.cube.result']='lose'
+		GAME_VALUE['game.cube.party']+=1
+		$args['res']=$args['выпало']+'<br>У противника выпало больше очков, чем у вас.<br>[page='+$args['lose']+']Выиграл он![/page]'
+	end
+	$args['res']='<br><br><p align=center>'+$args['res']+'</p>'
+	$args['add.colors and attributes']='stup'
+end
+:сохранения
+if $args[0]='сохранения':
+	$args['res']='Пример текста при сохранении.'
+end
+if $args[0]='nosave':
+	$args['res']='Сейчас нельзя сохранить игру.'
+end
+if $args[0]='save':
+	$args['res']='Игра сохранена.'
+end
+if $args[0]='chpload':
+	$args['res']='Контрольная точка загружена.'
+end
+if $args[0]='qckload':
+	$args['res']='Быстрое сохранение загружено.'
+end
+if $args[0]='notchp':
+	$args['res']='Контрольные точки ещё не созданы.'
+end
+if $args[0]='notqck':
+	$args['res']='Быстрые сохранения не сделаны.'
+end
+if $args[0]='nosave' or $args[0]='chpload' or $args[0]='qckload' or $args[0]='notchp' or $args[0]='save' or $args[0]='notqck' or $args[0]='сохранения':
+	$args['add.colors and attributes']='save'
+end
+:текст_по_модификатору_вероятностей
+if $args[0]='vm':
+	$args['res']="     Переход должен был выбросить вас где-то неподалёку от Ворот. Вот только <a href=""exec:gosub 'crt.obj','мв','','<knew>',0,1,'KNOWLEDGE' & time['goto']=1 & goto 'page.<<args[1]>>'"" class='plain'>где именно</a>? Эх, как бы пригодился модификатор вероятностей: нажал кнопку - и сразу к Воротам...
+     Клуша мгновенно реагирует на этот мечтательный вздох: нет, модификатор не стоит использовать при Переходе, и - да, он у вас имеется.
+     Вы тут же бросаете взгляд на браслет. Так и есть! Если смотреть под определённым углом, видны слабо светящиеся цифры красного и зелёного цветов. Господа учёные второпях забыли сообщить о столь полезном приборе.
+     «Это новая модель, - гордо объявляет Клуша, - Модификатор реагирует на мыслеприказ, концентрирует до шести благоприятных исходов, анализирует удачу и...»
+     «...отнимает шансы на успех в будущем!» - нетерпеливо заканчиваете вы.
+     «...и позволяет восстанавливать исходные вероятностные потоки к благоприятному состоянию в случае наиболее успешного течения событий» - невозмутимо заканчивает КЛУ-6.
+     «В случае успешного течения событий»... Как всегда, всё решает случай.
+"
+end
+if $args[0]='vm_1':
+	$args['res']="&nbsp;Эх, сейчас бы пригодился модификатор вероятностей!
+     «Шеф, так ведь он у вас есть! -- моментально реагирует Клуша. -- Новая модель! C телепатическим управлением!»
+     Отлично! Короткий мыслеприказ, и модификатор откликается. Мгновенный анализ возможных вероятностей и концентрация наиболее благоприятных исходов. Пусть это и отнимает шансы на успех в будущем, но сейчас вам позарез нужна удача!
+"
+end
+if $args[0]='note.objLoc':
+	$args['res']="<font  size=-1>Предметы на локации:</font><br><br>"
+end
+if $args[0]='button.close':
+	$args['res']="[Закрыть настройки интерфейса]"
+end
+:отдать предмет
+if $args[0]='help.putobj':
+	$args['res']='Чтобы отдать предмет, просто щёлкните по его названию и выберите во всплывающем меню пункт "Выбросить". Ссылка перехода активируется после сброса необходимого количества предметов.'
+	$args['add.colors and attributes']='stat'
+end
+!Общая схема модернизации текстовки в соответствии с настройками
+if $args['add.colors and attributes']!'':
+	$args['n.c']=$GAME_INTERFACE['print.'+$args['add.colors and attributes']+'.color']
+	$args['n.a']=$GAME_INTERFACE['print.'+$args['add.colors and attributes']+'.attrib']
+	$args['/n.a']=$GAME_INTERFACE['/print.'+$args['add.colors and attributes']+'.attrib']
+	$args['res']='<font color=#'+$args['n.c']+'>'+$args['n.a']+$args['res']+$args['/n.a']+'</font>'
+end
+$result=$args['res']
+--- base.txt ---------------------------------

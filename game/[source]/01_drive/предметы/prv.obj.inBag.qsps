@@ -1,0 +1,22 @@
+# prv.obj.inBag
+! локация проверяет наличие предмета в рюкзаке и выдаёт его ид
+! сначала происходи поиск предмета, потом проверяется его наличие в рюкзаке
+
+$args[0]=$args[0]
+if $args[1]='': $args['type']='<body>' else $args['type']=$args[1]
+args['pit']=-1
+:for
+if $AVS_PLAYERTYPE['type']="QN":
+	args['pit']=arrcomp('$object_array','[\s\S]*\[:'+$args[0]+':\][\s\S]*',args['pit']+1)
+else
+	args['pit']=arrcomp(args['pit']+1,'$object_array','[\s\S]*\[:'+$args[0]+':\][\s\S]*')
+end
+if args['pit']!-1:
+	if instr($object_array[arrpos('$id_array',$position_array[args['pit']])],$args['type'])!0:
+		$args['res']=$id_array[args['pit']]
+	else
+		jump 'for'
+	end
+end
+$result=$args['res']
+--- prv.obj.inBag ---------------------------------

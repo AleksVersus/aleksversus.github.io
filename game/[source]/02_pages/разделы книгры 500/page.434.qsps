@@ -1,0 +1,12 @@
+# page.434
+$lvar['заголовок']={Мир Камней<avs-enemy>}
+$lvar['исходник']={<center><font size=+1>ПИРАТ
+
+ЛОВКОСТЬ 9     СИЛА 9</font>
+
+<font color=#004400><i>Удастся</i></font> ли вам победить?</center>}
+$lvar['exit']='page.326'
+if здесь_был[$curloc]=0:
+	gosub 'crt.obj','пират','','<ratch>'
+end
+--- page.434 ---------------------------------

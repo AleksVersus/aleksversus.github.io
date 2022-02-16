@@ -1,0 +1,14 @@
+# page.65
+$lvar['заголовок']={Мир Легенд<avs-enemy>}
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Сэр Палеандр прерывает бой и грозно спрашивает, согласны ли вы признать Берегонду Аргианскую венцом творения. <a l:href="#n_651">Согласитесь с требованиями</a> этого головореза? Если из упрямства не захотите сдаваться — бой продолжится, уже до вашей гибели или победы.</p>}
+$lvar['динамический код']={
+if $args[0]='!war.refresh!':
+	if $tvar['refresh']='':
+		gosub 'get.daughter.obj',$curloc,'\[:палеандр:\]','$temp_id'
+		GAME_WAR['ratch.power.'+$temp_id[0]]=func('get.tag.num',$object_array[arrpos('$id_array',$temp_id[0])],'pownow')
+		$tvar['refresh']='refresh'
+		killvar '$temp_id'
+	end
+end}
+$lvar['exit']='page.265'
+--- page.65 ---------------------------------

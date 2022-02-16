@@ -1,0 +1,60 @@
+# onObjClick
+$args[0] = $args[0]	&	!	идентификатор предмета
+$OOC['id']=$args[0]
+args['sit'] = arrpos('$id_array',$args[0])	&	!	строка предмета в таблице объектов
+$args['obj']=$object_array[args['sit']]	&	!	тело объекта
+$args['np']=$func('get.tag.cont',$args['obj'],'np')	&	!	набор признаков объекта
+$args['sw']=$func('get.tag.cont',$args['obj'],'')	&	!	идентификатор вида
+! создаём пункты меню
+killvar '$OOC_menu'
+$OOC_menu[]='Информация:menu.info'
+! -------------- добавочные пункты меню из скрипта -----------------
+	if instr($run_array[args['sit']],'!menu.add!')!0:
+		$args['menu']=$func('run.dynamic.script','!menu.add!',$args[0])
+		if $args['menu']!'': $OOC_menu[]=$args['menu']
+	end
+! -------------- добавочные пункты меню из скрипта -----------------
+if instr($args['obj'],'[useon')!0:
+	$args['useof']=$func('get.tag.cont',$tvar['костыль.заголовок'],'useof')		&	!	получаем список предметов, которые можно использовать на локации
+	if instr($args['useof'],'['+$args['sw']+']')!0:
+	! если на текущей локации можно использовать данный предмет, он присутствует в списке
+		$OOC_menu[]='Воспользоваться:menu.useon'
+	end
+end
+if instr($tvar['костыль.заголовок'],'<avs-money:')!0:
+! если тип данной локации - локация торговли
+	! получаем список предметов, которые тут можно продать
+	$args['mass-sale']=$func('get.tag.cont',$tvar['костыль.заголовок'],'avs-obj')
+	if $args['mass-sale']!'':
+	! если список указан, проверяем соответствует ли ему предмет:
+		if instr($args['mass-sale'],'['+$args['sw']+']')!0:
+			$OOC_menu[]='Продать:menu.sale'
+		end
+		killvar '$temp_mass'
+	elseif instr($args['obj'],'[quest]')=0:
+	! если особого списка нет, значит можно продать любой предмет
+		$OOC_menu[]='Продать:menu.sale'
+	end
+end
+if instr($args['np'],'[доспех]')!0 and instr($object_array[arrpos('$id_array',$position_array[args['sit']])],'[:место_в_рюкзаке:]')!0: $OOC_menu[]='Надеть:menu.use'
+if $GAME_WAR['thiswar.'+$curloc]!'war' and $GAME_WAR['thiswar.'+$curloc]!'lose' and  $GAME_WAR['thiswar.'+$curloc]!'prelose':
+	if instr($args['np'],'[еда]')!0: $OOC_menu[]='Съесть:menu.eat'
+	if instr($args['np'],'[напиток]')!0: $OOC_menu[]='Сделать глоток:menu.eat'
+	if instr($args['np'],'[лекарство]')!0: $OOC_menu[]='Подлечиться:menu.eat'
+end
+if instr($args['np'],'[кошель]')!0 and instr($tvar['костыль.заголовок'],'<avs-buy>')!0: $OOC_menu[]='Отдать монету:menu.buy'
+if instr($args['obj'],'[quest]')=0:	$OOC_menu[]='Выбросить:menu.put'
+if instr($tvar['костыль.заголовок'],'<lock.obj>')!0: killvar '$OOC_menu' 
+if instr($tvar['костыль.заголовок'],'<avs-death>')=0:
+	if arrsize('$OOC_menu')>1:
+		!if $AVS_PLAYERTYPE['size']="MINI":
+			! меню выводится в экране
+			
+		!else
+			menu '$OOC_menu'
+		!end
+	else
+		gosub 'menu.info',$args[0]
+	end
+end
+--- onObjClick ---------------------------------

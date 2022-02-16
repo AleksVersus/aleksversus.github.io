@@ -1,0 +1,50 @@
+# world.new
+! локация выбирает новый мир из списка оставшихся
+args[0] = args[0]	&	!	номер страницы по умолчанию
+gosub 'get.daughter.obj','KNOWLEDGE','\[t:выход:t\]'	&	!	получаем список найденных ворот
+if arrsize('$temp_id')<2:
+	killvar '$temp_id'
+	args['res.page']=args[0]
+end
+:for_gate
+if arrsize('$temp_id')>0:
+	args['res.page']+=func('get.tag.num',$object_array[arrpos('$id_array',$temp_id[0])],'page')
+	killvar '$temp_id',0
+	jump 'for_gate'
+end
+killvar '$temp_id'
+$new_world[]='178'
+$new_world[]='290'
+$new_world[]='345'
+$new_world[]='366'
+if args['res.page']=242 or args['res.page']=263 or args['res.page']=318 or args['res.page']=404:
+	killvar '$new_world',arrpos('$new_world','178')
+end
+if args['res.page']=290 or args['res.page']=345 or args['res.page']=366 or args['res.page']=393:
+	killvar '$new_world',arrpos('$new_world','178')
+end
+if args['res.page']=242 or args['res.page']=130 or args['res.page']=75 or args['res.page']=641:
+	killvar '$new_world',arrpos('$new_world','366')
+end
+if args['res.page']=290 or args['res.page']=345 or args['res.page']=178 or args['res.page']=393:
+	killvar '$new_world',arrpos('$new_world','366')
+end
+if args['res.page']=151 or args['res.page']=318 or args['res.page']=130 or args['res.page']=598:
+	killvar '$new_world',arrpos('$new_world','290')
+end
+if args['res.page']=366 or args['res.page']=345 or args['res.page']=178 or args['res.page']=393:
+	killvar '$new_world',arrpos('$new_world','290')
+end
+if args['res.page']=151 or args['res.page']=263 or args['res.page']=75 or args['res.page']=467:
+	killvar '$new_world',arrpos('$new_world','345')
+end
+if args['res.page']=290 or args['res.page']=366 or args['res.page']=178 or args['res.page']=393:
+	killvar '$new_world',arrpos('$new_world','345')
+end
+if arrsize('$new_world')!0:
+	$result = $new_world[rand(0,arrsize('$new_world')-1)]
+else
+	$result = str(args['res.page'])
+end
+killvar '$new_world'
+--- world.new ---------------------------------

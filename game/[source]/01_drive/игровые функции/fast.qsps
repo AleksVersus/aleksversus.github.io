@@ -1,0 +1,25 @@
+# fast
+$args[0]=$args[0]	&	!	управляющая конструкция href - получаем ссылку cube - бросаем кубики
+args[1]=args[1]
+args[2]=args[2]
+if $args[0]='href':
+	if tvar['cube']=0:
+	! если кубики не брошены
+		$args['res']='<a href="exec:gosub ''fast'',''cube'',<<args[1]>>,<<args[2]>>" class="plain">Проверить ловкость</a>'
+	else
+		$args['res']=$func('base.txt','fst',tvar['cube'],fast['now'])+'<br><br>'
+		if tvar['cube']>fast['now']:
+		! если сумма выпавших очков больше вашей ловкости, то вы промахнулись, соскользнули, лопухнулись или чего ещё
+			$args['res']+='<a href="exec:time[''goto'']=1 & goto ''page.<<args[2]>>''" class="plain">Вы оказались не слишком ловки в этот раз.</a>'
+		else
+		! если меньше или равна ей, то вы победитель
+			$args['res']+='<a href="exec:time[''goto'']=1 & goto ''page.<<args[1]>>''" class="plain">В этот раз вы оказались достаточно ловки.</a>'
+		end
+	end
+elseif $args[0]='cube':
+	tvar['cube']=rand(2,12)
+	time['goto']=1
+	gosub 'true.goto'
+end
+$result=$args['res']
+--- fast ---------------------------------

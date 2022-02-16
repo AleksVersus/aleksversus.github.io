@@ -1,0 +1,8 @@
+# minus.obj
+! уменьшает количество предмета, и удаляет его, если количество меньше 1
+$args[0] = $args[0]	&	!	идентификатор
+args[1] = args[1]	&	!	количество
+args[9]=arrpos('$id_array',$args[0])
+kolvo_array[args[9]]-=args[1]
+if kolvo_array[args[9]]<1: gosub 'del.obj.id',$args[0]
+--- minus.obj ---------------------------------

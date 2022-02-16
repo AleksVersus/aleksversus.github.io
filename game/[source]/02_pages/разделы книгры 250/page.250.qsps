@@ -1,0 +1,9 @@
+# page.250
+$lvar['заголовок']={Мир Камней<checkpoint>}
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Расщелина становится всё уже, острые края камней царапают вас в кровь ([pow]-1[/pow]). <avs-insert></avs-insert></p>}
+if здесь_был[$curloc]=0:
+	gosub 'power',-1
+end
+$args['d']=$strfind($lvar['исходник'],'<avs-insert>[\s\S]*?<\/avs-insert>')
+$lvar['исходник']=$replace($lvar['исходник'],$args['d'],'Хотите вернуться и пойти <a l:href="#n_558">прежним путём</a>? Или всё же попытаетесь исследовать расщелину <a l:href="#n_322">до конца</a>?')
+--- page.250 ---------------------------------

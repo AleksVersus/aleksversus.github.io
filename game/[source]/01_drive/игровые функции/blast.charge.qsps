@@ -1,0 +1,16 @@
+# blast.charge
+! заряжаем бластер
+args[0] = args[0]	&	!	заряды
+$args['blast']=$func('prv.obj.inBag','бластер')
+if $AVS_PLAYERTYPE['size']="MINI":
+	$args['c']='444499'
+	$args['c2']='666699'
+else
+	$args['c']='000044'
+	$args['c2']='222244'
+end
+if -args[0]>charge_array[arrpos('$id_array',$args['blast'])]: args[0]=-charge_array[arrpos('$id_array',$args['blast'])]
+charge_array[arrpos('$id_array',$args['blast'])]+=args[0]
+if args[0]>0: $print_down[]="<font color=#"+$args['c']+">Заряд бластера увеличивается: +<<args[0]>></font>"
+if args[0]<0: $print_down[]="<font color=#"+$args['c']+">Заряд бластера уменьшается: <<args[0]>></font>"
+--- blast.charge ---------------------------------

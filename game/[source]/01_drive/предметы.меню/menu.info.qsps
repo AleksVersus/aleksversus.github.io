@@ -1,0 +1,48 @@
+# menu.info
+if $args[0] = '': $args[0] = $OOC['id']
+$temp_mi=$args[0]	&	!	временная переменная для хранения идентификатора предмета
+args['sit']=arrpos('$id_array',$args[0])
+$args['obj']=$object_array[args['sit']]
+$args['np']=$func('get.tag.cont',$args['obj'],'np')
+$args['text']=$func('int.DIN',$func('get.tag.cont',$args['obj'],'text'))
+if $AVS_PLAYERTYPE['size']="MINI":
+	$args['c']='444499'
+	$args['c2']='666699'
+else
+	$args['c']='000044'
+	$args['c2']='222244'
+end
+$print[]='<font color=#'+$args['c']+'>'+$args['text']+'</font>'
+if kolvo_array[args['sit']]>1: $print[]='<font color=#'+$args['c']+'>Осталось '+str(kolvo_array[args['sit']])+' '+$func('get.word.end',kolvo_array[args['sit']],'штука|штуки|штук')+'.</font>'
+if instr($args['np'],'[фляга]')!0:
+! если текущий предмет обладает признаком фляги !
+	args['заряд']=charge_array[args['sit']]
+	if args['заряд']>0:
+		args['pot']=arrpos('$position_array',$args[0])
+		$args['flaga']=$func('get.word.end',args['заряд'],'Осталось на '+str(args['заряд'])+' глоток.|Осталось на '+str(args['заряд'])+' глотка.|Осталось на '+str(args['заряд'])+' глотков.|Фляжка пуста.')
+		args['power']=func('get.tag.num',$object_array[args['pot']],'power')
+		$args['flaga']+=' Каждый глоток восстанавливает '+str(args['power'])+' СИЛЫ.'
+	else
+		$args['flaga']='Фляга пуста.'
+	end
+	$args['flaga']=$args['flaga']
+end
+gosub 'get.daughter.obj',$args[0]
+:for
+if arrsize('$temp_id')>0:
+	args['pit']=arrpos('$id_array',$temp_id[0])
+	if instr($object_array[args['pit']],'[hide]')=0:
+		$args['na']=$func('get.n.p',$object_array[args['pit']],'И')
+		args['k']=kolvo_array[args['pit']]
+		$args['ruker']+='<hr>'+$args['na']
+		if instr($object_array[args['pit']],'[hide.kolvo]')=0: $args['ruker']+=': '+str(args['k'])+' '+$func('get.word.end',args['k'],'штука|штуки|штук')+'.'
+	end
+	killvar '$temp_id',0
+	jump 'for'
+end
+$print[]='<font color=#'+$args['c2']+'>'+$args['flaga']+$args['ruker']+'</font>'
+killvar '$temp_id'
+killvar '$temp_mi'
+time['goto']=1
+gosub 'true.goto'
+--- menu.info ---------------------------------

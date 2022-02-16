@@ -1,0 +1,68 @@
+# int.war.attack
+! локация, выполняющая стандартную атаку
+$args[0] = $args[0]	&	!	идентификатор выбранного противника
+$GAME_WAR['select.enemy']=$args[0]
+$GAME_WAR_LOG[]="<font size=+1><b>Раунд <<GAME_WAR['round']+1>>.</b></font>"
+! сначала определяем собственные параметры
+! получаем мощность удара из текущей ловкости и случайного числа
+args['cube.hero']=rand(2,12)
+args['might.hero']=fast['now']+args['cube.hero']+GAME_WAR['hero.fast']
+! получаем список противников
+gosub 'get.daughter.obj',$curloc,'<ratch>','$temp_id'
+args['i']=0
+:for
+$args['attacks.all']="[pfast:<<fast['now']>>] [pcube:<<args['cube.hero']>>] [pfbns:<<GAME_WAR['hero.fast']>>]"
+if arrsize('$temp_id')>0:
+	if GAME_WAR['ratch.power.'+$temp_id[0]]>0:
+		args['cube.enemy']=rand(2,12)
+		args['might.enemy']=GAME_WAR['ratch.fast.'+$temp_id[0]]+args['cube.enemy']
+		args['pit']=arrpos('$id_array',$temp_id[0])
+		$args['name']=$func('get.n.p',$object_array[args['pit']],'И')
+		$args['name.Р']=$func('get.n.p',$object_array[args['pit']],'Р')
+		$args['name.Д']=$func('get.n.p',$object_array[args['pit']],'Д')
+		$args['name.В']=$func('get.n.p',$object_array[args['pit']],'В')
+		$args['sex']=$func('get.tag.cont',$object_array[args['pit']],'sex')
+		$args['attacks.all']+="[emight:<<args['might.enemy']>>] [ecube:<<args['cube.enemy']>>] [eblow:<<GAME_WAR['ratch.blow.'+$temp_id[0]]>>]"
+		! сравниваем можности
+		if args['might.enemy']>args['might.hero']:
+		! противник наносит урон.
+			gosub 'power',-GAME_WAR['ratch.blow.'+$temp_id[0]],'war'
+			!$GAME_WAR_LOG[]=$func('base.txt','ef',$args['name'],GAME_WAR['ratch.blow.'+$temp_id[0]])
+			$GAME_WAR_LOG[]=$func('war.txt','eblow',$temp_id[0],$args['attacks.all'])
+			if instr($GAME_WAR['DIN.'+$curloc],'!war.powerdown!')!0:
+				gosub 'run.dynamic.script','!war.powerdown!','//run.this.dynamic//',$GAME_WAR['DIN.'+$curloc]
+			end
+			if power['now']<1:
+				$GAME_WAR_LOG[]=$func('war.txt','pdeath',$temp_id[0],$args['attacks.all'])
+			end
+		elseif args['might.enemy']<args['might.hero'] and $temp_id[0]=$args[0]:
+			GAME_WAR['ratch.power.'+$temp_id[0]]-=2
+			$args['attacks.all']+=" [epower:<<GAME_WAR['ratch.power.'+$temp_id[0]]>>]"
+			!$GAME_WAR_LOG[]=$func('base.txt','hf',$args['name.Д'],$args['sex'],GAME_WAR['ratch.power.'+$temp_id[0]])
+			$GAME_WAR_LOG[]=$func('war.txt','pblow',$temp_id[0],$args['attacks.all'])
+			if GAME_WAR['ratch.power.'+$temp_id[0]]<1:
+				! $GAME_WAR_LOG[]=$func('base.txt','hve',$args['name.В'])
+				$GAME_WAR_LOG[]=$func('war.txt','edeath',$temp_id[0],$args['attacks.all'])
+				$GAME_WAR['ratch.dead.'+$temp_id[0]]=$func('base.txt','ed',$func('get.tag.cont',$object_array[args['pit']],'sex'))
+				GAME_WAR['death.enemy']+=1
+				$GAME_WAR['select.enemy']=''
+			end
+			if instr($GAME_WAR['DIN.'+$curloc],'!war.ratchdown!')!0:
+				gosub 'run.dynamic.script','!war.ratchdown!','//run.this.dynamic//',$GAME_WAR['DIN.'+$curloc]
+			end
+		elseif args['might.enemy']<=args['might.hero'] and $temp_id[0]!$args[0]:
+			!$GAME_WAR_LOG[]=$func('base.txt','eea',$args['name'],$args['sex'])
+			$GAME_WAR_LOG[]=$func('war.txt','pblock',$temp_id[0],$args['attacks.all'])
+		else
+			! $GAME_WAR_LOG[]=$func('base.txt','wehn',$args['name.Р'],$args['sex'])
+			$GAME_WAR_LOG[]=$func('war.txt','block',$temp_id[0],$args['attacks.all'])
+		end
+	end
+	killvar '$temp_id',0
+	jump 'for'
+end
+killvar '$temp_id'
+GAME_WAR['round']+=1
+gosub 'int.war.prove'
+gosub 'int.war'
+--- int.war.attack ---------------------------------

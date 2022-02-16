@@ -1,0 +1,40 @@
+# [start]
+! самая первая локация. Здесь может быть заставка или вступительное слово
+gosub 'set.newgame','kill'
+$GAME_VALUE['interface']=''
+! генерим уникальный номер игры
+$save['game.number']=$func('#rndstr#',4,'буквы и цифры')
+! разделяем типы, чтобы не заморачиваться с функциями instr
+if instr($AVS_PLAYERTYPE,"[MINI]")<>0: $AVS_PLAYERTYPE['size']="MINI" else $AVS_PLAYERTYPE['size']=""
+if instr($AVS_PLAYERTYPE,"[QN]")<>0: $AVS_PLAYERTYPE['type']="QN" else $AVS_PLAYERTYPE['type']=""
+! настраиваем экран:
+gosub 'set.Screen','обложка.чёрный'	&	!	переход на локацию с передачей аргумента и возврат к следующей строке
+! Выводим на экран необходимый текст:
+if $AVS_PLAYERTYPE['type']="QN" and $AVS_PLAYERTYPE['size']<>"MINI":
+! Для десктопного Questnavigator делаем div
+	$args['screen']='<div style="margin:auto; text-align:center;">'
+	$args['s.3']='</div>'
+elseif $AVS_PLAYERTYPE['size']="MINI":
+! для плеера на андроид ничего не делаем пока что
+else
+! если плеер и не мини и не навигатор, значит классический
+	$args['s.1']='</td></tr><tr name=text><td align=right>'
+	$args['s.2']='</td></tr><tr name=link><td align=center>'
+	$args['s.3']='</td></tr></table></center>'
+	$args['screen']='<center><table border=0><tr name=заголовок><td align=center>'
+end
+$args['screen']+='<font color=#dddd00>ОЛЬГА ГОЛОТВИНА<br><font size=+3>ВЕРЕНИЦА МИРОВ</font><br>или<br><font size=+3>ВЫВОДЫ ИЗ ЗАКОНА МЕРФИ</font></font><br><font size=-3>Книга-игра</font>'+$args['s.1']+'
+
+<font size=-1><i>"Если неприятность может произойти, она обязательно происходит". 
+Закон Мерфи, 2-я пол. ХХ века</i></font>
+
+
+'+$args['s.2']+'<a href="exec:goto ''page.-1''" title="переход к началу игры" class="plain">Начать игру</a>
+
+<a href="exec:goto ''[0.1_gameplay]''" title="переход к описанию правил игры через гиперссылку" class="plain">Об игре</a>
+
+<a href="exec:goto ''[0.0_about]''" title="переход к описанию игры через гиперссылку" class="plain">О текущей версии</a>'+$args['s.3']
+*p $args['screen']
+showinput 1
+! ВСЕМУ СООБЩЕСТВУ QSP, людям из quest-book, и просто проходившим мимо СПАСИБО !
+--- [start] ---------------------------------

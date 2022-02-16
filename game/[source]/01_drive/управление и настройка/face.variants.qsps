@@ -1,0 +1,8 @@
+# face.variants
+$args[0] = $args[0]
+args[1] = args[1]	&	!	vfrcbvfkmysq вариант
+args[2]=val($GAME_INTERFACE[$args[0]])+1
+if args[2]>args[1]: args[2]=1
+$GAME_INTERFACE[$args[0]]='<<args[2]>>'
+gosub 'avs.face.refresh'
+--- face.variants ---------------------------------

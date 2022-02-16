@@ -1,0 +1,26 @@
+# put.obj
+! процедура сбрасывает предмет на текущей локации
+$args[0] = $args[0]	&	!	идентификатор предмета
+$args[1] = $args[1]	&	!	управление
+args[2]=args[2]	&	!	количество
+! перед сбросом можно выполнить какой-нибудь код. Проверка, можно ли сбросить:
+$args['prove']=$func('run.dynamic.script','!putobj.prv!',$args[0])
+if $args['prove']='false':
+! если сбросить предмет нельзя
+	$print[]=$func('base.txt','n')
+else
+! если сбросить предмет можно
+	if args[2]=0:
+		$position_array[arrpos('$id_array',$args[0])]=$curloc
+		$print[]=$func('base.txt','put',$args[0])
+	else
+		$args['sw']=$func('get.tag.cont',$object_array[arrpos('$id_array',$args[0])])
+		gosub 'minus.obj',$args[0],args[2]
+		gosub 'crt.obj',$args['sw'],'','',0,args[2]
+	end
+end
+if instr($args[1],'//nope.goto//')=0:
+	time['goto']=1
+	gosub 'true.goto'
+end
+--- put.obj ---------------------------------

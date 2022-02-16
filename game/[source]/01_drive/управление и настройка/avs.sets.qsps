@@ -1,0 +1,58 @@
+# avs.sets
+killvar '$temp_menu'
+! локация организует меню переключения настроек интерфейса и игры
+if args[0]=0:
+	! генерим меню
+	if $GAME_INTERFACE['objs']='show':
+		$temp_menu[]=$args['span']+"Скрыть окно инвентаря"+$args['/span']+":avs.sets"
+	else
+		$temp_menu[]=$args['span']+"Показать окно инвентаря"+$args['/span']+":avs.sets"
+	end
+	if $GAME_INTERFACE['stat']='show':
+		$temp_menu[]=$args['span']+"Скрыть окно статистики"+$args['/span']+":avs.sets"
+	else
+		$temp_menu[]=$args['span']+"Показать окно статистики"+$args['/span']+":avs.sets"
+	end
+	if $GAME_VALUE['save.reserve']='false':
+		$temp_menu[]=$args['span']+"Создавать резервные копии сохранений"+$args['/span']+":avs.sets"
+	else
+		$temp_menu[]=$args['span']+"Не создавать резервные копии сохранений"+$args['/span']+":avs.sets"
+	end
+	! вызываем меню
+	menu '$temp_menu'
+	! уничтожаем меню
+	killvar '$temp_menu'
+elseif args[0]=1:
+	if $AVS_PLAYERTYPE['type']<>"QN":
+		if $GAME_INTERFACE['objs']='show':
+			$GAME_INTERFACE['objs']='hide'
+		else
+			$GAME_INTERFACE['objs']='show'
+		end
+		$GAME_INTERFACE['refresh']='страница.сброс'
+	else
+		$print[]='<span style="color:#'+$GAME_INTERFACE['print.nope.color']+';">Данная функция недоступна для QuestNavigator.</span> <br>'
+	end
+elseif args[0]=2:
+	if $AVS_PLAYERTYPE['type']<>"QN":
+		if $GAME_INTERFACE['stat']='show':
+			$GAME_INTERFACE['stat']='hide'
+		else
+			$GAME_INTERFACE['stat']='show'
+		end
+		$GAME_INTERFACE['refresh']='страница.сброс'
+	else
+		$print[] = '<span style="color:#'+$GAME_INTERFACE['print.nope.color']+';">Данная функция недоступна для QuestNavigator.</span> <br>'
+	end
+elseif args[0]=3:
+	if $GAME_VALUE['save.reserve']='false':
+		$GAME_VALUE['save.reserve']='true'
+	else
+		$GAME_VALUE['save.reserve']='false'
+	end
+end
+if args[0]!0:
+	time['goto']=1
+	gosub 'true.goto'
+end
+--- avs.sets ---------------------------------

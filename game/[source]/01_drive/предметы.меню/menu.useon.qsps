@@ -1,0 +1,26 @@
+# menu.useon
+! локация перемещает на локацию при использовании предмета
+if $args[0] = '': $args[0] = $OOC['id']
+args['pit']=arrpos('$id_array',$args[0])
+$args['obj']=$object_array[args['pit']]
+$args['np']=$func('get.tag.cont',$args['obj'],'np')
+time['goto']=1
+! проверка заряда:
+if instr($args['np'],'[заряженный]')!0:
+	if charge_array[args['pit']]>0:
+		charge_array[args['pit']]-=1
+	else
+		$print[]=$func('base.txt',"discharge")
+		gosub 'true.goto'
+	end
+end
+! проверка снаряда
+if instr($args['np'],'[снаряд]')!0:
+	gosub 'minus.obj',$args[0],1
+end
+args['useon']=func('get.tag.num',$args['obj'],'useon')
+if instr($run_array[args['pit']],'!use.on!')!0:
+	$args['l'] = $func('run.dynamic.script','!use.on!',$args[0])
+end
+goto 'page.'+str(val($strfind($curloc,'page.(\d+)',1))+args['useon'])
+--- menu.useon ---------------------------------

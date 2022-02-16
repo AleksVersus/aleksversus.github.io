@@ -1,0 +1,51 @@
+# set.Screen
+! локация предназначена для переключения режимов настройки интерфейса (экрана)
+if $GAME_INTERFACE['stat']='show':
+	args['stat']=1
+else
+	args['stat']=0
+end
+if $GAME_INTERFACE['objs']='show':
+	args['objs']=1
+else
+	args['objs']=0
+end
+if $args[0] = 'обложка.чёрный':
+	fcolor = rgb (0,200,0)		&	!	настраиваем текущий цвет шрифта - зелёный
+	bcolor = rgb (15,16,17)		&	!	настраиваем текущий цвет фона - чёрный
+	lcolor = rgb (0,100,0)		&	!	настраиваем текущий цвет ссылок - тёмно-зелёный
+	showacts 0					&	! скрываем действия
+	showobjs 0					&	! скрываем вещи
+	showstat 0					&	! скрываем дополнительное описание
+	$fname = 'Comic Sans MS'	&	!	устанавливаем шрифт
+	$args["bc"]="000000"
+	$args["fc"]="00C800"
+	$args["lc"]="006400"
+elseif $args[0] = 'страница.сброс':
+	$args["bc"]=$GAME_INTERFACE['main.bgcolor']
+	if $GAME_INTERFACE['main.text.color']!'':
+		$args["fc"]=$GAME_INTERFACE['main.text.color']
+	else
+		$args["fc"]=$func('#col-inv#',$GAME_INTERFACE['main.bgcolor'])
+	end
+	if $GAME_INTERFACE['href.inText.color']!'':
+		$args["lc"]=$GAME_INTERFACE['href.inText.color']
+	else
+		$args["lc"]=$func('#col-inv#',$GAME_INTERFACE['main.bgcolor'])
+	end
+	fcolor = func('#col-rgb#',$args["fc"])					&	!	настраиваем текущий цвет шрифта по умолчанию
+	bcolor = func('#col-rgb#',$args["bc"])					&	!	настраиваем текущий цвет фона - по умолчанию
+	lcolor = func('#col-rgb#',$args["lc"])					&	!	настраиваем текущий цвет ссылок
+	showacts 0				&	! скрываем действия
+	showobjs args['objs']	&	! скрываем/показываем вещи
+	showstat args['stat']	&	! скрываем/показываем дополнительное описание
+	$fname = 'Consolas'		&	!	устанавливаем шрифт
+end
+! задаём разные настройки для квест навигатора
+	EXEC('JS:document.body.style.backgroundColor="#'+$args["bc"]+'";')
+	EXEC('JS:document.body.style.color="#<<$args["fc"]>>";')
+! пока не удалось заставить навигатор перерисовывать цвет гиперссылок.
+! дело в том, что свойство linkColor не срабатывает после загрузки страницы
+!	EXEC('JS:document.linkColor="#<<$args["fc"]>>";')
+$GAME_INTERFACE['refresh']=''
+--- set.Screen ---------------------------------

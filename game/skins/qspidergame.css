@@ -110,6 +110,20 @@
     	padding:1em;
     	overflow-y:auto;}
 
-[data-one]::before {
-	content: attr(data-one) " ";
+[data-qsp="stats"]{
+	background-color: rgba(255, 255, 0, 0.10);
 }
+
+/* Костыль для двенадцатой версии qSpider
+#root > div {
+   --background-color: #ffff00;
+   --inverted-background-color: #00ffff;
+}
+
+
+там же можно прописать 
+цвет текста - --color и --inverted-color
+цвет бордеров на панелях - --border-color и --inverted-border-color
+размер текста  - --font-size
+цвет ссылок - --link-color
+*/

@@ -1,0 +1,61 @@
+# set.mainsets
+! устанавливаем начальные характеристики
+if args[0]=0:
+	cube['start'] = rand(1,6)+rand(1,6)	&	!	выбрасываем кубики
+else
+	cube['start'] = args[0]
+end
+if cube['start'] = 2:
+	$args['l']='p:22	f:8		s:8'
+elseif cube['start'] = 3:
+	$args['l']='p:20	f:10	s:6'
+elseif cube['start'] = 4:
+	$args['l']='p:16	f:12	s:5'
+elseif cube['start'] = 5:
+	$args['l']='p:18	f:9		s:8'
+elseif cube['start'] = 6:
+	$args['l']='p:20	f:11	s:6'
+elseif cube['start'] = 7:
+	$args['l']='p:20	f:9		s:7'
+elseif cube['start'] = 8:
+	$args['l']='p:16	f:10	s:7'
+elseif cube['start'] = 9:
+	$args['l']='p:24	f:8		s:7'
+elseif cube['start'] = 10:
+	$args['l']='p:22	f:9		s:6'
+elseif cube['start'] = 11:
+	$args['l']='p:18	f:10	s:7'
+elseif cube['start'] = 12:
+	$args['l']='p:20	f:11	s:5'
+end
+power['start']=func('get.tag.num',$args['l'],'p')	&	!	сила
+fast['start']=func('get.tag.num',$args['l'],'f')	&	!	ловкость
+social['start']=func('get.tag.num',$args['l'],'s')	&	!	обаяние
+power['now']=power['start']		&	!	текущая сила
+fast['now']=fast['start']		&	!	текущая ловкость
+social['now']=social['start']	&	!	текущее обаяние
+! числа удачи:
+killvar '$num_luck'
+killvar '$num_unluck'
+$num_luck[0]='1'
+$num_luck[1]='2'
+$num_luck[2]='3'
+$num_luck[3]='4'
+$num_luck[4]='5'
+$num_luck[5]='6'
+! числа неудачи
+args[0]=0
+:n
+if args[0]<2:
+! если args[0] меньше двух
+	$args['unluck']=str(rand(1,6))	&	!	выбрасываем число неудачи
+	args['p']=arrpos('$num_luck',$args['unluck'])
+	if args['p']!-1:
+	! если в массиве есть это число, убираем его из этого массива и добавляем в массив неудачи
+		killvar '$num_luck',args['p']
+		$num_unluck[]=$args['unluck']
+	end
+	args[0]+=1	&	!	увеличиваем args[0] на 1
+	jump 'n'	&	!	прыгаем на метку 'n'
+end
+--- set.mainsets ---------------------------------

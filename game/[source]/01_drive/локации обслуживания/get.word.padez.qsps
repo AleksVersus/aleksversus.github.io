@@ -1,0 +1,19 @@
+# get.word.padez
+! функция получает падеж из строки вида Именительныq|Родительный|Дательный|Винительный|Творительный|Предложный
+$args[0] = $args[0]	&	!	строка
+$args[1] = $args[1]	&	!	падеж
+if $args[1]='И' or $args[1]='':
+	$args['gwp']=$func('get.word.inPos',$args[0],1)
+elseif $args[1]='Р':
+	$args['gwp']=$func('get.word.inPos',$args[0],2)
+elseif $args[1]='Д':
+	$args['gwp']=$func('get.word.inPos',$args[0],3)
+elseif $args[1]='В':
+	$args['gwp']=$func('get.word.inPos',$args[0],4)
+elseif $args[1]='Т':
+	$args['gwp']=$func('get.word.inPos',$args[0],5)
+elseif $args[1]='П':
+	$args['gwp']=$func('get.word.inPos',$args[0],6)
+end
+$result=$args['gwp']
+--- get.word.padez ---------------------------------

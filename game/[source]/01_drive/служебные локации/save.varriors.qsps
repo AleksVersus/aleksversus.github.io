@@ -1,0 +1,49 @@
+# save.varriors
+! локация, сохраняющая переменные в виде динамического кода в специальный массив:
+args['i']=0
+:numluck
+if args['i']<arrsize('$num_luck'):
+	$args['luck']+="$num_luck[<<args['i']>>]='<<$num_luck[args['i']]>>'
+"
+	args['i']+=1
+	jump 'numluck'
+end
+args['i']=0
+:unluck
+if args['i']<arrsize('$num_unluck'):
+	$args['unluck']+="$num_unluck[<<args['i']>>]='<<$num_unluck[args['i']]>>'
+"
+	args['i']+=1
+	jump 'unluck'
+end
+args['i']=0
+:pit
+if args['i']<arrsize('$id_array'):
+	$args['pit']+="$id_array[<<args['i']>>]='<<$id_array[args['i']]>>'
+$object_array[<<args['i']>>]='"+$replace($object_array[args['i']],"'","''")+"'
+kolvo_array[<<args['i']>>]=<<kolvo_array[args['i']]>>
+charge_array[<<args['i']>>]=<<charge_array[args['i']]>>
+$position_array[<<args['i']>>]='<<$position_array[args['i']]>>'
+$run_array[<<args['i']>>]='"+$replace($run_array[args['i']],"'","''")+"'
+"
+	args['i']+=1
+	jump 'pit'
+end
+$survived_varriors[]="
+$GAME_VALUE['power.lose']='<<$GAME_VALUE['power.lose']>>'
+$GAME_VALUE['interface']='<<$GAME_VALUE['interface']>>'
+$GAME_VALUE['приём лекарства']='<<$GAME_VALUE['приём лекарства']>>'
+$GAME_VALUE['endlessbag']='<<$GAME_VALUE['endlessbag']>>'
+$GAME_VALUE['game.cube.result']='<<$GAME_VALUE['game.cube.result']>>'
+$GAME_VALUE['obj.inGame']='<<$GAME_VALUE['obj.inGame']>>'
+$GAME_VALUE['save.reserve']='<<$GAME_VALUE['save.reserve']>>'
+$GAME_VALUE['фиксация страницы']='<<$GAME_VALUE['фиксация страницы']>>'
+GAME_VALUE['war.log']=<<GAME_VALUE['war.log']>>
+GAME_VALUE['game.cube.party']=<<GAME_VALUE['game.cube.party']>>
+GAME_VALUE['page.228']=<<GAME_VALUE['page.228']>>
+fast['now']=<<fast['now']>> & fast['start']=<<fast['start']>>
+social['now']=<<social['now']>> & social['start']=<<social['start']>>
+power['now']=<<power['now']>> & power['start']=<<power['start']>>
+"+$args['luck']+$args['unluck']+$args['pit']
+$survived_location[]=$curloc
+--- save.varriors ---------------------------------

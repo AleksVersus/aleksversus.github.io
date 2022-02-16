@@ -1,0 +1,10 @@
+# page.214
+$lvar['заголовок']={Мир Камней}
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Немного не рассчитав прыжок, вы падаете прямо на мерзкую тварь — и она тут же наносит удар ([pow]-2[/pow]).<avs-insert></avs-insert></p>}
+if здесь_был[$curloc]=0:
+	gosub 'power',-2
+end
+$args['d']=$strfind($lvar['исходник'],'<avs-insert>[\s\S]*?<\/avs-insert>')
+$lvar['исходник']=$replace($lvar['исходник'],$args['d']," 
+     Придётся [page=94]драться[/page].")
+--- page.214 ---------------------------------

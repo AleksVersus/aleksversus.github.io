@@ -1,0 +1,32 @@
+# menu.put
+if $args[0] = '': $args[0] = $OOC['id']
+! проверки возможности сброса
+if instr($tvar['костыль.заголовок'],'<putlock:')!0:
+	! вычисляем список типов предметов, которые нельзя сбрасывать на локации
+	$args['putlock']=$func('get.tag.cont',$tvar['костыль.заголовок'],'putlock')
+	! вычисляем список признаков данного предмета
+	$args['np']=$func('get.tag.cont',$object_array[arrpos('$id_array',$args[0])],'np')
+	! распихиваем те и те признаки по массивам
+	gosub '#str.inArray#',$args['putlock'],'$temp_id','( |	)','NOTSPACE REGULAR'
+	gosub '#str.inArray#',$args['np'],'$temp_mi','( |	)','NOTSPACE REGULAR'
+	! сравниваем массивы на совпадение хотя бы одного значения
+	$args['simp']=$func('#array.simp#','$temp_id','$temp_mi','conc/se')
+	killvar '$temp_id'
+	killvar '$temp_mi'
+	if $args['simp']='true': $args['notput']='true' & jump 'ext'
+end
+if instr($tvar['динамический код'],'!put.lock!')!0:
+	$args['notput']=$func('run.dynamic.script','!put.lock!','//run.this.dynamic//',$tvar['динамический код'],$args[0])
+end
+if instr($tvar['костыль.заголовок'],'<lock.put>')!0:
+	$args['notput']='true'
+end
+:ext
+if  $args['notput']!'true':
+	gosub 'put.obj',$args[0]
+else
+	$print[]=$func('base.txt','notput')
+	time['goto']=1
+	gosub 'true.goto'
+end
+--- menu.put ---------------------------------

@@ -1,0 +1,15 @@
+# page.382
+$lvar['заголовок']={Мир Камней<checkpoint>}
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DIN1:if $tvar['шлем']="":
+		$args['шлем']=$func('prv.bag','\[плащ\]','regexp')
+		if $args['шлем']!'' and instr($object_array[arrpos('$id_array',$args['шлем'])],'[:плечи:]')!0:
+			$tvar['шлем']='К счастью на вас <a l:href="#n_238">надет</a> серый плащ с капюшоном.'
+		else
+			$tvar['шлем']='Эх, если бы у вас был плащ с капюшоном, можно было бы попробовать укрыться меж камней, но плаща <a l:href="#n_414">нет</a>.'
+		end
+		if $args['шлем']!'' and instr($object_array[arrpos('$id_array',$args['шлем'])],'[:плечи:]')=0:
+			$tvar['шлем']+=' (<font color=#004400><i>Если плащ лежит в рюкзаке, то, конечно, доставать и надевать его некогда.</i></font>)'
+		end
+	end
+	$result=$tvar['шлем']:1DIN></p>}
+--- page.382 ---------------------------------

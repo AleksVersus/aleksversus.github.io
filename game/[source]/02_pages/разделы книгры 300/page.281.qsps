@@ -1,0 +1,20 @@
+# page.281
+$lvar['заголовок']={Мир Легенд}
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;«Мне везет! — бурно радуется ваш противник. — Сыграем ещё раз?»
+     Хотите <DIN2:gosub 'get.daughter.obj',$curloc
+if arrsize('$temp_id')>0:
+	$result='<a l:href="#n_543">снова рискнуть</a><lock.put>'
+	$GAME_VALUE['obj.inGame']=$temp_id[0]
+else
+	$result='снова рискнуть'
+end
+killvar '$temp_id':2DIN>? Если считаете, что пора бросить эту затею (или вам больше нечего поставить на кон), то проститесь с партнером и <a l:href="#n_240">идите спать</a>.
+     
+     <DIN3:gosub 'get.daughter.obj',$curloc
+if arrsize('$temp_id')=0:
+	$result=$func('base.txt','help.putobj')
+else
+	$result=''
+end
+killvar '$temp_id':3DIN></p>}   
+--- page.281 ---------------------------------

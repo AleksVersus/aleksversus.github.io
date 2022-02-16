@@ -1,0 +1,28 @@
+# page.115
+$lvar['заголовок']={Мир Стрекоз}
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Стрекоза цепкими лапками срывает сухой плод, похожий на небольшую бутылочку, и бросает вам на колени. Затем она спускается, неся тоненькую лиану. Миг — и бутылочка обвязана лианой.
+     «Приспособление для транспортировки жидкости! — гордо объявляет стрекоза. — Мое изобретение!»
+     <DIN1:$args['pos.bl']=$func('prv.obj.inBag','фляга')
+	if $args['pos.bl']='':
+		$result='У вас ещё нет фляги - [obj]ФЛЯГА_000013|возьмите подарок[/obj].'
+	else
+		$result='У вас уже [page=451]есть фляга[/page], стрекоза сейчас её заметит.'
+	end:1DIN>}
+if здесь_был[$curloc]=0:
+$args['динамический код предметов']={![page115.uiOp]
+if $args[0]='!addobj.goto!':
+	! удаляем динамический код
+	args['pit']=arrpos('$id_array',$args[1])
+	$args['семена']=$func('prv.obj.inBag','семена')
+	if $args['семена']!'': gosub 'minus.obj',$args['семена'],1 & $print[]='<font color=#884400>Вы отдали cемечко сорняка.</font>'
+	$args['run']=$strfind($run_array[args['pit']],'!'+'\['+'page115\.'+'uiOp\]'+'[\s\S]*'+'!'+'\[\/'+'page115\.'+'uiOp\]')
+	$object_array[args['pit']]=$replace($object_array[args['pit']],'[hide.onloc]')
+	$run_array[args['pit']]=$replace($run_array[args['pit']],$args['run'])
+	$result='page.575'
+end
+![/page115.uiOp]
+}
+$args['a']=$func('crt.obj','фляга',"ФЛЯГА_000013",'[hide.onloc] [подарок стрекозы]',2,1,'',$args['динамический код предметов'])
+gosub 'flaga',$args['a'],'вода','//nope.goto//'
+end
+--- page.115 ---------------------------------

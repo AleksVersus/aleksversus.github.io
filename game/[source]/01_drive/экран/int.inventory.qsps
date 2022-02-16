@@ -1,0 +1,128 @@
+# int.inventory
+killobj
+if ($args[0]='[game]' or save['count']>0) and $GAME_INTERFACE['stat']='show' and $GAME_INTERFACE['objs']='show':
+	$args['sets.oid']='<oid:sets:oid>'
+	$args['save.oid']='<oid:save:oid>'
+	$args['face.oid']='<oid:face:oid>'
+elseif $args[0]='test' and $GAME_INTERFACE['stat']='show' and $GAME_INTERFACE['objs']='show':
+	$args['sets.oid']=''
+	$args['save.oid']=''
+	$args['face.oid']=''
+end
+addobj "<font color=#"+$GAME_INTERFACE['obj.sets.color']+">"+$GAME_INTERFACE['obj.sets.attrib']+"Интерфейс"+$GAME_INTERFACE['/obj.sets.attrib']+"</font>"+$args['face.oid']
+addobj "<font color=#"+$GAME_INTERFACE['obj.sets.color']+">"+$GAME_INTERFACE['obj.sets.attrib']+"Настройки"+$GAME_INTERFACE['/obj.sets.attrib']+"</font>"+$args['sets.oid']
+addobj "<font color=#"+$GAME_INTERFACE['obj.sets.color']+">"+$GAME_INTERFACE['obj.sets.attrib']+"Сохранения"+$GAME_INTERFACE['/obj.sets.attrib']+"</font>"+$args['save.oid']
+addobj '<hr>'
+if $args[0]='[game]':
+	gosub 'get.daughter.obj','INVENTORY','','$temp_id'
+	:blast
+	if arrsize('$temp_id')>0:
+		! строка объекта часть тела
+		args['pos.body']=arrpos('$id_array',$temp_id[0])
+		! строка дочернего объекта
+		args['pos.obj']=arrpos('$position_array',$temp_id[0])
+		! если дочерний объект есть, выводим его
+		$args['hide']='false'
+		if args['pos.obj']!-1:
+			if instr($object_array[args['pos.obj']],'[hide.inInv]')!0: $args['hide']='true'
+			if instr($object_array[args['pos.obj']],'[quest]')!0:
+			! подсветка квестового предмета
+				$args['color']=$GAME_INTERFACE['obj.quest.color']
+				$args['attrib']=$GAME_INTERFACE['obj.quest.attrib']
+				$args['/attrib']=$GAME_INTERFACE['/obj.quest.attrib']
+				$args['bgcolor']=$GAME_INTERFACE['obj.quest.bgcolor']
+			elseif instr($object_array[args['pos.body']],'[:место_в_рюкзаке:]')=0:
+			! подсветка активного предмета
+				$args['color']=$GAME_INTERFACE['obj.active.color']
+				$args['attrib']=$GAME_INTERFACE['obj.active.attrib']
+				$args['/attrib']=$GAME_INTERFACE['/obj.active.attrib']
+				$args['bgcolor']=$GAME_INTERFACE['obj.active.bgcolor']
+			else
+			! подсветка неактивного предмета
+				$args['color']=$GAME_INTERFACE['obj.unactive.color']
+				$args['attrib']=$GAME_INTERFACE['obj.unactive.attrib']
+				$args['/attrib']=$GAME_INTERFACE['/obj.unactive.attrib']
+				$args['bgcolor']=$GAME_INTERFACE['obj.unactive.bgcolor']
+			end
+			$args['name']='<font color=#'+$args['color']+'>'+$args['attrib']
+			$args['name']+=$func('get.word.padez',$func('get.tag.cont',$object_array[args['pos.obj']],'name'),'И')
+			$args['name']+=$args['/attrib']+'</font>'
+			args['charge']=charge_array[args['pos.obj']]
+			args['maxcharge']=func('get.tag.num',$object_array[args['pos.obj']],'maxchrg')
+			if instr($object_array[args['pos.obj']],'[maxchrg:')!0 and args['maxcharge']=0:
+				$args['ch']="<font color=#"+$GAME_INTERFACE['obj.charge.color']+'>'+$GAME_INTERFACE['obj.charge.attrib']+str(args['charge'])+$GAME_INTERFACE['/obj.charge.attrib']+'</font><font color=#'+$GAME_INTERFACE['obj.maxcharge.color']+'>'+$GAME_INTERFACE['obj.maxcharge.attrib']+'/<font size=+1>∞</font>'+$GAME_INTERFACE['/obj.maxcharge.attrib']+'</font>'
+			elseif instr($object_array[args['pos.obj']],'[maxchrg:')!0 and args['maxcharge']!0:
+				$args['ch']="<font color=#"+$GAME_INTERFACE['obj.charge.color']+'>'+$GAME_INTERFACE['obj.charge.attrib']+str(args['charge'])+$GAME_INTERFACE['/obj.charge.attrib']+'</font><font color=#'+$GAME_INTERFACE['obj.maxcharge.color']+'>'+$GAME_INTERFACE['obj.maxcharge.attrib']+'/'+str(args['maxcharge'])+$GAME_INTERFACE['/obj.maxcharge.attrib']+'</font>'
+			else
+				$args['ch']='&nbsp;'
+			end
+			$args['oid']=$id_array[args['pos.obj']]
+		else
+			if instr($object_array[args['pos.body']],'[hide.inInv]')!0: $args['hide']='true'
+			$args['color']=$GAME_INTERFACE['obj.space.color']
+			$args['attrib']=$GAME_INTERFACE['obj.space.attrib']
+			$args['/attrib']=$GAME_INTERFACE['/obj.space.attrib']
+			$args['name']='<font color=#'+$args['color']+'>'+$args['attrib']
+			$args['name']+=$func('get.tag.cont',$object_array[args['pos.body']],'name')
+			$args['name']+=$args['/attrib']+'</font>'
+			$args['bgcolor']=$GAME_INTERFACE['obj.space.bgcolor']
+			$args['ch']='&nbsp;'
+			$args['oid']=$id_array[args['pos.body']]
+		end
+		if $args['hide']='false':
+			$args['obj.view']='<table border=0 cellpadding=0 cellspacing=0 width=100%>'
+			$args['obj.view']+='<tr><td align=left>'
+			$args['obj.view']+=$args['name']+'<oid:'+$args['oid']+':oid>'+'</td><td align=right width=25%>'+$args['ch']+'</td></tr></table>'
+			addobj $args['obj.view']
+		end
+		killvar '$temp_id',0
+		jump 'blast'
+	end
+	killvar '$temp_id'
+end
+if $args[0]='test':
+	args['i']=0
+	:table_mlyad
+	if args['i']<11:
+		$args['ch']='&nbsp;'
+		if args['i']<3:
+			$args['color']=$GAME_INTERFACE['obj.quest.color']
+			$args['attrib']=$GAME_INTERFACE['obj.quest.attrib']
+			$args['/attrib']=$GAME_INTERFACE['/obj.quest.attrib']
+			$args['bgcolor']=$GAME_INTERFACE['obj.quest.bgcolor']
+			$args['obj']='Квестовый предмет'
+			if args['i']=2:
+				$args['ch']="<font color=#"+$GAME_INTERFACE['obj.charge.color']+'>'+$GAME_INTERFACE['obj.charge.attrib']+str(5)+$GAME_INTERFACE['/obj.charge.attrib']+'</font><font color=#'+$GAME_INTERFACE['obj.maxcharge.color']+'>'+$GAME_INTERFACE['obj.maxcharge.attrib']+'/<font size=+1>∞</font>'+$GAME_INTERFACE['/obj.maxcharge.attrib']+'</font>'
+			elseif args['i']=1:
+				$args['ch']="<font color=#"+$GAME_INTERFACE['obj.charge.color']+'>'+$GAME_INTERFACE['obj.charge.attrib']+str(4)+$GAME_INTERFACE['/obj.charge.attrib']+'</font><font color=#'+$GAME_INTERFACE['obj.maxcharge.color']+'>'+$GAME_INTERFACE['obj.maxcharge.attrib']+'/'+str(8)+$GAME_INTERFACE['/obj.maxcharge.attrib']+'</font>'
+			end
+		elseif args['i']<5:
+			$args['color']=$GAME_INTERFACE['obj.active.color']
+			$args['attrib']=$GAME_INTERFACE['obj.active.attrib']
+			$args['/attrib']=$GAME_INTERFACE['/obj.active.attrib']
+			$args['bgcolor']=$GAME_INTERFACE['obj.active.bgcolor']
+			$args['obj']='Активный предмет'
+		elseif args['i']<8:
+			$args['color']=$GAME_INTERFACE['obj.unactive.color']
+			$args['attrib']=$GAME_INTERFACE['obj.unactive.attrib']
+			$args['/attrib']=$GAME_INTERFACE['/obj.unactive.attrib']
+			$args['bgcolor']=$GAME_INTERFACE['obj.unactive.bgcolor']
+			$args['obj']='Неактивный предмет'
+		else
+			$args['color']=$GAME_INTERFACE['obj.space.color']
+			$args['attrib']=$GAME_INTERFACE['obj.space.attrib']
+			$args['/attrib']=$GAME_INTERFACE['/obj.space.attrib']
+			$args['bgcolor']=$GAME_INTERFACE['obj.space.bgcolor']
+			$args['obj']='Место в рюкзаке'
+		end
+		$args['name']='<font color=#'+$args['color']+'>'+$args['attrib']
+		$args['name']+=$args['obj']
+		$args['name']+=$args['/attrib']+'</font>'
+		$args['res']='<table border=0 cellpadding=0 cellspacing=0 width=100%><tr name=blastobj><td align=left>'+$args['name']+'</td><td align=right>'+$args['ch']+'</td></tr></table>'
+		addobj $args['res']
+		args['i']+=1
+		jump 'table_mlyad'
+	end
+	addobj '[Закрыть настройки интерфейса]<oid:close:oid>'
+end
+--- int.inventory ---------------------------------

@@ -1,0 +1,10 @@
+# mv
+args[0] = args[0]
+if $func('prv.obj.inBag','мв','<KNOWLEDGE>')='':
+	gosub 'crt.obj','мв','','<knew>',0,1,'KNOWLEDGE'
+end
+time['goto']=1
+pl "Сейчас сделаю переход на <<args[0]>>"
+wait 2500
+goto 'page.<<args[0]>>'
+--- mv ---------------------------------

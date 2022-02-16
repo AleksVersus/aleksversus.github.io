@@ -1,0 +1,11 @@
+# page.54
+$lvar['заголовок']={Мир Камней}
+if здесь_был[$curloc]=0:
+	cube=rand(2,12)
+end
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=#004400><i>Кубики брошены. Задевшие вас пиратские пули уменьшили вашу СИЛУ на }+str(cube)+{.</i></font><avs-insert></avs-insert></p>}
+if здесь_был[$curloc]=0:
+	gosub 'power',-cube
+end
+$lvar['исходник']+={ <font color=#004400><i>Тем не менее вы живы, а значит вам [page=202]удалось[/page] перелететь пещеру.</i></font>}
+--- page.54 ---------------------------------

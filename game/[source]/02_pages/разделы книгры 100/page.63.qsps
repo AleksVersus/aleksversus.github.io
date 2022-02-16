@@ -1,0 +1,8 @@
+# page.63
+$lvar['заголовок']={Мир Стрекоз}
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Яйцо не только съедобное, но и очень питательное — ваша СИЛА восстанавливается до первоначального уровня. А теперь <a l:href="#n_239">идите дальше</a>.</p>}
+if здесь_был[$curloc]=0:
+	if power['start']>power['now']: args['y']=power['start']-power['now']
+	gosub 'power',args['y']
+end
+--- page.63 ---------------------------------

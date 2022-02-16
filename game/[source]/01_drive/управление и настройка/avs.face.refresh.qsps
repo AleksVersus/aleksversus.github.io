@@ -1,0 +1,11 @@
+# avs.face.refresh
+if $args[0]='close':
+	disablescroll=0
+	gs 'int.inventory','[game]'
+	gs 'true.goto'
+else
+	gs 'set.Screen','страница.сброс'
+	gs 'int.inventory','test'
+	gs 'avs.face','test'
+end
+--- avs.face.refresh ---------------------------------

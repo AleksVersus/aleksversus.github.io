@@ -1,0 +1,71 @@
+# add.obj
+! добавляем предмет в рюкзак
+$args[0] = $args[0]	&	!	идентификатор предмета
+$args[1] = $args[1]	&	!	место в рюкзаке, куда хотим добавить предмет (идентификатор)
+$args[2] = $args[2]	&	!	управляющая конструкция
+! получаем позицию предмета в общей таблице объектов
+args['pit']=arrpos('$id_array',$args[0])
+$args['pos']=$func('get.tag.cont',$object_array[args['pit']],'pos')
+$args['np']=$func('get.tag.cont',$object_array[args['pit']],"np")
+$args['sw']=$func('get.tag.cont',$object_array[args['pit']])
+if instr($args['np'],'[монета]')!0:
+	! ищем кошель
+	$args['кошел']=$func('prv.obj.inBag','кошель')
+	if $args['кошел']="":
+	! если кошеля нет, создаём, для этого:
+		! ищем место под кошель. Должно быть создано в самом начале игры
+		$args['пояс']=$func('prv.bag','','','пояс_кошель')
+		! если место не найдено - создаем
+		$args['кошел']=$func('crt.obj','кошель','','[quest]',0,1,$args['пояс'])
+	end
+	! получаем дочерние предметы кошеля
+	killvar '$temp_id'
+	gosub 'get.daughter.obj',$args['кошел'],'\[:'+$args['sw']+':\]'
+	$print[]=$func('base.txt','get',$args[0])
+	if arrsize('$temp_id')>0:
+	! если есть такой предмет, увеличиваем количество
+		kolvo_array[arrpos('$id_array',$temp_id[0])]+=kolvo_array[args['pit']]
+		gosub 'del.obj.id',$args[0]
+	else
+	! если нет такого предмета, добавляем
+		$position_array[args['pit']]=$args['кошел']
+	end
+	killvar '$temp_id'
+	jump 'ext'
+end
+! возможность подменить идентификатор
+if instr($run_array[args['pit']],'!addobj.id!')!0: $args[0] = $func('run.dynamic.script','!addobj.id!',$args[0],'',$args[1])
+! возможность подменить местоположение
+if instr($run_array[args['pit']],'!addobj.pos!')!0: $args[1] = $func('run.dynamic.script','!addobj.pos!',$args[0],'',$args[1])
+if $args[1] = '':
+! если не указано место, в которое нужно добавить предмет, необходимо такое место найти. Это первая пустая ячейка рюкзака
+	$args[1] = $func('prv.bag','','',$args['pos'])
+	if $GAME_VALUE['endlessbag']='true' and $args[1]='':
+	! предназначено для отладчика! бесконечный рюкзак
+		$args[1] = $func('crt.obj','место_в_рюкзаке','','<body>',0,1,'INVENTORY')
+	end
+	! если нет пустой ячейки, значит предмет поднять нельзя
+	if $args[1] = '': $print[] = $func('base.txt','f',$args['pos']) & jump 'ext'
+end
+! определяем не присутствует ли в данной позиции предмет
+args['posobjinpos']=arrpos('$position_array',$args[1])
+if args['posobjinpos']!-1:
+! если место, в которое нам нужно положить предмет занято, выбрасываем предмет на текущей локации
+	gosub 'put.obj',$id_array[args['posobjinpos']],'//nope.goto//'
+end
+! кладём предмет в указанное место
+$position_array[arrpos('$id_array',$args[0])]=$args[1]
+$print[]=$func('base.txt','add',$args[0])
+! конец процедуры
+:ext
+if $args[2]!'//nope.goto//':
+	! подмена перехода
+	time['goto']=1
+	if instr($run_array[args['pit']],'!addobj.goto!')!0: $args['goto'] = $func('run.dynamic.script','!addobj.goto!',$args[0],'',$args[1])
+	if $args['goto']="":
+		gosub 'true.goto'
+	else
+		goto $args['goto']
+	end
+end
+--- add.obj ---------------------------------

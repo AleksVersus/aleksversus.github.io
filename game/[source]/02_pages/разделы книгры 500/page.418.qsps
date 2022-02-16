@@ -1,0 +1,15 @@
+# page.418
+$lvar['заголовок']={Мир Камней}
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Вода чуточку горчит, но вполне годится для питья ([pow]3[/pow]). <DIN1:$args['pos.bl']=$func('prv.obj.inBag','фляга')
+if $args['pos.bl']!'' and $tvar['water']!'true':
+	$result='Если хотите, можете <a href="exec:$tvar[''water'']=''true'' & gosub ''flaga'',''<<$args["pos.bl"]>>'',''вода''" class="plain">наполнить</a> флягу. А затем'
+elseif $args['pos.bl']='':
+	$result='Если бы у вас была фляга, можно было бы наполнить её водой. Но: чего нет, того нет, -'
+else
+	$result='Вы наполнили флягу. Теперь'
+end
+$result='<font color=#004400><i>'+$result+'</i></font>':1DIN> <a l:href="#n_386">продолжайте путь</a>.</p>}
+if здесь_был[$curloc]=0:
+	gosub 'power',3
+end
+--- page.418 ---------------------------------

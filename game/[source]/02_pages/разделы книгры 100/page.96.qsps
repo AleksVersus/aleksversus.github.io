@@ -1,0 +1,10 @@
+# page.96
+$lvar['luck'] = $args[0]
+$lvar['заголовок']={Мир Стрекоз}
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Что верно, то верно: кусты колючие. И жесткие, как проволока. Шипы изодрали вам в кровь лицо и руки ([pow]-1[/pow]).</p><avs-insert></avs-insert>}
+if здесь_был[$curloc]=0:
+	gosub 'power',-1
+end
+$args['d']=$strfind($lvar['исходник'],'<avs-insert>[\s\S]*?<\/avs-insert>')
+$lvar['исходник']=$replace($lvar['исходник'],$args['d'],"<DIN1:$result=$func('luck',$lvar['luck'],661,540):1DIN>")
+--- page.96 ---------------------------------

@@ -1,0 +1,16 @@
+# лист_вонючка
+$args['empty']=$func('prv.bag','','','место_в_рюкзаке')
+$args['dyn']={if $args[0]='!use.on!':
+	gosub 'del.obj.id',$args[1]
+	$print[]='Вы использовали Лист. Он больше ни на что не годен.'
+end}
+if $args['empty']!'':
+	$args['id']=$func('crt.obj','лист_вонючка','','',0,1,$args['empty'],$args['dyn'])
+	$print[]=$func('base.txt','add',$args['id'])
+else
+	$print[]=$func('base.txt','f','место_в_рюкзаке')
+end
+:ext
+time['goto']=1
+gosub 'true.goto'
+--- лист_вонючка ---------------------------------

@@ -1,0 +1,4 @@
+# onGameSave
+killvar '$print'
+killvar '$print_down'
+--- onGameSave ---------------------------------

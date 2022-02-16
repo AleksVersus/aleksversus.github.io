@@ -1,0 +1,12 @@
+# onObjSel
+$args[0] = $func('get.tag.cont',$selobj,'oid')
+if $args[0]='save': gosub 'avs.save'
+if $args[0]='sets': gosub 'avs.sets'
+if $args[0]='face': gosub 'avs.face','test'
+if $args[0]='close': gosub 'avs.face.refresh','close'
+args['pit']=arrpos('$id_array',$args[0])
+if instr($object_array[args['pit']],'<obj>')!0:
+	gosub 'onObjClick',$args[0]
+end
+unselect
+--- onObjSel ---------------------------------

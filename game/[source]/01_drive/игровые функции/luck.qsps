@@ -1,0 +1,28 @@
+# luck
+$args[0]=$args[0]
+args[1]=args[1]
+args[2]=args[2]
+$args['res']="<p align=justify>[knew]мв|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Пришло время воспользоваться модификатором вероятностей. Короткий мыслеприказ, и модификатор откликается. Остаётся лишь положиться на удачу...|"+$func('base.txt','vm_1')+"[/knew]</p>
+
+"
+if $args[0]='':
+! если это первое посещение локации
+	$args['res']+='<center><font color=#'+$GAME_INTERFACE['print.prov.color']+'>'+$GAME_INTERFACE['print.prov.attrib']+'ПРОВЕРЬТЕ СВОЮ УДАЧУ'+$GAME_INTERFACE['/print.prov.attrib']+'</font>. Повезёт вам или нет?</center>
+	
+<center><a href="exec:goto $curloc,str(rand(1,6))" class="plain">Проверить удачу</a></center>'
+elseif arrpos('$num_luck',$args[0])!-1:
+! если это повторное посещение локации и выпавшее число находится в списке удачных чисел
+	killvar '$num_luck',arrpos('$num_luck',$args[0])
+	$num_unluck[]=$args[0]
+	$args['res']+="<center>На браслете замигало и погасло число <font color=#008800><<$args[0]>></font>. Через секунду оно уже светилось красным.
+
+<a href=""exec:gosub 'crt.obj','мв','','<knew>',0,1,'KNOWLEDGE' & time['goto']=1 & goto 'page.<<args[1]>>'"" class='plain'>Вам повезло!</a></center>"
+elseif arrpos('$num_unluck',$lvar['luck'])!-1:
+	$args['res']+="<center>На браслете замигало и погасло число <font color=#880000><<$args[0]>></font>.
+
+<a href=""exec:gosub 'crt.obj','мв','','<knew>',0,1,'KNOWLEDGE' & time['goto']=1 & goto 'page.<<args[2]>>'"" class='plain'>Вам не повезло...</a></center>"
+else
+	$args['res']+='<font color=#880000>Произошла ошибка. Сделайте скриншот и обратитесь к разработчику</font>'
+end
+$result=$args['res']
+--- luck ---------------------------------

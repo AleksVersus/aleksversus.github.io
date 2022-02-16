@@ -1,0 +1,16 @@
+# face.floor
+args[9]=arrpos('$floor',$args[0])
+if args[9]=-1 and $args[0]!'':
+! если текущая настройка не найдена, добавляем её в список
+	$floor[]=$args[0]
+elseif $args[0]='':
+	killvar '$floor'
+elseif $args[0]!$floor[]:
+	:for
+	if arrsize('$floor')-1>args[9]:
+		killvar '$floor',args[9]+1
+		jump 'for'
+	end
+end
+gosub 'avs.face.refresh'
+--- face.floor ---------------------------------

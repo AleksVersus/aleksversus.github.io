@@ -1,0 +1,92 @@
+# war.txt
+! локация извлекает текущий текст из описания противника
+$args[0] = $args[0]	&	!	какого рода текст нужен
+$args[1] = $args[1]	&	!	идентификатор противника
+$args[2] = $args[2]	&	!	поступившие параметры
+! сначала ищем текст по роду
+args['pit']=arrpos('$id_array',$args[1])
+$args['enemy']=$object_array[args['pit']]
+$args['name']=$func('get.n.p',$args['enemy'],'И')
+$args['name.Р']=$func('get.n.p',$args['enemy'],'Р')
+$args['name.Д']=$func('get.n.p',$args['enemy'],'Д')
+$args['name.В']=$func('get.n.p',$args['enemy'],'В')
+$args['sex']=$func('get.tag.cont',$args['enemy'],'sex')
+$args['enemy.sw']=$func('get.tag.cont',$args['enemy'])
+$args['enemy.txt']=$func('base.ratch',$args['enemy.sw'],'','blow')
+args['enemy.cube']=func('get.tag.num',$args[2],'ecube')
+args['enemy.might']=func('get.tag.num',$args[2],'emight')
+args['enemy.blow']=func('get.tag.num',$args[2],'eblow')
+args['enemy.power']=func('get.tag.num',$args[2],'epower')
+args['hero.cube']=func('get.tag.num',$args[2],'pcube')
+args['hero.fast']=func('get.tag.num',$args[2],'pfast')
+args['hero.bns']=func('get.tag.num',$args[2],'pfbns')
+if $args[0]='eblow':
+	args['num']=args['enemy.cube']
+	$args['text.type']=$args[0]
+	$args['color']='880000'
+	$args['text.reserve']=$func('base.txt','ef',$args['name'],GAME_WAR['ratch.blow.'+$args[1]])
+	$args['add.str']="<sub><font color=#440000>[<<args['hero.cube']+args['hero.fast']+args['hero.bns']>>&lt;<<args['enemy.might']>> - ваша СИЛА снижается: <<power['now']>>=<<power['now']+args['enemy.blow']>>-<<args['enemy.blow']>>]</font></sub>"
+elseif $args[0]='pblow':
+	args['num']=args['hero.cube']
+	$args['text.type']=$args[0]
+	$args['color']='008800'
+	$args['text.reserve']=$func('base.txt','hf',$args['name.Д'],$args['sex'],GAME_WAR['ratch.power.'+$args[1]])
+	$args['add.str']="<sub><font color=#004400>[<<args['hero.cube']+args['hero.fast']+args['hero.bns']>>&gt;<<args['enemy.might']>> - СИЛА противника снижается: <<args['enemy.power']>>=<<args['enemy.power']+2>>-<<2>>]</font></sub>"
+elseif $args[0]='pblock':
+	args['num']=args['hero.cube']
+	$args['text.type']=$args[0]
+	$args['color']='666600'
+	$args['text.reserve']=$func('base.txt','eea',$args['name'],$args['sex'])
+	$args['add.str']="<sub><font color=#444400>[<<args['hero.cube']+args['hero.fast']+args['hero.bns']>>&gt;=<<args['enemy.might']>> - силы равны]</font></sub>"
+elseif $args[0]='eblock':
+	args['num']=args['enemy.cube']
+	$args['text.type']=$args[0]
+	$args['color']='666600'
+	$args['text.reserve']=$func('base.txt','wehn',$args['name.Р'],$args['sex'])
+	$args['add.str']="<sub><font color=#444400>[<<args['hero.cube']+args['hero.fast']+args['hero.bns']>>&gt;=<<args['enemy.might']>> - силы равны]</font></sub>"
+elseif $args[0]='block':
+	if args['enemy.cube']>args['hero.cube']:
+		args['num']=args['enemy.cube']
+		$args['text.type']='pblock'
+	else
+		args['num']=args['hero.cube']
+		$args['text.type']='eblock'
+	end
+	$args['text.reserve']=$func('base.txt','wehn',$args['name.Р'],$args['sex'])
+	$args['color']='666600'
+	$args['add.str']="<sub><font color=#444400>[<<args['hero.cube']+args['hero.fast']+args['hero.bns']>>=<<args['enemy.might']>> - силы равны]</font></sub>"
+elseif $args[0]='edeath':
+	$args['text']=$func('get.tag.cont',$args['enemy.txt'],$args[0])
+	$args['color']='008800'
+	$args['text.reserve']=$func('base.txt','hve',$args['name.В'])
+	jump 'replaced'
+elseif $args[0]='pdeath':
+	$args['text']=$func('get.tag.cont',$args['enemy.txt'],$args[0])
+	$args['color']='880000'
+	jump 'replaced'	
+end
+$args['text.list']=$func('get.tag.cont',$args['enemy.txt'],$args['text.type'])
+$args['text']=$func('get.tag.cont',$args['text.list'],str(args['num']))
+:replaced
+if $GAME_INTERFACE['war.cubes']='show': $args['war.cubes.e']="<sub><font color=#440000>[<<args['enemy.cube']>>]</font></sub>"
+if $GAME_INTERFACE['war.cubes']='show': $args['war.cubes.p']="<sub><font color=#004400>[<<args['hero.cube']>>]</font></sub>"
+$args['text']=$replace($args['text'],'[ecube]',$args['war.cubes.e'])
+$args['text']=$replace($args['text'],'[pcube]',$args['war.cubes.p'])
+$args['text']=$replace($args['text'],'[eblow]',"<sub><font color=#440000>[<<args['enemy.might']>>]</font></sub>")
+if args['hero.bns']>0:
+	$args['+']="+<<args['hero.bns']>>"
+elseif args['hero.bns']<0:
+	$args['+']="<<args['hero.bns']>>"
+end
+$args['text']=$replace($args['text'],'[pblow]',"<sub><font color=#004400>[<<args['hero.cube']+args['hero.fast']>><<$args['+']>>]</font></sub>")
+$args['text']=$replace($args['text'],'[name]',$args['name'])
+$args['text']=$replace($args['text'],'[name.В]',$args['name.В'])
+$args['text']=$replace($args['text'],'[name.Д]',$args['name.Д'])
+$args['text']=$replace($args['text'],'[name.Р]',$args['name.Р'])
+if $args['text']='': $args['text']=$args['text.reserve'] else $args['text']='<font color=#'+$args['color']+'>'+$args['text']+'</font>'
+$args['text']+='<br>	'+$args['add.str']
+$args['text']=$replace($args['text'],'  ',' ')
+$args['text']=$replace($args['text'],' .','.')
+$args['text']=$replace($args['text'],' ,',',')
+$result=$args['text']
+--- war.txt ---------------------------------

@@ -1,0 +1,25 @@
+# int.war.blaster
+! локация полного уничтожения противника
+$args[0] = $args[0]
+$args['pos.bl']=$func('prv.obj.inBag','бластер')
+! проверяем заряды
+if $args['pos.bl']!"" and charge_array[arrpos('$id_array',$args['pos.bl'])]>0:
+	$GAME_WAR_LOG[]="<font size=+1>Раунд <<GAME_WAR['round']+1>>.</font>"
+	charge_array[arrpos('$id_array',$args['pos.bl'])]-=1
+	args['pit']=arrpos('$id_array',$args[0])
+	$args['name']=$func('get.n.p',$object_array[args['pit']],'И')
+	$args['name.В']=$func('get.n.p',$object_array[args['pit']],'В')
+	$args['sex']=$func('get.tag.cont',$object_array[args['pit']],'sex')
+	GAME_WAR['ratch.power.'+$args[0]]=0
+	$GAME_WAR['ratch.dead.'+$args[0]]=$func('base.txt','ed',$func('get.tag.cont',$object_array[args['pit']],'sex'))
+	GAME_WAR['death.enemy']+=1
+	if $GAME_WAR['select.enemy']=$args[0]: $GAME_WAR['select.enemy']=''
+	$GAME_WAR_LOG[]=$func('base.txt','hveb',$args['name.В'])
+else
+	$log_error[]='Ошибка! Такого быть не должно. Бластер оказался доступен к использованию, хотя заряды отсутствовали. Сообщите разработчику.'
+	$print[]=$log_error[]
+end
+GAME_WAR['round']+=1
+gosub 'int.war.prove'
+gosub 'int.war'
+--- int.war.blaster ---------------------------------

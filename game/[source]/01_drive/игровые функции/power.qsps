@@ -1,0 +1,16 @@
+# power
+! локация ведёт подсчёт силы
+args[0] = args[0]	&	!	изменение силы
+$args[1] = $args[1]	&	!	управление
+$args[2]=$args[2]	&	!	разное
+if args[0]+power['now']>power['start']: args[0]=power['start']-power['now']
+power['now']+=args[0]
+$print_down[]=$func('base.txt','powup',args[0])
+if $args[1]!'war':
+	if power['now']<1:
+		$GAME_VALUE['power.lose']='poweroff'
+		goto 'page.death'
+	end
+end
+if power['now']<1: nosave=1 else nosave=0
+--- power ---------------------------------

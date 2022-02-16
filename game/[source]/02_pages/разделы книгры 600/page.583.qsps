@@ -1,0 +1,23 @@
+# page.583
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Вы легко догоняете аборигена, но он не намерен с вами разговаривать. Бросив в траву свою ношу, муравей поудобнее перехватывает заостренную палку.</p>
+
+<center><font size=+1>МУРАВЕЙ
+
+ЛОВКОСТЬ 9     СИЛА 8</font>
+
+<font color=#004400><i>Удастся</i></font> ли вам победить?</center>}
+$lvar['заголовок']={Мир Стрекоз<avs-enemy><non-blaster>}
+$lvar['exit']='page.351'	&	!	название локации, на которую можно перейти в случае победы.
+$lvar['динамический код']={
+if $args[0]='!war.ratchdown!':
+	if GAME_WAR['ratch.power.'+$temp_id[0]]<3:
+		$GAME_WAR['thiswar.'+$curloc]='victory'
+		$GAME_WAR['prewin.txt']='Его сила упала до двух! Ура!!!'
+		$GAME_WAR['exit.'+$curloc]='page.351'
+	end
+end
+}
+if здесь_был[$curloc]=0:
+	gosub 'crt.obj','муравей','','<ratch>'
+end
+--- page.583 ---------------------------------

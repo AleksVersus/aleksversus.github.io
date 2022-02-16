@@ -1,0 +1,33 @@
+# page.493
+$lvar['заголовок']={Мир Легенд<avs-enemy>}
+$lvar['исходник']={<p align=justify>     Рыцарь упорно требует, чтобы вы назвали имя дамы, во имя которой будете сражаться. С отвращением глядя на него, вы торжественно объявляете, что посвящаете бой красоте, благородству и прочим достоинствам несравненной Клуши Космопатрульной.
+     Короткий металлический смешок эхом проносится в вашем сознании: Клуша оценила красивый жест.</p>
+
+<center><font size=+1>ПАЛЕАНДР НЕУКРОТИМЫЙ
+
+ЛОВКОСТЬ 10     СИЛА 12</font>
+
+<font color=#004400><i>Удастся</i></font> ли вам победить?</center>}
+$lvar['exit']='page.265'	&	!	название локации, на которую можно перейти в случае победы.
+$lvar['динамический код']={
+if $args[0]='!war.powerdown!':
+	if power['now']<3:
+		$GAME_WAR['thiswar.'+$curloc]='prelose'
+		$GAME_WAR['prelose.txt']='Ваша сила снизилась до 2-х. Увы...'
+		$object_array[arrpos('$id_array',$temp_id[0])]+=" [pownow:<<GAME_WAR['ratch.power.'+$temp_id[0]]>>"
+		$position_array[arrpos('$id_array',$temp_id[0])]='page.65'
+		$GAME_WAR['exit.'+$curloc]='page.65'
+	end
+end
+if $args[0]='!war.ratchdown!':
+	if GAME_WAR['ratch.power.'+$temp_id[0]]<3:
+		$GAME_WAR['thiswar.'+$curloc]='victory'
+		$GAME_WAR['prewin.txt']='Его сила упала до двух! Ура!!!'
+		$GAME_WAR['exit.'+$curloc]='page.157'
+	end
+end
+}
+if здесь_был[$curloc]=0:
+	gosub 'crt.obj','палеандр','','<ratch>'
+end
+--- page.493 ---------------------------------

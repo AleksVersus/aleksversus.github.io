@@ -1,0 +1,7 @@
+# knew.fin
+$args[0]=$args[0]
+$args['knew']=$func('prv.obj.inBag',$args[0],'<KNOWLEDGE>')
+if $args['knew']!'':
+	$object_array[arrpos('$id_array',$args['knew'])]+='[выполнено]'
+end
+--- knew.fin ---------------------------------

@@ -1,0 +1,25 @@
+# social
+$args[0]=$args[0]	&	!	управляющая конструкция href - получаем ссылку cube - бросаем кубики
+args[1]=args[1]
+args[2]=args[2]
+if $args[0]='href':
+	if tvar['cube']=0:
+	! если кубики не брошены
+		$args['res']='<a href="exec:gosub ''social'',''cube'',<<args[1]>>,<<args[2]>>" class="plain">Проверить обаяние</a>'
+	else
+		$args['res']=$func('base.txt','soc',tvar['cube'],social['now'])+'<br><br>'
+		if tvar['cube']>social['now']:
+		! если сумма выпавших очков больше вашей ловкости, то вы промахнулись, соскользнули, лопухнулись или чего ещё
+			$args['res']+='<a href="exec:time[''goto'']=1 & social[''now'']-=1 & goto ''page.<<args[2]>>''" class="plain">Вам не удалось убедить собеседника в этот раз.</a>'
+		else
+		! если меньше или равна ей, то вы победитель
+			$args['res']+='<a href="exec:time[''goto'']=1 & social[''now'']+=1 & goto ''page.<<args[1]>>''" class="plain">В этот раз вам удалось убедить собеседника.</a>'
+		end
+	end
+elseif $args[0]='cube':
+	tvar['cube']=rand(2,12)
+	time['goto']=1
+	gosub 'true.goto'
+end
+$result=$args['res']
+--- social ---------------------------------

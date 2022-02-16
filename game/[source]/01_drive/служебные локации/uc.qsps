@@ -1,0 +1,29 @@
+# uc
+! микро-отладчик
+! "команды
+	p0 - переход на страницу 0. Вместо 0 можно указать номер любой другой страницы
+	log - вывод логов
+	имя_переменной/a - вывод содержимого массива с указанным именем (ключ записывается с латинской a)
+!"
+if strcomp($user_text,'p\d+')<>0:
+	$GAME_VALUE['interface']='[game]'
+	goto 'page.'+$strfind($user_text,'\d+')
+elseif $user_text='log':
+	*pl $func('#array.prnt#','$log_error')
+elseif $user_text='way':
+	*pl $func('#array.prnt#','$survived_location')
+elseif instr($user_text,'/a')=len($user_text)-1:
+	*pl $func('#array.prnt#',$trim($mid($user_text,1,len($user_text)-2)))
+elseif strcomp($user_text,'o\d+')=-1:
+	args[9]=$strfind($user_text,'\d+')
+	$replace($replace("
+	$id_array[<<args[9]>>]='<<$id_array[args[9]]>>'
+	$object_array[<<args[9]>>]='<<$object_array[args[9]]>>'
+	$position_array[<<args[9]>>]='<<$position_array[args[9]]>>'
+	kolvo_array[<<args[9]>>]=<<kolvo_array[args[9]]>>
+	charge_array[<<args[9]>>]=<<charge_array[args[9]]>>
+	$run_array[<<args[9]>>]='<<$run_array[args[9]]>>'",'<','&lt;'),'>','&gt;')
+else
+	dynamic $user_text
+end
+--- uc ---------------------------------

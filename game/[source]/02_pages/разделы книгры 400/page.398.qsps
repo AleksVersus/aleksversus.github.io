@@ -1,0 +1,31 @@
+# page.398
+$lvar['заголовок']={Мир Камней<avs-dark><checkpoint>}
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Здесь гораздо темнее, светящихся жуков на стенах почти нет. <DIN1:$result=''
+$args['очки']=$func('prv.bag','\[:ночное_видение:\]','regexp')
+if $args['очки']!'':
+	if instr($object_array[arrpos('$id_array',$args['очки'])],'[:лицо:]')=0:
+		$result+='В рюкзаке лежат очки «Ночное зрение», можете надеть их. '
+	else
+		time['goto']=1
+		goto 'page.482'
+	end
+elseif $args['pos.bl']='' or $args['pos.sv']='':
+	$result+='Сейчас вам могли бы пригодиться очки «Ночное зрение». '
+end
+$args['pos.bl']=$func('prv.obj.inBag','зажигалка')
+$args['pos.sv']=$func('prv.obj.inBag','свеча')
+if $args['pos.bl']!'' and $args['pos.sv']!'':
+	$result+='У вас есть зажигалка и свеча: можете [page=218]осветить себе дорогу[/page]. '
+elseif $args['pos.bl']!'':
+	$result+='У вас есть зажигалка, но от одной зажигалки света будет слишком мало.'
+elseif $args['pos.sv']!'':
+	$result+='У вас есть свеча, но зажечь её нечем. '
+end
+if $args['pos.bl']='' and $args['pos.sv']='' and $args['очки']='':
+	$result='У вас <a l:href="#n_518">нет</a> ничего, что могло бы осветить вам путь.'
+elseif ($args['pos.bl']='' or $args['pos.sv']='') and $args['очки']='':
+	$result+='К сожалению того, что у вас есть, <a l:href="#n_518">недостаточно</a>, чтоб освещать путь. А значит придётся'
+else
+	$result+='Но может быть вы и <a l:href="#n_518">не хотите</a> пользоваться ими?'
+end:1DIN></p>}
+--- page.398 ---------------------------------

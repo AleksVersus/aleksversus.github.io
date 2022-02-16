@@ -1,0 +1,254 @@
+# int.screen
+! локация, выписывающая готовый текст в таблицу экрана.
+$args[0] = $args[0]	&	!	текст экрана
+$args[1] = $args[1]	&	!	список предметов
+$args[2] = $args[2]	&	!	заголовок
+$args[3] = $args[3]	&	!	управление
+$args[4] = $args[4]	&	!	колонтитул
+:заголовок
+if $args[2]='' and instr($curloc,'page')!0: $args['head']=$strfind($curloc,'\d+') else $args['head']=$args[2]
+if $args[4]='' and instr($curloc,'page')!0: $args['colontitle']=$strfind($curloc,'\d+') else $args['colontitle']=$args[4]
+if $args['colontitle']!'' and $args['colontitle']!'nope' and $GAME_INTERFACE['colontitle.variants']!'2': $args['colontitle']='-'+$args['colontitle']+'-' else $args['colontitle']=''
+if $args['colontitle']!'':
+	$args['colontitle']='<font color=#'+$GAME_INTERFACE['colontitle.color']+' '+$GAME_INTERFACE['colontitle.size']+'>'+$GAME_INTERFACE['colontitle.attrib']+$args['colontitle']+$GAME_INTERFACE['/colontitle.attrib']+'</font>'
+	if $GAME_INTERFACE['colontitle.bgcolor']!'': $args['colon.bg']='bgcolor=#'+$GAME_INTERFACE['colontitle.bgcolor']
+end
+if instr($args[2],'<checkpoint>')!0 or ($args[2]='test' and instr($floor[],'head.chpnt')!0):
+	$args['color.head']=$GAME_INTERFACE['head.chpnt.color']
+	$args['attrib.head']=$GAME_INTERFACE['head.chpnt.attrib']
+	$args['/attrib.head']=$GAME_INTERFACE['/head.chpnt.attrib']
+	$args['size.head']=$GAME_INTERFACE['head.chpnt.size']
+	if $GAME_INTERFACE['head.chpnt.bgcolor']!'': $args['head.bgcolor']='bgcolor=#'+$GAME_INTERFACE['head.chpnt.bgcolor']
+	if $args[2]='test': $args['head']='Заголовок контрольной точки'
+elseif instr($args[2],'<checkpoint>')=0 or ($args[2]='test' and instr($floor[],'head.simpl')!0):
+	$args['color.head']=$GAME_INTERFACE['head.simpl.color']
+	$args['attrib.head']=$GAME_INTERFACE['head.simpl.attrib']
+	$args['/attrib.head']=$GAME_INTERFACE['/head.simpl.attrib']
+	$args['size.head']=$GAME_INTERFACE['head.simpl.size']
+	if $GAME_INTERFACE['head.simpl.bgcolor']!'': $args['head.bgcolor']='bgcolor=#'+$GAME_INTERFACE['head.simpl.bgcolor']
+	if $args[2]='test': $args['head']='Простой заголовок'
+end
+if $GAME_INTERFACE['head.variants']='1': $args['head']=$strfind($curloc,'\d+')
+if $GAME_INTERFACE['head.variants']='2' and $args['head']!$strfind($curloc,'\d+'): $args['head']=$strfind($curloc,'\d+')+'.	'+$args['head']
+if $GAME_INTERFACE['head.variants']='3': $args['head']=$args['head']
+if $GAME_INTERFACE['head.variants']='4' and $args['head']!$strfind($curloc,'\d+'): $args['head']=$args['head']+'	-	'+$strfind($curloc,'\d+')
+if $GAME_INTERFACE['head.variants']='5' and $args['head']!$strfind($curloc,'\d+'): $args['head']=''
+$args['result.head']='<font color=#'+$args['color.head']+' '+$args['size.head']+'>'+$args['attrib.head']+$args['head']+$args['/attrib.head']+'</font>'
+
+:ссылка_назад
+if $GAME_INTERFACE['back.href']='true' or $args[2]='test':
+	if $args[2]!"test":
+		$args['hr.b']={<a href="exec:gosub 'back.varriors'" class="plain">}
+		$args['/hr.b']="</a>"
+	end
+	$args['back.href']=$args['hr.b']+{<font color=#}+$GAME_INTERFACE['href.back.color']+">"+$GAME_INTERFACE['href.back.attrib']+"Назад"+$GAME_INTERFACE['/href.back.attrib']+{</font>}+$args['/hr.b']
+else
+	$args['back.href']="&nbsp;"
+end
+! работа с основным описанием
+if instr($args[3],'[game]')=1 or $args[2]='test':
+! формируем содержимое ячеек с характеристиками и предметами
+	:статы
+	if $args[2]='test': $args['knew.test']='test'
+	$args['stat']='<table id="avs_game_stat_short"><tr><td align=right>'+$func('base.txt','table.char')+'</td></tr>'
+	$args['stat']+='<tr name=numbers><td align=right>'+$func('base.txt','table.numbers')+'</td></tr>'
+	$args['stat']+='<tr name=knew><td align=right>'+$func('base.txt','table.knew',$args['knew.test'])+'</td></tr></table>'
+	:предметы
+	if $GAME_INTERFACE['objs']='show':
+		$args['objs.scroll']='&nbsp;'
+	elseif $args[2]='test':
+		$args['objs.scroll']=$func('base.txt','table.mlast')
+	else
+		$args['objs.scroll']=$func('base.txt','table.blast')
+	end
+	if $AVS_PLAYERTYPE['type']<>"QN": $args['objs.scroll']="<table cellpadding=0 cellspacing=0><tr><td>"+$args['objs.scroll']+"</td></tr></table>"
+	:дополнительные_тексты
+	if $GAME_INTERFACE['stat']='show':
+		$args['stat.scroll']='&nbsp;'
+	else
+		if arrsize('$print')>0 or $args[2]='test' or arrsize('$print_down')>0:
+			$args['stat.scroll']='<table cellspacing=0 width=100%>'
+			$args['stat.scroll']+='<tr name=printsp bgcolor=#'+$GAME_INTERFACE['print.main.bgcolor']+'><td align=left>&nbsp;</td></tr>'
+			if arrsize('$print')>0: $args['r']=$func('#array.prnt#','$print','[only result]')
+			if arrsize('$print_down')>0:
+				if $AVS_PLAYERTYPE['size']="MINI":
+					$args['print.down.log']=$func('#array.prnt#','$print_down','[only result]')
+				else
+					$args['r']+=$func('#array.prnt#','$print_down','[only result]')
+				end
+			end
+			if $args[2]='test':
+				$args['r']+='Простой текст. Общее форматирование.<br>'
+				$args['r']+=$func('base.txt','невозможное_действие')+'<br>'
+				$args['r']+=$func('base.txt','одевание')+'<br>'
+				$args['r']+=$func('base.txt','взять')+'<br>'
+				$args['r']+=$func('base.txt','выбросить')+'<br>'
+				$args['r']+=$func('base.txt','сохранения')+'<br>'
+				$args['r']+=$func('base.txt','изменение_стата')+'<br>'
+			end
+			$args['r']='<font color=#'+$GAME_INTERFACE['print.main.color']+'>'+$GAME_INTERFACE['print.main.attrib']+$args['r']+$GAME_INTERFACE['/print.main.attrib']+'</font>'
+			$args['stat.scroll']+='<tr name=printpr bgcolor=#'+$GAME_INTERFACE['print.main.bgcolor']+'><td align=left>'+$args['r']+'</td></tr>'
+			$args['stat.scroll']+='</table>'
+		else
+			$args['stat.scroll']='&nbsp;'
+		end
+	end
+	! таблица из объектов и дополнительных текстов
+	$args['objs']='<table cellpadding=0 cellspacing=0 border=0 id="avs_game_objs_short"><tr name=blast><td>'+$args['objs.scroll']+'</td></tr>'
+	$args['objs']+='<tr name=print><td>'+$args['stat.scroll']+'</td></tr></table>'
+else
+! не формируем содержимое ячеек с характеристиками и предметами
+	$args['stat']='&nbsp;'
+	$args['objs']='&nbsp;'
+end
+! размеры
+if $args['stat.scroll']='&nbsp;' and $args['objs.scroll']='&nbsp;':
+	$args['width.right']='width=5%'
+	$args['width.center']=''
+else
+	$args['width.right']='width=25%'
+	$args['width.center']='width=50%'
+end
+! работа с окнами:
+if $GAME_INTERFACE['objs']='show':
+	gosub 'int.inventory',$args[3]
+end
+if $GAME_INTERFACE['stat']='show' and $args[3]='[game]':
+	clr
+	pl $func('#array.prnt#','$print','[only result]')
+end
+! генерируем основное описание и список предметов
+if $GAME_INTERFACE["maintxt.bgcolor"]!'':
+	$args['mtxt.bg']='bgcolor=#<<$GAME_INTERFACE["maintxt.bgcolor"]>>'
+end
+if $GAME_INTERFACE["maintxt.text.color"]!'':
+	$args['mtxt.cl']='<font color=#'+$GAME_INTERFACE["maintxt.text.color"]+'>'
+	$args['/mtxt.cl']='</font>'
+end
+$args['mtxt.attrib']=$GAME_INTERFACE["maintxt.text.attrib"]
+$args['/mtxt.attrib']=$GAME_INTERFACE["/maintxt.text.attrib"]
+$args[0]='<table width=100% border=0><tr><td <<$args["mtxt.bg"]>> name="maintxtOp">'+$args['mtxt.cl']+$args['mtxt.attrib']+$args[0]+'<br><br>'+$args['/mtxt.attrib']+$args['/mtxt.cl']+'</td></tr>'
+if $GAME_INTERFACE['objLoc.variants']='1': $args['objLoc.var']=$func('base.txt','note.objLoc')
+if $args[1]!'': $args[0]+='<tr name=objects><td bgcolor=#'+$GAME_INTERFACE['objLoc.bgcolor']+'>'+$args['objLoc.var']+$args[1]+'</td></tr>'
+$args[0]+='</table>'	
+if $GAME_INTERFACE['next.href']='true':
+	if $args[2]!'test':
+		$args['hr.np']='<a href="exec:power[''now'']=power[''start''] & $GAME_VALUE[''interface'']=''[game]'' & $GAME_INTERFACE[''refresh'']=''страница.сброс'' & goto '+"'page."+str(val($strfind($curloc,'\d+'))+1)+"'"+'">'
+		$args['/hr.np']='</a>'
+	end
+	$args['nextpage']=$args['hr.np']+'<font color=#'+$GAME_INTERFACE['href.next.color']+'>'+$GAME_INTERFACE['href.next.attrib']+"next"+$GAME_INTERFACE['/href.next.attrib']+'</font>'+$args['/hr.np']
+	jump 'button.close'
+elseif (instr($args[3],'[game]')=1 or save['count']>0) and ($GAME_INTERFACE['stat']!'show' or $GAME_INTERFACE['objs']!'show'):
+	if $args[2]!'test':
+		$args['hr.np.l']={<a href="exec:gosub 'avs.face','test'" class="plain">}
+		$args['hr.np.e']={<a href="exec:gosub 'avs.sets'" class="plain">}
+		$args['hr.np.s']={<a href="exec:gosub 'avs.save'" class="plain">}
+		$args['/hr.np']={</a>}
+	end
+	!$args['nextpage']=$args['hr.np.l']+'<font color=#'+$GAME_INTERFACE['href.next.color']+'>'+$GAME_INTERFACE['href.next.attrib']+"<b>λ</b>"+$GAME_INTERFACE['/href.next.attrib']+'</font>'+$args['/hr.np']
+	!$args['nextpage']+='&nbsp;'
+	$args['nextpage']+=$args['hr.np.e']+'<font color=#'+$GAME_INTERFACE['href.next.color']+'>'+$GAME_INTERFACE['href.next.attrib']+"<b>é</b>"+$GAME_INTERFACE['/href.next.attrib']+'</font>'+$args['/hr.np']
+	$args['nextpage']+='&nbsp;'
+	$args['nextpage']+=$args['hr.np.s']+'<font color=#'+$GAME_INTERFACE['href.next.color']+'>'+$GAME_INTERFACE['href.next.attrib']+"<b>S</b>"+$GAME_INTERFACE['/href.next.attrib']+'</font>'+$args['/hr.np']
+	:button.close
+	if $args[2]='test':
+		$args['cc']=$func('#col-inv#',$GAME_INTERFACE['main.bgcolor'])
+		if $args['cc']!'':
+			$args['close.color']=$args['cc']
+		else
+			$args['close.color']='880000'
+		end
+		$args['nextpage']+='	<a href="exec:gosub ''avs.face.refresh'',''close''" class="plain"><font color=#'+$args['close.color']+'><b>'+$func('base.txt','button.close')+'</b></font></a>'
+	end
+	jump 'button.end'
+else
+	$args['nextpage']='&nbsp;'
+end
+:button.end
+if $GAME_INTERFACE['href.back.bgcolor']!'': $args['back.href.bgcolor']='bgcolor=#'+$GAME_INTERFACE['href.back.bgcolor']
+if $GAME_INTERFACE['href.next.bgcolor']!'': $args['next.href.bgcolor']='bgcolor=#'+$GAME_INTERFACE['href.next.bgcolor']
+! непосредственно генерим таблицу
+if $AVS_PLAYERTYPE='':
+! если плеер классический, генерим тупо таблицу
+	$args['result']='<center><table cellpadding=10 border=0 width=100%>'
+	if $args['head']!'': $args['result']+='<tr name=head><td width=25% '+$args['back.href.bgcolor']+' align=right>'+$args['back.href']+'</td><td align=center '+$args['head.bgcolor']+' '+$args['width.center']+'>'+$args['result.head']+'</td><td '+$args['next.href.bgcolor']+' '+$args['width.right']+'>'+$args['nextpage']+'</td></tr>'
+	$args['result']+='<tr name=centr><td valign=top align=right width=25%>'+$args['stat']+'</td><td valign=top '+$args['width.center']+'>'+$args[0]+'</td><td valign=top align=left '+$args['width.right']+'>'+$args['objs']+'</td></tr>'
+	if $args['colontitle']!'': $args['result']+='<tr><td valign=top align=right width=25%>&nbsp;</td><td name=btm '+$args['colon.bg']+' valign=middle align=center '+$args['width.center']+'>'+$args['colontitle']+'</td><td valign=top align=left '+$args['width.right']+'>&nbsp;</td></tr>'
+	$args['result']+='</table></center>'
+elseif $AVS_PLAYERTYPE['type']="QN" and $AVS_PLAYERTYPE['size']<>"MINI":
+! если навигатор, пробуем генерить дивами
+	! левая колонка
+	if $args['stat']<>'' or $args['back.href']<>'':
+		$args['result']='<div id="avs_game_left_column">'
+			if $args['back.href']<>'': $args['result']+='<div id="avs_game_back">'+$args['back.href']+'</div>'
+			if $args['stat']<>'': $args['result']+='<div id="avs_game_statisctics">'+$args['stat']+'</div>'
+		$args['result']+='</div>'
+	end
+	! центральная колонка
+	$args['result']+='<div id="avs_game_center_column">'
+		if $args['result.head']<>'':	$args['result']+='<div id="avs_game_head">'+$args['result.head']+'</div>'
+		$args['result']+='<div id="avs_game_opinion">'+$args[0]+'</div>'
+		if $args['colontitle']<>'':		$args['result']+='<div id="avs_game_colontitle">'+$args['colontitle']+'</div>'
+	$args['result']+='</div>'
+	! правая колонка
+	$args['result']+='<div id="avs_game_right_column">'
+		if $args['nextpage']<>'': $args['result']+='<div id="avs_game_sets">'+$args['nextpage']+'</div>'
+		if $args['objs']<>'': $args['result']+='<div id="avs_game_objects">'+$args['objs']+'</div>'
+	$args['result']+='</div>'
+else
+	! Здесь моделируется интерфейс для приложений на андроид или с маленькими экранами
+	! адаптировано для FORK
+	$args['back.to.page']='<font color=#0000ff>[</font><a href="exec:$GAME_VALUE[''screen.floor'']='''' & gs ''true.goto''">Закрыть</a><font color=#0000ff>]</font>'
+	$args['back.to.up']='<font color=#0000ff>[</font><a href="exec:gs ''true.goto'' ">Назад</a><font color=#0000ff>]</font>'
+	if arrsize('$print')>0:
+	! описательные моменты выводятся поверх всех прочих текстов
+		$args['result']+=$args['stat.scroll']
+		$args['result']+='<br>'+$args['back.to.up']+'<br>'		
+	else
+	! если это не описательный момент, смотрим по значению переменной, отмечающей состояние экрана
+		if $args['back.href']<>"&nbsp;":
+			if $GAME_VALUE['screen.floor']='STATS' or $GAME_VALUE['screen.floor']='OBJS':
+				$args['tools']+=$args['back.to.page']+' &nbsp; &nbsp; '
+			else
+				$args['tools']+='<font color=#0000ff>[</font>'+$args['back.href']+'<font color=#0000ff>]</font> &nbsp; &nbsp; '
+			end
+			if $GAME_VALUE['screen.floor']='STATS':
+				$args['tools']+='<font color=#888888>[<<fast["now"]>>|<<power["now"]>>|<<social["now"]>>]</font> &nbsp; &nbsp; '
+			else
+				$args['tools']+='<font color=#0000ff>[</font><a href="exec:$GAME_VALUE[''screen.floor'']=''STATS'' & gs ''true.goto''"><<fast["now"]>>|<<power["now"]>>|<<social["now"]>></a><font color=#0000ff>]</font> &nbsp; &nbsp; '
+			end
+			if $GAME_VALUE['screen.floor']='OBJS':
+				$args['tools']+='<font color=#888888>[Предметы]</font>'
+			else
+				$args['tools']+='<font color=#0000ff>[</font><a href="exec:$GAME_VALUE[''screen.floor'']=''OBJS'' & gs ''true.goto''">Предметы</a><font color=#0000ff>]</font>'
+			end
+			!$args['tools']+=' ['+$args['nextpage']+']'
+		end
+		if $GAME_VALUE['screen.floor']='STATS':
+			$args['result']+='<b>'+$args['tools']+'</b>'+'<br><br>'
+			$args['result']+=$args['stat']
+			$args['result']+='<br><br>'+'<b>'+$args['tools']+'</b>'
+			$args['result']+='<h2><a href="exec:gosub ''avs.save'',6">Быстрое сохранение</a></h2>'
+			$args['result']+='<h2><a href="exec:gosub ''avs.save'',7">Быстрая загрузка</a></h2>'
+			$args['result']+='<h2><a href="exec:gosub ''avs.save'',4">Загрузить контрольную точку</a></h2>'
+		elseif $GAME_VALUE['screen.floor']='OBJS':
+			$args['result']+='<b>'+$args['tools']+'</b>'+'<br><br>'
+			$args['result']+=$args['objs.scroll']
+			$args['result']+='<br><br>'+'<b>'+$args['tools']+'</b>'
+		else
+			! стандартный экран, т.е. сами локации
+			! строка инструментов выводится только, если $args['back.href']<>"&nbsp;"
+			$args['result']+='<b>'+$args['tools']+'</b>'
+			$args['result']+='<h2>'+$args['result.head']+'</h2>'
+			$args['result']+=$args[0]
+			$args['result']+=$args['print.down.log']
+			$args['result']+=$args['colontitle']
+			$args['result']+='<br>'+'<b>'+$args['tools']+'</b>'
+		end
+	end
+	if $AVS_PLAYERTYPE['type']="QN": $args['result']='<div class="avs_game_mini_all">'+$args['result']+"</div>"
+end
+killvar '$print'
+killvar '$print_down'
+$result=$args['result']
+--- int.screen ---------------------------------

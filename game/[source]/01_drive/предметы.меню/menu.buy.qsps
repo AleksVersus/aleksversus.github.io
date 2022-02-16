@@ -1,0 +1,13 @@
+# menu.buy
+if $args[0] = '': $args[0] = $OOC['id']
+$args['m']=$func('get.daughter.obj',$args[0],'\[np:[\s\S]*\[монета\][\s\S]*:np\]')
+if $args['m']='true':
+	$print[]=$func('base.txt','gift',$temp_id[0])
+	gosub 'put.obj',$temp_id[0],'//nope.goto//',1
+else
+	$print[]=$func('base.txt','gift.no')
+end
+killvar '$temp_id'
+time['goto']=1
+gosub 'true.goto'
+--- menu.buy ---------------------------------

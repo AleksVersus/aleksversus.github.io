@@ -1,0 +1,99 @@
+# onNewLoc
+! служебная локация для обработки перехода на новую локацию. Фактически здесь исходный текст книжки превращается в выводимый на экран.
+	! -------------------- переход на новую локацию -----------
+		if $id_watch[]<>$curloc:
+			$id_watch[] = $curloc
+			! очищаем временный массив:
+			killvar '$tvar'
+			$GAME_VALUE['screen.floor']=''
+			$args['save']='yep'
+			if $GAME_VALUE['back.code']<>'back':
+				gosub 'save.varriors'
+			else
+				gosub 'back.varriors','back'
+			end
+			IF $AVS_PLAYERTYPE['type']="QN":
+				! данный костыль должен позволять прокручивать
+				! страницу при повторном посещении до низу.
+				! смысл в чём. Элемент добавляется только тогда,
+				! когда страница посещена первый раз.
+				! Если же элемент не найден, скрипт прокрутит 
+				! полосу прокрутки до низа.
+				$args['controlJS']='<a name="controlJS" id="controlJS" href="#"></a>'
+			END
+		end
+		if arrsize('$id_watch')>100: killvar '$id_watch',0
+	! -------------------- переход на новую локацию -----------
+
+	! -------------------- переход на любую локацию -----------
+		$refresh_watch[]=$curloc
+		if arrsize('$refresh_watch')>9999: killvar '$refresh_watch',0
+	! -------------------- переход на любую локацию -----------
+if val($strfind($curloc,'\d+'))>0 and strcomp($curloc,'page\.\d+')=-1:
+	if $AVS_PLAYERTYPE['type']="QN" and $GAME_HELP['QN']='':
+		$GAME_HELP['QN']='yep'
+		$print[] = '<span style="color:#'+$GAME_INTERFACE['print.nope.color']+';">Внимание!!! Контрольные точки сохраняются в первом слоте, быстрые сохранения - во втором.</span> <br>'
+	end
+end
+if здесь_был[$curloc]=0:
+	здесь_был[$curloc]=1
+end
+if $lvar['исходник']!'':
+	$args['на экран']=$func('int.DIN',$lvar['исходник'])
+	$args['список предметов']=$func('int.loc.obj',$curloc)
+else
+	$args['на экран']='<avs-main>'+$maintxt+'</avs-main>'
+end
+$tvar['костыль.заголовок']=$lvar['заголовок']
+! проверка боем
+if instr($lvar['заголовок'],'<avs-enemy>')!0:$args['на экран']+=$func('base.txt','war')
+if instr($lvar['заголовок'],'<avs-money:')!0: $args['на экран']+=$func('base.txt','sell')
+if instr($lvar['заголовок'],'<avs-death>')!0 or $GAME_VALUE['power.lose']='poweroff':
+	if $GAME_VALUE['power.lose']='poweroff': $args['на экран']+=$func('base.txt','off')
+	$args['на экран']+=$func('base.txt','wl')
+	$args['список предметов']=''
+	$GAME_INTERFACE['refresh']='страница.сброс'
+	$GAME_VALUE['interface']=''
+	nosave=1
+else
+	nosave=0
+end
+if instr($lvar['заголовок'],'<avs-victory>')!0:
+	$args['на экран']+=$func('base.txt','go')
+	$args['список предметов']=''
+	$GAME_INTERFACE['refresh']='страница.сброс'
+	$GAME_VALUE['interface']=''
+end
+if instr($lvar['заголовок'],'<avs-game:')!0:
+	$args['на экран']+=$func('int.DIN',$func('base.txt','game.enemy',$func('get.tag.cont',$lvar['заголовок'],'avs-game')))
+end
+! кусок костыля для прокрутки
+$args['на экран']+=$args['controlJS']
+*clr
+if $GAME_INTERFACE['refresh']!'': gosub 'set.Screen',$GAME_INTERFACE['refresh']
+$args['PRINTSCREEN']=$func('int.screen',$args['на экран'],$args['список предметов'],$lvar['заголовок'],$GAME_VALUE['interface'],$lvar['колонтитул'])
+*pl $args['PRINTSCREEN']
+if $refresh_watch[]=$refresh_watch[arrsize('$refresh_watch')-2] and time['goto']=0:
+	wait 1
+	*p ' '
+end
+if $refresh_watch[]!$refresh_watch[arrsize('$refresh_watch')-2]:
+! если локация, на которую мы переместились, новая
+	if instr($tvar['костыль.заголовок'],'<avs-enemy>')!0:
+		$GAME_VALUE['приём лекарства']='запрещён'
+	elseif $GAME_VALUE['приём лекарства']='запрещён':
+		$GAME_VALUE['приём лекарства']='разрешён'
+	else
+		$GAME_VALUE['приём лекарства']=''
+	end
+end
+killvar '$lvar'
+killvar '$GAME_WAR'
+killvar '$GAME_WAR_LOG'
+if instr($tvar['костыль.заголовок'],'<checkpoint>')!0 and checkpoint[$curloc]=0:
+	checkpoint[$curloc]+=1
+	gosub 'avs.save',999
+end
+time['goto']=0
+showstat 1 & clr & pl $replace($maintxt,'<','&lt;')
+--- onNewLoc ---------------------------------

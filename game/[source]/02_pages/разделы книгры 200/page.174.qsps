@@ -1,0 +1,9 @@
+# page.174
+$lvar['заголовок']={Мир Камней}
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Чудом удаётся вам пробежать через пылающий коридор. Ожоги <font color=#004400>уменьшают вашу СИЛУ на 6</font>. <avs-insert></avs-insert></p>}
+if здесь_был[$curloc]=0:
+	gosub 'power',-6
+end
+$args['d']=$strfind($lvar['исходник'],'<avs-insert>[\s\S]*?<\/avs-insert>')
+$lvar['исходник']=$replace($lvar['исходник'],$args['d'],"Тем не менее вы живы — можете [page=210]идти дальше[/page]")
+--- page.174 ---------------------------------

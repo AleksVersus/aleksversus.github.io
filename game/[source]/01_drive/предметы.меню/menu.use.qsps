@@ -1,0 +1,30 @@
+# menu.use
+if $args[0] = '': $args[0] = $OOC['id']
+! использовать предмет
+args['pit']=arrpos('$id_array',$args[0])
+$args['obj']=$object_array[args['pit']]
+$args['short_word']=$func('get.tag.cont',$args['obj'])
+$args['name.В']=$func('get.n.p',$args['obj'],'В')
+$args['np']=$func('get.tag.cont',$args['obj'],'np')
+$args['useoff']=$func('get.tag.cont',$args['obj'],'useoff')
+! соответствие типов предметов типам частей тела:
+if instr($args['np'],'[очки]')!0: $args['идентификатор типа части тела']='лицо'
+if instr($args['np'],'[шлем]')!0: $args['идентификатор типа части тела']='голова'
+
+if $args['useoff']!0 and instr($tvar['костыль.заголовок'],'<'+$args['useoff']+'>')=0:
+	$print[]=$func('base.obj',$args['short_word'],'','notspec')
+	jump 'ext'
+end
+! ищем ячейку для предмета
+$args['bag']=$func('prv.bag','','',$args['идентификатор типа части тела'])
+
+if arrpos('$position_array',$args['bag'])!-1:
+	$print[]=$func('base.txt','f',$args['идентификатор типа части тела'])
+else
+	$print[]=$func('base.txt','used',$args['идентификатор типа части тела'],$args['name.В'])
+	$position_array[args['pit']]=$args['bag']
+end
+:ext
+time['goto']=1
+gosub 'true.goto'
+--- menu.use ---------------------------------

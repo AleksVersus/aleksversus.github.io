@@ -1,0 +1,9 @@
+# upluck.num
+$args[0] = $args[0]
+args[1]=arrpos('$num_unluck',$args[0])
+$num_luck[]=$num_unluck[args[1]]
+killvar '$num_unluck',args[1]
+удача_восст[$curloc]=1
+time['goto']=1
+goto $curloc
+--- upluck.num ---------------------------------
