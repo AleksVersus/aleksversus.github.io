@@ -1,0 +1,27 @@
+# page.19
+$lvar['заголовок']={Мир Стрекоз<avs-enemy>}
+$lvar['исходник']={<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Вам удаётся освободить левую руку, и вы выхватываете оружие. Но драться левой рукой неудобно, поэтому на время боя <font color=#004400><i>ЛОВКОСТЬ уменьшается на 1</i></font>. 
+</p><center><font size=+1>1-Й МУРАВЕЙ 
+ 
+ЛОВКОСТЬ 8     СИЛА 10 
+ 
+2-Й МУРАВЕЙ 
+ 
+ЛОВКОСТЬ 8 СИЛА 8</font></center>
+<p align=justify>
+     <font color=#004400><i>Если они снизят вашу СИЛУ до 2, то, увы ...</i></font></p>}
+lvar['штраф.ловк']=-1
+$lvar['exit']='page.343'
+$lvar['динамический код']={if $args[0]='!war.powerdown!':
+	if power['now']<3:
+		$GAME_WAR['thiswar.'+$curloc]='prelose'
+		$GAME_WAR['exit.'+$curloc]='page.635'
+		$GAME_WAR['prelose.txt']='Ваша сила снизилась до 2-х. Увы...'
+	end
+end
+}
+if здесь_был[$curloc]=0:
+	gosub 'crt.obj','муравей1','МУРВЙ_030303','<ratch>'
+	gosub 'crt.obj','муравей2','МУРВЙ_040404','<ratch>'
+end
+--- page.19 ---------------------------------
