@@ -225,25 +225,25 @@ else
 			!$args['tools']+=' ['+$args['nextpage']+']'
 		end
 		if $GAME_VALUE['screen.floor']='STATS':
-			$args['result']+='<b>'+$args['tools']+'</b>'+'<br><br>'
+			$args['result']+='<b><mark:1>'+$args['tools']+'</b>'+'<br><br>'
 			$args['result']+=$args['stat']
-			$args['result']+='<br><br>'+'<b>'+$args['tools']+'</b>'
+			$args['result']+='<br><br>'+'<b><mark:2>'+$args['tools']+'</b>'
 			$args['result']+='<h2><a href="exec:gosub ''avs.save'',6">Быстрое сохранение</a></h2>'
 			$args['result']+='<h2><a href="exec:gosub ''avs.save'',7">Быстрая загрузка</a></h2>'
 			$args['result']+='<h2><a href="exec:gosub ''avs.save'',4">Загрузить контрольную точку</a></h2>'
 		elseif $GAME_VALUE['screen.floor']='OBJS':
-			$args['result']+='<b>'+$args['tools']+'</b>'+'<br><br>'
+			$args['result']+='<b><mark:3>'+$args['tools']+'</b>'+'<br><br>'
 			$args['result']+=$args['objs.scroll']
-			$args['result']+='<br><br>'+'<b>'+$args['tools']+'</b>'
+			$args['result']+='<br><br>'+'<b><mark:4>'+$args['tools']+'</b>'
 		else
 			! стандартный экран, т.е. сами локации
 			! строка инструментов выводится только, если $args['back.href']<>"&nbsp;"
-			$args['result']+='<b>'+$args['tools']+'</b>'
+			$args['result']+='<b><mark:5>'+$args['tools']+'</b>'
 			$args['result']+='<h2>'+$args['result.head']+'</h2>'
 			$args['result']+=$args[0]
 			$args['result']+=$args['print.down.log']
 			$args['result']+=$args['colontitle']
-			$args['result']+='<br>'+'<b>'+$args['tools']+'</b>'
+			$args['result']+='<br>'+'<b><mark:6>'+$args['tools']+'</b>'
 		end
 	end
 	if $AVS_PLAYERTYPE['type']="QN": $args['result']='<div class="avs_game_mini_all">'+$args['result']+"</div>"
