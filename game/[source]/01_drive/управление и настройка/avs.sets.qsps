@@ -2,17 +2,18 @@
 killvar '$temp_menu'
 ! локация организует меню переключения настроек интерфейса и игры
 if args[0]=0:
-	! генерим меню
+	!@ генерим меню
 	if $GAME_VALUE['save.reserve']='false':
 		$temp_menu[]=$args['span']+"Создавать резервные копии сохранений"+$args['/span']+":avs.sets"
 	else
 		$temp_menu[]=$args['span']+"Не создавать резервные копии сохранений"+$args['/span']+":avs.sets"
 	end
-	! вызываем меню
+	!@ вызываем меню
 	menu '$temp_menu'
-	! уничтожаем меню
+	!@ уничтожаем меню
 	killvar '$temp_menu'
 elseif args[0]=1:
+	!@ остался один пункт: создавать/не создавать резервные копии сохранений
 	if $GAME_VALUE['save.reserve']='false':
 		$GAME_VALUE['save.reserve']='true'
 	else
