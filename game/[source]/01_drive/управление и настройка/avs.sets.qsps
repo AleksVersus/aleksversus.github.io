@@ -3,16 +3,6 @@ killvar '$temp_menu'
 ! локация организует меню переключения настроек интерфейса и игры
 if args[0]=0:
 	! генерим меню
-	if $GAME_INTERFACE['objs']='show':
-		$temp_menu[]=$args['span']+"Скрыть окно инвентаря"+$args['/span']+":avs.sets"
-	else
-		$temp_menu[]=$args['span']+"Показать окно инвентаря"+$args['/span']+":avs.sets"
-	end
-	if $GAME_INTERFACE['stat']='show':
-		$temp_menu[]=$args['span']+"Скрыть окно статистики"+$args['/span']+":avs.sets"
-	else
-		$temp_menu[]=$args['span']+"Показать окно статистики"+$args['/span']+":avs.sets"
-	end
 	if $GAME_VALUE['save.reserve']='false':
 		$temp_menu[]=$args['span']+"Создавать резервные копии сохранений"+$args['/span']+":avs.sets"
 	else
