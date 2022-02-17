@@ -1,0 +1,13 @@
+{
+	"project":
+	[
+		{
+			"build":".\\game\\merphy_law.qn.qsp",
+			"folders":[{"path":".\\game\\[source]"}]
+		}
+	],
+	"converter":"D:\\my\\GameDev\\QuestSoftPlayer\\QSP 570 QG 400b\\txt2gam.exe",
+	"player":"C:\\Program Files\\qSpider\\start.bat",
+	"save_txt2gam":"True",
+	"start":".\\game\\merphy_law.qn.qsp"
+}
