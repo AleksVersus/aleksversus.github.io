@@ -19,7 +19,7 @@ gosub 'set.Screen','обложка.чёрный'	&	!@ выставляем те�
 <center><table border=0><tr name=заголовок><td align=center><font color=#dddd00>ОЛЬГА ГОЛОТВИНА<br><font size=+3>ВЕРЕНИЦА МИРОВ</font><br>или<br><font size=+3>ВЫВОДЫ ИЗ ЗАКОНА МЕРФИ</font></font><br><font size=-3>Книга-игра</font></td></tr><tr name=text><td align=right>
 
 <center><font color=#008888>Каким плеером вы пользуетесь?</font>
-<span style="font-family:GoodVibesPro;color:#ff0000;font-size:4em;">Пока что игра не адаптирована для qSpider.
+<span style="font-family:GoodVibesPro;color:#ff0000;font-size:2em;">Пока что игра не адаптирована для qSpider.
 Может иногда вылетать в молоко.</span></center>
 </td></tr><tr name=link><td align=center><a href="exec:goto ''[start]''" class="plain">Версия для компьютера</a>
 
