@@ -28,7 +28,7 @@ elseif $args[0] = 'страница.сброс':
 	lcolor = rgb(0,136,136)		&	!@	настраиваем текущий цвет ссылок
 end
 !@ задаём разные настройки для квест навигатора, если плеер определён, как навигатор
-if instr($AVS_PLAYER,'[QN]')<>0:
+if instr($AVS_PLAYERTYPE,'[QN]')<>0 or $AVS_PLAYERTYPE['type']="QN":
 	EXEC('JS:document.body.style.backgroundColor="#'+$args["bc"]+'";')
 	EXEC('JS:document.body.style.color="#<<$args["fc"]>>";')
 end

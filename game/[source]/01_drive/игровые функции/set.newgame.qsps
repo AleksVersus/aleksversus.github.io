@@ -1,8 +1,12 @@
+QSP-Game локация выставляет настройки по умолчанию.
+$args[0] — управляющая конструкция. Сюда можно передавать слово kill
+	— сбрасывает все настройки, или название настройки, которую нужно сбросить.
 # set.newgame
+$args[9]=$args[9]
 if $args[0]='kill':
 	killvar '$survived_location'
 	killvar '$survived_varriors'
-	!killvar '$GAME_INTERFACE'
+	!@ killvar '$GAME_INTERFACE'
 	killvar '$GAME_VALUE'
 	killvar 'fast' & killvar 'power' & killvar 'social'
 	killvar '$id_array'
@@ -17,8 +21,7 @@ if $args[0]='kill':
 	killvar 'удача_восст'
 	killvar 'checkpoint'
 end
-if $GAME_INTERFACE['sets.refresh']='' or $args[0]!'kill':
-! форма записи при условии. Условие kill - чтобы сбросить все настройки. Условие по названию настройки - сбрасывает указанную настройку.
+if $GAME_INTERFACE['sets.refresh']='' or $args[0]<>'kill':
 	! основные настройки
 	if $args[0]='kill' or $args[0]='war.cubes': 	$GAME_INTERFACE['war.cubes']='hide'		&	!	очки кубиков в тексте описания боя hide - скрывать show - показывать
 	if $args[0]='kill' or $args[0]='refresh': 		$GAME_INTERFACE['refresh']=''			&	!	принудительно обновить настройки интерфейса страница.сброс - сбросить к стандартным настройкам плеера
