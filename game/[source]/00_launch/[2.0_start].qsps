@@ -20,7 +20,7 @@ $args['head.floor1']='ВЕРЕНИЦА МИРОВ'
 $args['subhead.floor1']='или'
 $args['head.floor2']='ВЫВОДЫ ИЗ ЗАКОНА МЕРФИ'
 $args['subhead.floor2']='Книга-игра'
-$args['epigraph.1']='Если неприятность может произойти, она обязательно происходит.'
+$args['epigraph.1']='«Если неприятность может произойти, она обязательно происходит».'
 $args['epigraph.2']='Закон Мерфи, 2-я пол. ХХ века'
 $args['link.startgame']='<a href="exec:goto ''page.-1''" id="start_the_game" class="plain">Начать игру</a>'
 $args['link.gameplay']='<a href="exec:goto ''[1.1_gameplay]''" id="about_gameplay" class="plain">Об игре</a>'
@@ -42,11 +42,59 @@ if $AVS_PLAYERTYPE['size']<>"MINI":
 			$args['screen']+='</div><br><br>'
 			$args['screen']+=$args['link.startgame']+'<br><br>'
 			$args['screen']+=$args['link.gameplay']+'<br><br>'
-			$args['screen']+=$args['link.release']+''
+			$args['screen']+=$args['link.release']
 		$args['screen']+='</div>'
 	else
 		!@ для классического плеера
-		
+		$args['screen']+='<center><table border=0 id="main_cover">'
+			$args['screen']+='<tr name="Заголовок"><td align=center>'
+				$args['screen']+='<font color=#dddd00>'+$args['author']+'</font><br>'
+				$args['screen']+='<font color=#dddd00 size=+3>'+$args['head.floor1']+'</font><br>'
+				$args['screen']+='<font color=#dddd00>'+$args['subhead.floor1']+'</font><br>'
+				$args['screen']+='<font color=#dddd00 size=+3>'+$args['head.floor2']+'</font><br>'
+				$args['screen']+='<font size=-3>'+$args['subhead.floor2']+'</font>'
+			$args['screen']+='</td></tr>'
+			$args['screen']+='<tr name=text><td align=right>'
+				$args['screen']+='<br><br><font size=-1><i>'+$args['epigraph.1']+'</i></font><br>'
+				$args['screen']+='<font size=-1><i>'+$args['epigraph.2']+'</i></font><br><br>'
+			$args['screen']+='</td></tr>'
+			$args['screen']+='<tr name=link><td align=center>'
+				$args['screen']+=$args['link.startgame']+'<br><br>'
+				$args['screen']+=$args['link.gameplay']+'<br><br>'
+				$args['screen']+=$args['link.release']
+			$args['screen']+='</td></tr>'
+		$args['screen']+='</table></center>'
+	end
+else
+	if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
+		!@ для Quest Navigator и qSpider
+		$args['screen']+='<div class="main_cover">'
+			$args['screen']+='<span class="author">'+$args['author']+'</span><br>'
+			$args['screen']+='<span class="heading">'+$args['head.floor1']+'</span><br>'
+			$args['screen']+='<span class="subhead" style="color:#dddd00;">'+$args['subhead.floor1']+'</span><br>'
+			$args['screen']+='<span class="heading">'+$args['head.floor2']+'</span><br>'
+			$args['screen']+='<span class="subhead">'+$args['subhead.floor2']+'</span>'
+			$args['screen']+='<br><br><div class="epigraph">'
+				$args['screen']+='<div id="epigraph_1">'+$args['epigraph.1']+'</div>'
+				$args['screen']+='<div id="epigraph_2">'+$args['epigraph.2']+'</div>'
+			$args['screen']+='</div><br><br>'
+			$args['screen']+=$args['link.startgame']+'<br><br>'
+			$args['screen']+=$args['link.gameplay']+'<br><br>'
+			$args['screen']+=$args['link.release']
+		$args['screen']+='</div>'
+	else
+		$args['screen']+='<center>'
+			$args['screen']+='<font color=#dddd00>'+$args['author']+'</font><br>'
+			$args['screen']+='<font color=#dddd00 size=+3>'+$args['head.floor1']+'</font><br>'
+			$args['screen']+='<font color=#dddd00>'+$args['subhead.floor1']+'</font><br>'
+			$args['screen']+='<font color=#dddd00 size=+3>'+$args['head.floor2']+'</font><br>'
+			$args['screen']+='<font size=-3>'+$args['subhead.floor2']+'</font>'
+			$args['screen']+='<br><br><font size=-1><i>'+$args['epigraph.1']+'</i></font><br>'
+			$args['screen']+='<font size=-1><i>'+$args['epigraph.2']+'</i></font><br><br>'
+			$args['screen']+=$args['link.startgame']+'<br><br>'
+			$args['screen']+=$args['link.gameplay']+'<br><br>'
+			$args['screen']+=$args['link.release']
+		$args['screen']+='</center>'
 	end
 end
 !@ выводим обложку:
