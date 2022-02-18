@@ -104,26 +104,41 @@
 	}
 
 .avs_game_mini_all {
-		position:absolute;
-    	height:80%;
-    	width:95%;
-    	padding:1em;
-    	overflow-y:auto;}
-
-[data-qsp="stats"]{
-	background-color: rgba(255, 255, 0, 0.10);
+	position:absolute;
+	height:80%;
+	width:95%;
+	padding:1em;
+	overflow-y:auto;
 }
 
-/* Костыль для двенадцатой версии qSpider
-#root > div {
-   --background-color: #ffff00;
-   --inverted-background-color: #00ffff;
+[data-one]::before {
+	content: attr(data-one) " ";
 }
 
+.main_cover {
+	margin:0 auto;
+	text-align:center;
+	
+}
 
-там же можно прописать 
-цвет текста - --color и --inverted-color
-цвет бордеров на панелях - --border-color и --inverted-border-color
-размер текста  - --font-size
-цвет ссылок - --link-color
-*/
+.main_cover .author, .main_cover .heading {
+	color: #dddd00;
+}
+.main_cover .heading {
+	font-size: 2em;
+}
+.main_cover .subhead, .main_cover .epigraph {
+	/* font-size: 0.5em; */
+}
+.main_cover .epigraph {
+	/* width: 100%; */
+	font-style: italic;
+}
+.main_cover .epigraph #epigraph_1 {
+	text-align: left;
+	width: 100%;
+}
+.main_cover .epigraph #epigraph_2 {
+	text-align: right;
+	width: 100%;
+}
