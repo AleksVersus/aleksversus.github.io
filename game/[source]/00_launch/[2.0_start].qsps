@@ -1,46 +1,56 @@
+QSP-Game самая первая локация. Здесь может быть заставка или вступительное слово
 # [start]
-! самая первая локация. Здесь может быть заставка или вступительное слово
-gosub 'set.newgame','kill'
-$GAME_VALUE['interface']=''
-! генерим уникальный номер игры
-$save['game.number']=$func('#rndstr#',4,'буквы и цифры')
-! разделяем типы, чтобы не заморачиваться с функциями instr
+gosub 'set.newgame','kill'	& !@ выставляем настройки по-умолчанию. !!! НУЖНО ЛИ???
+$GAME_VALUE['interface']=''	& !@ установки интерфейса. Пустое значение: текст игры без доп элементов интерфейса.
+$save['game.number']=$func('#rndstr#',4,'буквы и цифры') & !@ генерим уникальный номер игры
+!@ разделяем типы, чтобы не заморачиваться с функциями instr
 if instr($AVS_PLAYERTYPE,"[MINI]")<>0: $AVS_PLAYERTYPE['size']="MINI" else $AVS_PLAYERTYPE['size']=""
 if instr($AVS_PLAYERTYPE,"[QN]")<>0:
-	$AVS_PLAYERTYPE['type']="QN"
+	$AVS_PLAYERTYPE['type']="QN"	& !@ Quest Navigator
 elseif instr($AVS_PLAYERTYPE,"[qSpider]")<>0:
-	$AVS_PLAYERTYPE['type']="qSpider"
+	$AVS_PLAYERTYPE['type']="qSpider"	& !@ qSpider и классический версии 5.8.0
 else
-	$AVS_PLAYERTYPE['type']=""
+	$AVS_PLAYERTYPE['type']=""	& !@ классический 5.7.0
 end
-! настраиваем экран:
-gosub 'set.Screen','обложка.чёрный'	&	!	переход на локацию с передачей аргумента и возврат к следующей строке
-! Выводим на экран необходимый текст:
-if $AVS_PLAYERTYPE['type']="QN" and $AVS_PLAYERTYPE['size']<>"MINI":
-! Для десктопного Questnavigator делаем div
-	$args['screen']='<div style="margin:auto; text-align:center;">'
-	$args['s.3']='</div>'
-elseif $AVS_PLAYERTYPE['size']="MINI":
-! для плеера на андроид ничего не делаем пока что
-else
-! если плеер и не мини и не навигатор, значит классический
-	$args['s.1']='</td></tr><tr name=text><td align=right>'
-	$args['s.2']='</td></tr><tr name=link><td align=center>'
-	$args['s.3']='</td></tr></table></center>'
-	$args['screen']='<center><table border=0><tr name=заголовок><td align=center>'
+gosub 'set.Screen','обложка.чёрный'	& !@ настраиваем экран
+
+!@ Набираем текст для последующего вывода на экран:
+$args['author']='ОЛЬГА ГОЛОТВИНА'
+$args['head.floor1']='ВЕРЕНИЦА МИРОВ'
+$args['subhead.floor1']='или'
+$args['head.floor2']='ВЫВОДЫ ИЗ ЗАКОНА МЕРФИ'
+$args['subhead.floor2']='Книга-игра'
+$args['epigraph.1']='Если неприятность может произойти, она обязательно происходит.'
+$args['epigraph.2']='Закон Мерфи, 2-я пол. ХХ века'
+$args['link.startgame']='<a href="exec:goto ''page.-1''" id="start_the_game" class="plain">Начать игру</a>'
+$args['link.gameplay']='<a href="exec:goto ''[1.1_gameplay]''" id="about_gameplay" class="plain">Об игре</a>'
+$args['link.release']='<a href="exec:goto ''[1.0_about]''" id="about_release" class="plain">О текущей версии</a>'
+!@ для каждого плеера собственные настройки оформления. Зачем добиваться одинакового отображения, если все плееры разные?
+if $AVS_PLAYERTYPE['size']<>"MINI":
+	!@ только для десктопных версий плееров пишем собственные схемы вывода
+	if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
+		!@ для Quest Navigator и qSpider
+		$args['screen']+='<div class="main_cover">'
+			$args['screen']+='<span class="author">'+$args['author']+'</span><br>'
+			$args['screen']+='<span class="heading">'+$args['head.floor1']+'</span><br>'
+			$args['screen']+='<span class="subhead" style="color:#dddd00;">'+$args['subhead.floor1']+'</span><br>'
+			$args['screen']+='<span class="heading">'+$args['head.floor2']+'</span><br>'
+			$args['screen']+='<span class="subhead">'+$args['subhead.floor2']+'</span>'
+			$args['screen']+='<br><br><div class="epigraph">'
+				$args['screen']+='<div id="epigraph_1">'+$args['epigraph.1']+'</div>'
+				$args['screen']+='<div id="epigraph_2">'+$args['epigraph.2']+'</div>'
+			$args['screen']+='</div><br><br>'
+			$args['screen']+=$args['link.startgame']+'<br><br>'
+			$args['screen']+=$args['link.gameplay']+'<br><br>'
+			$args['screen']+=$args['link.release']+''
+		$args['screen']+='</div>'
+	else
+		!@ для классического плеера
+		
+	end
 end
-$args['screen']+='<font color=#dddd00>ОЛЬГА ГОЛОТВИНА<br><font size=+3>ВЕРЕНИЦА МИРОВ</font><br>или<br><font size=+3>ВЫВОДЫ ИЗ ЗАКОНА МЕРФИ</font></font><br><font size=-3>Книга-игра</font>'+$args['s.1']+'
-
-<font size=-1><i>"Если неприятность может произойти, она обязательно происходит". 
-Закон Мерфи, 2-я пол. ХХ века</i></font>
-
-
-'+$args['s.2']+'<a href="exec:goto ''page.-1''" title="переход к началу игры" class="plain">Начать игру</a>
-
-<a href="exec:goto ''[1.1_gameplay]''" title="переход к описанию правил игры через гиперссылку" class="plain">Об игре</a>
-
-<a href="exec:goto ''[1.0_about]''" title="переход к описанию игры через гиперссылку" class="plain">О текущей версии</a>'+$args['s.3']
+!@ выводим обложку:
 *p $args['screen']
-showinput 1
+showinput 1	& !@ включаем строку ввода для отладки
 ! ВСЕМУ СООБЩЕСТВУ QSP, людям из quest-book, и просто проходившим мимо СПАСИБО !
 --- [start] ---------------------------------
