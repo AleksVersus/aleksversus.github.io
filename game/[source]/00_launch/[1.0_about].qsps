@@ -96,11 +96,18 @@ $args['li.06.6']='Исправлены мелкие недочёты, связа
 $args['head.floor2.7']='Изменения и исправления в версии 3.2 (адаптация для qSpider и онлайн-версия):'
 $args['li.07.1']='Исправлены ошибки локаций 133 и 305 — создавались тупики из-за неверно закрытых кавычек.'
 $args['ending']='Если Вы обнаружили, что игра не запускается, или некорректно отображается в вашей версии плеера, напишите мне на aleksversus@mail.ru, посмотрим, что с этим можно сделать. Целенаправленно отслеживать и исправлять косяки отображения я больше не буду.'
-if $AVS_PLAYERTYPE['size']<>"MINI":
+!@ if $AVS_PLAYERTYPE['size']<>"MINI":
 	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
 		!@ собираем текстовки для quest navigator и qspider
-		$args['screen']+='<div class="main_cover">'
-			$args['screen']+='<span class="back_href" style="font-size:0.8em">'+$args['href.back']+'</span><br>'
+		if $AVS_PLAYERTYPE['size']<>"MINI":
+			$args["styles.1"]='style="display:flex;align-justify:flex-start;"'
+			$args["styles.2"]=' style="font-size:0.9em;position: sticky; top: 0;"'
+		end
+		$args['screen']+='<div <<$args["styles.1"]>> class="main_cover">'
+			if $AVS_PLAYERTYPE['size']<>"MINI": $args['screen']+='<div syle="padding:0.15em;">'
+				$args['screen']+='<span <<$args["styles.2"]>> class="back_href">'+$args['href.back']+'</span><br>'
+			if $AVS_PLAYERTYPE['size']<>"MINI": $args['screen']+='</div>'
+			if $AVS_PLAYERTYPE['size']<>"MINI": $args['screen']+='<div>'	& !@ средний блок
 			$args['screen']+='<span class="heading">'+$args['head.floor1']+'</span><br>'
 			$args['screen']+='<span class="subhead">'+$args['version']+'</span><br>'
 			$args['screen']+='<span class="subhead">'+$args['resolution']+'</span><br>'
@@ -137,57 +144,66 @@ if $AVS_PLAYERTYPE['size']<>"MINI":
 				args['j']+=1
 				jump 'for_list'
 			end
-
-
+			$args['screen']+='<p class="pgf">'+$args['ending']+'</p>'
+			if $AVS_PLAYERTYPE['size']<>"MINI": $args['screen']+='</div>'
 		$args['screen']+='</div>'
+		jump 'end_keep'
 	else
+		!@ классический плеер
+		:classical
+		if $AVS_PLAYERTYPE['size']<>"MINI":$args['screen']+='<center><table border=0><tr name=port>'
+			if $AVS_PLAYERTYPE['size']<>"MINI": $args['screen']+='<td align=left valign=top width=5%>'
+				$args['screen']+='<font size=-4>'+$args['href.back']+'</font>'
+			if $AVS_PLAYERTYPE['size']<>"MINI": $args['screen']+='</td><td align=justify>'
+				$args['screen']+='<p align=center>'
+					$args['screen']+='<font color=#dddd00 size=+3>'+$args['head.floor1']+'</font><br><br>'
+					$args['screen']+='<font color=#dddd00 size=-4>'+$args['version']+'</font>'
+				$args['screen']+='</p>'
+				$args['screen']+='<p align=justify>'+$args['resolution']+'</p>'
+				args['i']=1
+				:for_paragraph_1
+				if $args['p.<<args["i"]>>']<>'':
+					$args['screen']+='<p align=justify>'
+						$args['screen']+=$replace($args['p.<<args["i"]>>'],'<span class="yello_text">','<span style="color:#888800;">')
+					$args['screen']+='</p>'
+					if args['i']=4:
+						$args['screen']+='<p align=justify><font color=#888888 size=-2>'+$args['save.about']+'</font></p>'
+					end
+					if args['i']=10:
+						$args['screen']+='<p align=right>'+$args['postscript']+'</p>'
+					end
+					if args['i']=10 or args['i']=14:
+						$args['screen']+='<p align=center>'+$args['href.back.1']+'</p>'
+					end
+					args['i']+=1
+					jump 'for_paragraph_1'
+				end
+				args['j']=1
+				:for_list_1
+				if $args['head.floor2.<<args["j"]>>']<>'':
+					$args['screen']+='<p align=left><font color=#dddd00>'+$args['head.floor2.<<args["j"]>>']+'</font></p>'
+					$args['screen']+='<ul style="text-align:left;">'
+					args['i']=1
+					:for_dot_1
+					if $args['li.0<<args["j"]>>.<<args["i"]>>']<>'':
+						$args['screen']+='<li>'+$replace($args['li.0<<args["j"]>>.<<args["i"]>>'],'<span class="yello_text">','<span style="color:#888800;">')+'</li>'
+						args['i']+=1
+						jump 'for_dot_1'
+					end
+					$args['screen']+='</ul>'
+					$args['screen']+='<p align=center>'+$args['href.back.1']+'</p>'
+					args['j']+=1
+					jump 'for_list_1'
+				end
+				$args['screen']+='<p align=justify>'+$args['ending']+'</p>'
+			if $AVS_PLAYERTYPE['size']<>"MINI":$args['screen']+='</td><td width=5%>'
+				$args['screen']+='<font size=-4>'+$args['href.back']+'</font>'
+			if $AVS_PLAYERTYPE['size']<>"MINI":$args['screen']+='</td>'
+		if $AVS_PLAYERTYPE['size']<>"MINI":$args['screen']+='</tr></table></center>'
+		jump 'end_keep'
 	end
-else
-	$args['open.table']='<table border=0><tr name=port><td align=left  width=5%>'
-	$args['table.center']='</td><td align=center>'
-	$args['table.version']='</td><td width=5%>&nbsp;</td></tr><tr><td width=5%>&nbsp;</td><td align=center>'
-	$args['proptext']='</td><td width=5%>&nbsp;</td></tr><tr name=porttext><td width=5%>&nbsp;</td><td>'
-	$args['table.between']='</td><td width=5%>&nbsp;</td></tr><tr name=portlink><td width=5%>&nbsp;</td><td align=center valign=bottom>'
-	$args['table.between2']='</td><td width=5%>&nbsp;</td></tr><tr name=port><td width=5%>&nbsp;</td><td align=left>'
-	$args['table.bottom']='</td><td width=5%>&nbsp;</td></tr><tr name=portlink><td width=5%>&nbsp;</td><td align=center valign=bottom>'
-	$args['table.end']='</td><td width=5%>&nbsp;</td></tr></table>'
-	$args['li']='<li>'
-	$args['/li']='</li>'
-	$args['разрешение']='<font size=2>resolution</font><br>'
-	
-end
-! {выводим в основное описание
-$args['screen']='<center>'+$args['open.table']+'<font size=-4>back_href'+$args['back']+'</font>'+$args['table.center']+'<font color=#dddd00 size=+3>head.floor1</font>'+$args['table.version']+'<font color=#dddd00 size=-4>version</font>'+$args['proptext']+'<p align=justify>
-'+$args['разрешение']+'!@ первый блок абзацев'+$args['save.about']+'!@ второй блок абзацев
-
-
-
-</p><p align=right>!@ подпись</p>'+$args['table.between']+'<br>!@ back_href_1<br>'+$args['table.between2']+'<p align=justify>     !@ третий блок абзацев</p><br><br>
-<font color=#888800>!@ subhead 1</font>
-<ul>
-'
-!@ список первый
-'</ul>
-<font color=#888800>!@ subhead 2</font>
-<ul>
-'
-!@ список второй
-'</ul><font color=#888800>!@ subhead 3</font>
-<ul>
-'
-!@ список третий
-'</ul><font color=#888800>!@ subhead 4</font>
-<ul>
-'
-!@ списко четвёртый
-'</ul><font color=#888800>!@ subhead 5</font>
-<ul>
-'
-!@ список пятый
-'</ul><font color=#888800>!@ subhead 6</font>
-<ul>
-'
-!@ список шестой
-'</ul>'+$args['table.bottom']+'<br>!@ ending<br><br>!@ back_href_1'+$args['table.end']+'</center>'}
-$args['screen']
+!@ else
+!@ end
+:end_keep
+*p $args['screen']
 --- [1.0_about] ---------------------------------
