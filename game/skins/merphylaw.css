@@ -115,10 +115,11 @@
 	content: attr(data-one) " ";
 }
 
+/* Стили обложки и инфо-разделов */
 .main_cover {
 	margin:0 auto;
 	text-align:center;
-	
+	max-width: 720px;
 }
 
 .main_cover .author, .main_cover .heading {
@@ -141,4 +142,16 @@
 .main_cover .epigraph #epigraph_2 {
 	text-align: right;
 	width: 100%;
+}
+.yello_text {
+	color: #888800;
+	font-weight: bolder;
+}
+.pgf {
+	text-indent: 0.5em;
+	padding: 0.25em;
+	text-align: justify;
+}
+.back_href {
+	color: #008888;
 }

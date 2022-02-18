@@ -83,6 +83,7 @@ else
 			$args['screen']+=$args['link.release']
 		$args['screen']+='</div>'
 	else
+		!@ для классического плеера
 		$args['screen']+='<center>'
 			$args['screen']+='<font color=#dddd00>'+$args['author']+'</font><br>'
 			$args['screen']+='<font color=#dddd00 size=+3>'+$args['head.floor1']+'</font><br>'
