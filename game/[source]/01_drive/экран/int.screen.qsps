@@ -87,60 +87,52 @@ if instr($args[3],'[game]')=1:
 		$args['objs.scroll']="<table cellpadding=0 cellspacing=0><tr><td>"+$args['objs.scroll']+"</td></tr></table>"
 	end
 	:дополнительные_тексты
-	if $GAME_INTERFACE['stat']='show':
-		$args['stat.scroll']='&nbsp;'
-	else
-		if arrsize('$print')>0 or $args[2]='test' or arrsize('$print_down')>0:
-			$args['stat.scroll']='<table cellspacing=0 width=100%>'
-			$args['stat.scroll']+='<tr name=printsp bgcolor=#'+$GAME_INTERFACE['print.main.bgcolor']+'><td align=left>&nbsp;</td></tr>'
-			if arrsize('$print')>0: $args['r']=$func('#array.prnt#','$print','[only result]')
-			if arrsize('$print_down')>0:
-				if $AVS_PLAYERTYPE['size']="MINI":
-					$args['print.down.log']=$func('#array.prnt#','$print_down','[only result]')
-				else
-					$args['r']+=$func('#array.prnt#','$print_down','[only result]')
-				end
+	!@ дополнительные тексты
+	if arrsize('$print')>0 or arrsize('$print_down')>0:
+		!@ не помню, в чём разница между $print и $print_down 
+		if arrsize('$print')>0: $args['r']=$func('#array.prnt#','$print','[only result]')
+		if arrsize('$print_down')>0:
+			if $AVS_PLAYERTYPE['size']="MINI":
+				$args['print.down.log']=$func('#array.prnt#','$print_down','[only result]')
+			else
+				$args['r']+=$func('#array.prnt#','$print_down','[only result]')
 			end
-			if $args[2]='test':
-				$args['r']+='Простой текст. Общее форматирование.<br>'
-				$args['r']+=$func('base.txt','невозможное_действие')+'<br>'
-				$args['r']+=$func('base.txt','одевание')+'<br>'
-				$args['r']+=$func('base.txt','взять')+'<br>'
-				$args['r']+=$func('base.txt','выбросить')+'<br>'
-				$args['r']+=$func('base.txt','сохранения')+'<br>'
-				$args['r']+=$func('base.txt','изменение_стата')+'<br>'
-			end
-			$args['r']='<font color=#'+$GAME_INTERFACE['print.main.color']+'>'+$GAME_INTERFACE['print.main.attrib']+$args['r']+$GAME_INTERFACE['/print.main.attrib']+'</font>'
-			$args['stat.scroll']+='<tr name=printpr bgcolor=#'+$GAME_INTERFACE['print.main.bgcolor']+'><td align=left>'+$args['r']+'</td></tr>'
-			$args['stat.scroll']+='</table>'
-		else
-			$args['stat.scroll']='&nbsp;'
 		end
+		if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+			$args['r']='<span class="avs_text_infoscroll">'+$args['r']+'</span>'
+		else
+			$args['r']='<font color=#000088>'+$args['r']+'</font>'
+		end
+		$args['info.scroll']='<table cellspacing=0 width=100%>'
+			$args['info.scroll']+='<tr name=printsp bgcolor=#fdfdff><td align=left>&nbsp;</td></tr>'
+			$args['info.scroll']+='<tr name=printpr bgcolor=#fdfdff><td align=left>'+$args['r']+'</td></tr>'
+		$args['info.scroll']+='</table>'
+	else
+		$args['info.scroll']='&nbsp;'
 	end
-	! таблица из объектов и дополнительных текстов
-	$args['objs']='<table cellpadding=0 cellspacing=0 border=0 id="avs_game_objs_short"><tr name=blast><td>'+$args['objs.scroll']+'</td></tr>'
-	$args['objs']+='<tr name=print><td>'+$args['stat.scroll']+'</td></tr></table>'
+	!@ общая таблица из объектов и дополнительных текстов
+	$args['objs_n_info']='<table cellpadding=0 cellspacing=0 border=0 id="avs_game_objs_short">'
+		$args['objs_n_info']+='<tr name=blast><td>'
+			$args['objs_n_info']+=$args['objs.scroll']
+		$args['objs_n_info']+='</td></tr>'
+		$args['objs_n_info']+='<tr name=print><td>'
+			$args['objs_n_info']+=$args['info.scroll']
+		$args['objs_n_info']+='</td></tr>'
+	$args['objs_n_info']+='</table>'
 else
-! не формируем содержимое ячеек с характеристиками и предметами
+!@ не формируем содержимое ячеек с характеристиками и предметами
 	$args['stat']='&nbsp;'
-	$args['objs']='&nbsp;'
+	$args['objs_n_info']='&nbsp;'
 end
 ! размеры
-if $args['stat.scroll']='&nbsp;' and $args['objs.scroll']='&nbsp;':
+if $args['info.scroll']='&nbsp;' and $args['objs.scroll']='&nbsp;':
 	$args['width.right']='width=5%'
 	$args['width.center']=''
 else
 	$args['width.right']='width=25%'
 	$args['width.center']='width=50%'
 end
-! работа с окнами:
-if $GAME_INTERFACE['objs']='show':
-	gosub 'int.inventory',$args[3]
-end
-if $GAME_INTERFACE['stat']='show' and $args[3]='[game]':
-	clr
-	pl $func('#array.prnt#','$print','[only result]')
-end
+
 ! генерируем основное описание и список предметов
 if $GAME_INTERFACE["maintxt.bgcolor"]!'':
 	$args['mtxt.bg']='bgcolor=#<<$GAME_INTERFACE["maintxt.bgcolor"]>>'
@@ -196,7 +188,7 @@ if $AVS_PLAYERTYPE='':
 ! если плеер классический, генерим тупо таблицу
 	$args['result']='<center><table cellpadding=10 border=0 width=100%>'
 	if $args['head']!'': $args['result']+='<tr name=head><td width=25% '+$args['back.href.bgcolor']+' align=right>'+$args['back.href']+'</td><td align=center '+$args['head.bgcolor']+' '+$args['width.center']+'>'+$args['result.head']+'</td><td '+$args['next.href.bgcolor']+' '+$args['width.right']+'>'+$args['nextpage']+'</td></tr>'
-	$args['result']+='<tr name=centr><td valign=top align=right width=25%>'+$args['stat']+'</td><td valign=top '+$args['width.center']+'>'+$args[0]+'</td><td valign=top align=left '+$args['width.right']+'>'+$args['objs']+'</td></tr>'
+	$args['result']+='<tr name=centr><td valign=top align=right width=25%>'+$args['stat']+'</td><td valign=top '+$args['width.center']+'>'+$args[0]+'</td><td valign=top align=left '+$args['width.right']+'>'+$args['objs_n_info']+'</td></tr>'
 	if $args['colontitle']!'': $args['result']+='<tr><td valign=top align=right width=25%>&nbsp;</td><td name=btm '+$args['colon.bg']+' valign=middle align=center '+$args['width.center']+'>'+$args['colontitle']+'</td><td valign=top align=left '+$args['width.right']+'>&nbsp;</td></tr>'
 	$args['result']+='</table></center>'
 elseif $AVS_PLAYERTYPE['type']="QN" and $AVS_PLAYERTYPE['size']<>"MINI":
@@ -217,7 +209,7 @@ elseif $AVS_PLAYERTYPE['type']="QN" and $AVS_PLAYERTYPE['size']<>"MINI":
 	! правая колонка
 	$args['result']+='<div id="avs_game_right_column">'
 		if $args['nextpage']<>'': $args['result']+='<div id="avs_game_sets">'+$args['nextpage']+'</div>'
-		if $args['objs']<>'': $args['result']+='<div id="avs_game_objects">'+$args['objs']+'</div>'
+		if $args['objs_n_info']<>'': $args['result']+='<div id="avs_game_objects">'+$args['objs_n_info']+'</div>'
 	$args['result']+='</div>'
 else
 	! Здесь моделируется интерфейс для приложений на андроид или с маленькими экранами
@@ -226,7 +218,7 @@ else
 	$args['back.to.up']='<font color=#0000ff>[</font><a href="exec:gs ''true.goto'' ">Назад</a><font color=#0000ff>]</font>'
 	if arrsize('$print')>0:
 	! описательные моменты выводятся поверх всех прочих текстов
-		$args['result']+=$args['stat.scroll']
+		$args['result']+=$args['info.scroll']
 		$args['result']+='<br>'+$args['back.to.up']+'<br>'		
 	else
 	! если это не описательный момент, смотрим по значению переменной, отмечающей состояние экрана
