@@ -11,8 +11,8 @@ if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
 else
 	args['pit']=arrcomp(args['pit']+1,'$object_array','[\s\S]*\[:'+$args[0]+':\][\s\S]*')
 end
-if args['pit']!-1:
-	if instr($object_array[arrpos('$id_array',$position_array[args['pit']])],$args['type'])!0:
+if args['pit']<>-1:
+	if instr($object_array[arrpos('$id_array',$position_array[args['pit']])],$args['type'])<>0:
 		$args['res']=$id_array[args['pit']]
 	else
 		jump 'for'
