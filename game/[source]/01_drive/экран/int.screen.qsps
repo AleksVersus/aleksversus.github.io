@@ -78,14 +78,14 @@ if instr($args[3],'[game]')=1:
 		$args['stat']+='</td></tr>'
 	$args['stat']+='</table>'
 	:предметы
-	if $GAME_INTERFACE['objs']='show':
-		$args['objs.scroll']='&nbsp;'
-	elseif $args[2]='test':
-		$args['objs.scroll']=$func('base.txt','table.mlast')
+	!@ список предметов тоже генерируем в виде таблицы:
+	$args['objs.scroll']=$func('base.txt','table.blast')
+	!@ для классического плеера заворачиваем список в дополнительную таблицу
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['objs.scroll']=$args['objs.scroll']
 	else
-		$args['objs.scroll']=$func('base.txt','table.blast')
+		$args['objs.scroll']="<table cellpadding=0 cellspacing=0><tr><td>"+$args['objs.scroll']+"</td></tr></table>"
 	end
-	if $AVS_PLAYERTYPE['type']<>"QN": $args['objs.scroll']="<table cellpadding=0 cellspacing=0><tr><td>"+$args['objs.scroll']+"</td></tr></table>"
 	:дополнительные_тексты
 	if $GAME_INTERFACE['stat']='show':
 		$args['stat.scroll']='&nbsp;'
