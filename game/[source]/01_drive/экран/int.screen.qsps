@@ -139,43 +139,34 @@ $args[0]='<table width=100% border=0>'
 		$args[0]+='<tr name=objects><td bgcolor=#f0ffff>'+$func('base.txt','note.objLoc')+$args[1]+'</td></tr>'
 	end
 $args[0]+='</table>'
-
 if $GAME_INTERFACE['next.href']='true':
-	if $args[2]!'test':
-		$args['hr.np']='<a href="exec:power[''now'']=power[''start''] & $GAME_VALUE[''interface'']=''[game]'' & $GAME_INTERFACE[''refresh'']=''страница.сброс'' & goto '+"'page."+str(val($strfind($curloc,'\d+'))+1)+"'"+'">'
-		$args['/hr.np']='</a>'
+	!@ ссылка для пролистывания всех глав по порядку
+	$args['hr.np']='<a href="exec:power[''now'']=power[''start''] & $GAME_VALUE[''interface'']=''[game]'' & $GAME_INTERFACE[''refresh'']=''страница.сброс'' & goto ''page.<<$str(val($strfind($curloc,"\d+"))+1)>>''" id="avs_next_btn">'
+	$args['/hr.np']='</a>'
+	$args['hr.np.n']="next"
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['nextpage']=$args['hr.np']+$args['hr.np.n']+$args['/hr.np']
+	else
+		$args['nextpage']=$args['hr.np']+'<font color=#008888>'+$args['hr.np.n']+'</font>'+$args['/hr.np']
 	end
-	$args['nextpage']=$args['hr.np']+'<font color=#'+$GAME_INTERFACE['href.next.color']+'>'+$GAME_INTERFACE['href.next.attrib']+"next"+$GAME_INTERFACE['/href.next.attrib']+'</font>'+$args['/hr.np']
-	jump 'button.close'
-elseif (instr($args[3],'[game]')=1 or save['count']>0) and ($GAME_INTERFACE['stat']!'show' or $GAME_INTERFACE['objs']!'show'):
-	if $args[2]!'test':
-		$args['hr.np.l']={<a href="exec:gosub 'avs.face','test'" class="plain">}
-		$args['hr.np.e']={<a href="exec:gosub 'avs.sets'" class="plain">}
-		$args['hr.np.s']={<a href="exec:gosub 'avs.save'" class="plain">}
-		$args['/hr.np']={</a>}
+elseif (instr($args[3],'[game]')=1 or save['count']>0):
+	!@ если уже запущен режим игры, т.е. включены боковые панели, или сделано хотя бы одно сохранение
+	$args['hr.np.e']='<a href="exec:gosub ''avs.sets''" class="plain" id="avs_epsilon_btn">'
+	$args['hr.np.s']='<a href="exec:gosub ''avs.save''" class="plain" id="avs_septima_btn">'
+	$args['/hr.np']='</a>'
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['nextpage']+=$args['hr.np.e']+"é"+$args['/hr.np']
+		$args['nextpage']+='&nbsp;'
+		$args['nextpage']+=$args['hr.np.s']+"S"+$args['/hr.np']
+	else
+		$args['nextpage']+=$args['hr.np.e']+"<font color=#008888><b>é</b></font>"+$args['/hr.np']
+		$args['nextpage']+='&nbsp;'
+		$args['nextpage']+=$args['hr.np.s']+"<font color=#008888><b>S</b></font>"+$args['/hr.np']
 	end
-	!$args['nextpage']=$args['hr.np.l']+'<font color=#'+$GAME_INTERFACE['href.next.color']+'>'+$GAME_INTERFACE['href.next.attrib']+"<b>λ</b>"+$GAME_INTERFACE['/href.next.attrib']+'</font>'+$args['/hr.np']
-	!$args['nextpage']+='&nbsp;'
-	$args['nextpage']+=$args['hr.np.e']+'<font color=#'+$GAME_INTERFACE['href.next.color']+'>'+$GAME_INTERFACE['href.next.attrib']+"<b>é</b>"+$GAME_INTERFACE['/href.next.attrib']+'</font>'+$args['/hr.np']
-	$args['nextpage']+='&nbsp;'
-	$args['nextpage']+=$args['hr.np.s']+'<font color=#'+$GAME_INTERFACE['href.next.color']+'>'+$GAME_INTERFACE['href.next.attrib']+"<b>S</b>"+$GAME_INTERFACE['/href.next.attrib']+'</font>'+$args['/hr.np']
-	:button.close
-	if $args[2]='test':
-		$args['cc']=$func('#col-inv#',$GAME_INTERFACE['main.bgcolor'])
-		if $args['cc']!'':
-			$args['close.color']=$args['cc']
-		else
-			$args['close.color']='880000'
-		end
-		$args['nextpage']+='	<a href="exec:gosub ''avs.face.refresh'',''close''" class="plain"><font color=#'+$args['close.color']+'><b>'+$func('base.txt','button.close')+'</b></font></a>'
-	end
-	jump 'button.end'
 else
 	$args['nextpage']='&nbsp;'
 end
-:button.end
-if $GAME_INTERFACE['href.back.bgcolor']!'': $args['back.href.bgcolor']='bgcolor=#'+$GAME_INTERFACE['href.back.bgcolor']
-if $GAME_INTERFACE['href.next.bgcolor']!'': $args['next.href.bgcolor']='bgcolor=#'+$GAME_INTERFACE['href.next.bgcolor']
+
 ! непосредственно генерим таблицу
 if $AVS_PLAYERTYPE='':
 ! если плеер классический, генерим тупо таблицу
