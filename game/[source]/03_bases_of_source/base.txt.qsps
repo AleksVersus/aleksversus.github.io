@@ -407,14 +407,12 @@ if $args[0]='wp':
 	$args['res']+='<center><font size=+1><a href="exec:time[''goto'']=1 & goto ''<<$args[1]>>''" class="plain">Вы проиграли!!!</a></font></center>'
 end
 if $args[0]='wl':
-	$args['res']='<br><br><center><font size=+1><a href="exec:goto ''[start]''" class="plain">Вы проиграли.
-Начать с начала</a></font></center>'
+	$args['res']='<br><br><center><font size=+1><a href="exec:goto ''[start]''" class="plain">Вы проиграли.<br>Начать с начала</a></font></center>'
 end
 :GAME_OVER
 if $args[0]='go':
 ! ПОБЕДА В ИГРЕ !!!
-	$args['res']='<br><br><center><a href="exec:goto ''[start]''" class="plain"><font size=+1>Победа!!! Игра пройдена.</font>
-<font size=-1>(вернуться в главное меню)</font></a></center>'
+	$args['res']='<br><br><center><a href="exec:goto ''[start]''" class="plain"><font size=+1>Победа!!! Игра пройдена.</font><br><font size=-1>(вернуться в главное меню)</font></a></center>'
 end
 if $args[0]='off':
 	$args['res']='<br><br><center><font size=+1>Силы покинули вас.</font></center>'
