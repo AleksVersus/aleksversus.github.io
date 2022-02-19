@@ -1,14 +1,27 @@
+QSP-Game ! локация, выписывающая готовый текст в таблицу экрана.
 # int.screen
-! локация, выписывающая готовый текст в таблицу экрана.
-$args[0] = $args[0]	&	!	текст экрана
-$args[1] = $args[1]	&	!	список предметов
-$args[2] = $args[2]	&	!	заголовок
-$args[3] = $args[3]	&	!	управление
-$args[4] = $args[4]	&	!	колонтитул
+args[9]=args[9]	& !@ инициализируем аргументы
 :заголовок
-if $args[2]='' and instr($curloc,'page')!0: $args['head']=$strfind($curloc,'\d+') else $args['head']=$args[2]
-if $args[4]='' and instr($curloc,'page')!0: $args['colontitle']=$strfind($curloc,'\d+') else $args['colontitle']=$args[4]
-if $args['colontitle']!'' and $args['colontitle']!'nope' and $GAME_INTERFACE['colontitle.variants']!'2': $args['colontitle']='-'+$args['colontitle']+'-' else $args['colontitle']=''
+if $args[2]='' and instr($curloc,'page')<>0:
+	!@ если заголовок не передавали, то он извлекается из идентификатора локации
+	$args['head']=$strfind($curloc,'\d+')
+else
+	!@ в противном случае заголовком становится переданный заголовок
+	$args['head']=$args[2]
+end
+if $args[4]='' and instr($curloc,'page')<>0:
+	!@ если колонтитул не передан, извлекаем его из идентификатора локации
+	$args['colontitle']=$strfind($curloc,'\d+')
+else
+	!@ в противном случае колонтитул берётся из переданного аргумента
+	$args['colontitle']=$args[4]
+end
+if $args['colontitle']<>'' and $args['colontitle']<>'nope':
+	!@ если колонтитул получен, переформируем его
+	$args['colontitle']='-'+$args['colontitle']+'-'
+else
+	$args['colontitle']=''
+end
 if $args['colontitle']!'':
 	$args['colontitle']='<font color=#'+$GAME_INTERFACE['colontitle.color']+' '+$GAME_INTERFACE['colontitle.size']+'>'+$GAME_INTERFACE['colontitle.attrib']+$args['colontitle']+$GAME_INTERFACE['/colontitle.attrib']+'</font>'
 	if $GAME_INTERFACE['colontitle.bgcolor']!'': $args['colon.bg']='bgcolor=#'+$GAME_INTERFACE['colontitle.bgcolor']
@@ -252,3 +265,9 @@ killvar '$print'
 killvar '$print_down'
 $result=$args['result']
 --- int.screen ---------------------------------
+АРГУМЕНТЫ:
+$args[0] = $args[0]	&	!	текст экрана
+$args[1] = $args[1]	&	!	список предметов
+$args[2] = $args[2]	&	!	заголовок
+$args[3] = $args[3]	&	!	управление
+$args[4] = $args[4]	&	!	колонтитул
