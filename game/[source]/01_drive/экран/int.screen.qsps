@@ -124,7 +124,7 @@ else
 	$args['stat']='&nbsp;'
 	$args['objs_n_info']='&nbsp;'
 end
-! размеры
+!@ размеры
 if $args['info.scroll']='&nbsp;' and $args['objs.scroll']='&nbsp;':
 	$args['width.right']='width=5%'
 	$args['width.center']=''
@@ -132,21 +132,14 @@ else
 	$args['width.right']='width=25%'
 	$args['width.center']='width=50%'
 end
+!@ генерируем основное описание и список предметов на локации. Текст экрана и текст предметов засовываем в таблицу
+$args[0]='<table width=100% border=0>'
+	$args[0]+='<tr><td name="maintxtOp">'+$args[0]+'<br><br></td></tr>'
+	if $args[1]<>'':
+		$args[0]+='<tr name=objects><td bgcolor=#f0ffff>'+$func('base.txt','note.objLoc')+$args[1]+'</td></tr>'
+	end
+$args[0]+='</table>'
 
-! генерируем основное описание и список предметов
-if $GAME_INTERFACE["maintxt.bgcolor"]!'':
-	$args['mtxt.bg']='bgcolor=#<<$GAME_INTERFACE["maintxt.bgcolor"]>>'
-end
-if $GAME_INTERFACE["maintxt.text.color"]!'':
-	$args['mtxt.cl']='<font color=#'+$GAME_INTERFACE["maintxt.text.color"]+'>'
-	$args['/mtxt.cl']='</font>'
-end
-$args['mtxt.attrib']=$GAME_INTERFACE["maintxt.text.attrib"]
-$args['/mtxt.attrib']=$GAME_INTERFACE["/maintxt.text.attrib"]
-$args[0]='<table width=100% border=0><tr><td <<$args["mtxt.bg"]>> name="maintxtOp">'+$args['mtxt.cl']+$args['mtxt.attrib']+$args[0]+'<br><br>'+$args['/mtxt.attrib']+$args['/mtxt.cl']+'</td></tr>'
-if $GAME_INTERFACE['objLoc.variants']='1': $args['objLoc.var']=$func('base.txt','note.objLoc')
-if $args[1]!'': $args[0]+='<tr name=objects><td bgcolor=#'+$GAME_INTERFACE['objLoc.bgcolor']+'>'+$args['objLoc.var']+$args[1]+'</td></tr>'
-$args[0]+='</table>'	
 if $GAME_INTERFACE['next.href']='true':
 	if $args[2]!'test':
 		$args['hr.np']='<a href="exec:power[''now'']=power[''start''] & $GAME_VALUE[''interface'']=''[game]'' & $GAME_INTERFACE[''refresh'']=''страница.сброс'' & goto '+"'page."+str(val($strfind($curloc,'\d+'))+1)+"'"+'">'
