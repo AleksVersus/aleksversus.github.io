@@ -19,34 +19,31 @@ end
 if $args['colontitle']<>'' and $args['colontitle']<>'nope':
 	!@ если колонтитул получен, переформируем его
 	$args['colontitle']='-'+$args['colontitle']+'-'
+	!@ колонтитул оборачивается в стили в зависимости от пллера
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['colontitle']='<span class="avs_text_colontitle">'+$args['colontitle']+'</span>'
+	else
+		$args['colontitle']='<font color=#888888 size=1>'+$args['colontitle']+'</font>'
+	end
 else
 	$args['colontitle']=''
 end
-if $args['colontitle']!'':
-	$args['colontitle']='<font color=#'+$GAME_INTERFACE['colontitle.color']+' '+$GAME_INTERFACE['colontitle.size']+'>'+$GAME_INTERFACE['colontitle.attrib']+$args['colontitle']+$GAME_INTERFACE['/colontitle.attrib']+'</font>'
-	if $GAME_INTERFACE['colontitle.bgcolor']!'': $args['colon.bg']='bgcolor=#'+$GAME_INTERFACE['colontitle.bgcolor']
+
+if instr($args[2],'<checkpoint>')<>0:
+	!@ данная локация является контрольной точкой
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['result.head']='<span class="avs_text_head_chp">'+$args['head']+'</span>'
+	else
+		$args['result.head']='<font color=#994400 size=6><b>'+$args['head']+'</b></font>'
+	end
+elseif instr($args[2],'<checkpoint>')=0:
+	!@ данная локация НЕ является контрольной точкой
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['result.head']='<span class="avs_text_head_smp">'+$args['head']+'</span>'
+	else
+		$args['result.head']='<font color=#008899 size=6><b>'+$args['head']+'</b></font>'
+	end
 end
-if instr($args[2],'<checkpoint>')!0 or ($args[2]='test' and instr($floor[],'head.chpnt')!0):
-	$args['color.head']=$GAME_INTERFACE['head.chpnt.color']
-	$args['attrib.head']=$GAME_INTERFACE['head.chpnt.attrib']
-	$args['/attrib.head']=$GAME_INTERFACE['/head.chpnt.attrib']
-	$args['size.head']=$GAME_INTERFACE['head.chpnt.size']
-	if $GAME_INTERFACE['head.chpnt.bgcolor']!'': $args['head.bgcolor']='bgcolor=#'+$GAME_INTERFACE['head.chpnt.bgcolor']
-	if $args[2]='test': $args['head']='Заголовок контрольной точки'
-elseif instr($args[2],'<checkpoint>')=0 or ($args[2]='test' and instr($floor[],'head.simpl')!0):
-	$args['color.head']=$GAME_INTERFACE['head.simpl.color']
-	$args['attrib.head']=$GAME_INTERFACE['head.simpl.attrib']
-	$args['/attrib.head']=$GAME_INTERFACE['/head.simpl.attrib']
-	$args['size.head']=$GAME_INTERFACE['head.simpl.size']
-	if $GAME_INTERFACE['head.simpl.bgcolor']!'': $args['head.bgcolor']='bgcolor=#'+$GAME_INTERFACE['head.simpl.bgcolor']
-	if $args[2]='test': $args['head']='Простой заголовок'
-end
-if $GAME_INTERFACE['head.variants']='1': $args['head']=$strfind($curloc,'\d+')
-if $GAME_INTERFACE['head.variants']='2' and $args['head']!$strfind($curloc,'\d+'): $args['head']=$strfind($curloc,'\d+')+'.	'+$args['head']
-if $GAME_INTERFACE['head.variants']='3': $args['head']=$args['head']
-if $GAME_INTERFACE['head.variants']='4' and $args['head']!$strfind($curloc,'\d+'): $args['head']=$args['head']+'	-	'+$strfind($curloc,'\d+')
-if $GAME_INTERFACE['head.variants']='5' and $args['head']!$strfind($curloc,'\d+'): $args['head']=''
-$args['result.head']='<font color=#'+$args['color.head']+' '+$args['size.head']+'>'+$args['attrib.head']+$args['head']+$args['/attrib.head']+'</font>'
 
 :ссылка_назад
 if $GAME_INTERFACE['back.href']='true' or $args[2]='test':

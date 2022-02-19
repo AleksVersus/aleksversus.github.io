@@ -71,6 +71,10 @@
     	width:100%;
     	text-align:center;
     }
+    .avs_text_colontitle {
+    	color: #888888;
+    	font-size: xx-small;
+    }
   /* правая колонка*/
   #avs_game_right_column {
   width:25%;
@@ -154,4 +158,14 @@
 }
 .back_href {
 	color: #008888;
+}
+.avs_text_head_chp {
+	color: 994400;
+	font-weight: bold;
+	font-size: xx-large;
+}
+.avs_text_head_smp {
+	color: 008899;
+	font-weight: bold;
+	font-size: xx-large;
 }
