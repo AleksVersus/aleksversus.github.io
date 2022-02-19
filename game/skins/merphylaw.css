@@ -163,12 +163,13 @@
 	font-size: xx-large;
 }
 .avs_text_head_smp {
-	color: 008899;
+	color: #008899;
 	font-weight: bold;
 	font-size: xx-large;
 }
 /* кнопки назад и вперёд */
-#avs_back_btn {
+#avs_back_btn, #avs_epsilon_btn, #avs_septima_btn,
+#avs_backtopage_btn, #avs_backtoup_btn, #avs_openstat_btn, #avs_openobjs_btn {
 	color: #008888;
 	font-weight: bolder;
 }

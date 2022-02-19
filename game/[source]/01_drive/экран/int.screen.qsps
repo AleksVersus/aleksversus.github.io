@@ -133,12 +133,13 @@ else
 	$args['width.center']='width=50%'
 end
 !@ генерируем основное описание и список предметов на локации. Текст экрана и текст предметов засовываем в таблицу
-$args[0]='<table width=100% border=0>'
-	$args[0]+='<tr><td name="maintxtOp">'+$args[0]+'<br><br></td></tr>'
+$args['maintxtOp']='<table width=100% border=0>'
+	$args['maintxtOp']+='<tr><td name="maintxtOp">'+$args[0]+'<br><br></td></tr>'
 	if $args[1]<>'':
-		$args[0]+='<tr name=objects><td bgcolor=#f0ffff>'+$func('base.txt','note.objLoc')+$args[1]+'</td></tr>'
+		$args['maintxtOp']+='<tr name=objects><td bgcolor=#f0ffff>'+$func('base.txt','note.objLoc')+$args[1]+'</td></tr>'
 	end
-$args[0]+='</table>'
+$args['maintxtOp']+='</table>'
+$args[0]=$args['maintxtOp']
 if $GAME_INTERFACE['next.href']='true':
 	!@ ссылка для пролистывания всех глав по порядку
 	$args['hr.np']='<a href="exec:power[''now'']=power[''start''] & $GAME_VALUE[''interface'']=''[game]'' & $GAME_INTERFACE[''refresh'']=''страница.сброс'' & goto ''page.<<$str(val($strfind($curloc,"\d+"))+1)>>''" id="avs_next_btn">'
@@ -168,7 +169,7 @@ else
 end
 !@ непосредственно генерим таблицу
 if $AVS_PLAYERTYPE['size']<>"MINI":
-	if $AVS_PLAYERTYPE['type']='':
+	if $AVS_PLAYERTYPE['type']='' or $AVS_PLAYERTYPE='':
 	!@ для классического плеера генерируем полную таблицу
 		$args['result']='<center><table cellpadding=10 border=0 width=100%>'
 			if $args['head']<>'':
@@ -181,89 +182,150 @@ if $AVS_PLAYERTYPE['size']<>"MINI":
 			end
 			$args['result']+='<tr name=centr>'
 				$args['result']+='<td valign=top align=right width=25%>'+$args['stat']+'</td>'
-				$args['result']+='<td <<$args['width.center']>> valign=top>'+$args[0]+'</td>'
-				$args['result']+='<td <<$args['width.right']>> valign=top align=left>'+$args['objs_n_info']+'</td>'
+				$args['result']+='<td <<$args["width.center"]>> valign=top>'+$args[0]+'</td>'
+				$args['result']+='<td <<$args["width.right"]>> valign=top align=left>'+$args['objs_n_info']+'</td>'
 			$args['result']+='</tr>'
 			if $args['colontitle']<>'':
 				$args['result']+='<tr>'
 					$args['result']+='<td valign=top align=right width=25%>&nbsp;</td>'
-					$args['result']+='<td <<$args['width.center']>> name=btm valign=middle align=center>'+$args['colontitle']+'</td>'
-					$args['result']+='<td <<$args['width.right']>> valign=top align=left>&nbsp;</td>'
+					$args['result']+='<td <<$args["width.center"]>> name=btm valign=middle align=center>'+$args['colontitle']+'</td>'
+					$args['result']+='<td <<$args["width.right"]>> valign=top align=left>&nbsp;</td>'
 				$args['result']+='</tr>'
 			end
 		$args['result']+='</table></center>'
-	elseif $AVS_PLAYERTYPE['type']="QN":
-	! если навигатор, пробуем генерить дивами
-		! левая колонка
+	elseif $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
+	!@ если Quest Navigator или qSpider, пробуем генерить дивами
+		!@ левая колонка
 		if $args['stat']<>'' or $args['back.href']<>'':
 			$args['result']='<div id="avs_game_left_column">'
 				if $args['back.href']<>'': $args['result']+='<div id="avs_game_back">'+$args['back.href']+'</div>'
 				if $args['stat']<>'': $args['result']+='<div id="avs_game_statisctics">'+$args['stat']+'</div>'
 			$args['result']+='</div>'
 		end
-		! центральная колонка
+		!@ центральная колонка
 		$args['result']+='<div id="avs_game_center_column">'
-			if $args['result.head']<>'':	$args['result']+='<div id="avs_game_head">'+$args['result.head']+'</div>'
+			if $args['result.head']<>'': $args['result']+='<div id="avs_game_head">'+$args['result.head']+'</div>'
 			$args['result']+='<div id="avs_game_opinion">'+$args[0]+'</div>'
-			if $args['colontitle']<>'':		$args['result']+='<div id="avs_game_colontitle">'+$args['colontitle']+'</div>'
+			if $args['colontitle']<>'': $args['result']+='<div id="avs_game_colontitle">'+$args['colontitle']+'</div>'
 		$args['result']+='</div>'
-		! правая колонка
+		!@ правая колонка
 		$args['result']+='<div id="avs_game_right_column">'
 			if $args['nextpage']<>'': $args['result']+='<div id="avs_game_sets">'+$args['nextpage']+'</div>'
 			if $args['objs_n_info']<>'': $args['result']+='<div id="avs_game_objects">'+$args['objs_n_info']+'</div>'
 		$args['result']+='</div>'
-	else
-		! Здесь моделируется интерфейс для приложений на андроид или с маленькими экранами
-		! адаптировано для FORK
-		$args['back.to.page']='<font color=#0000ff>[</font><a href="exec:$GAME_VALUE[''screen.floor'']='''' & gs ''true.goto''">Закрыть</a><font color=#0000ff>]</font>'
-		$args['back.to.up']='<font color=#0000ff>[</font><a href="exec:gs ''true.goto'' ">Назад</a><font color=#0000ff>]</font>'
+	end
+else
+	!@ Здесь моделируется интерфейс для приложений на андроид или с маленькими экранами
+	$args['back.to.page']='<a href="exec:$GAME_VALUE[''screen.floor'']='''' & gs ''true.goto''" id="avs_backtopage_btn">'
+	$args['back.to.up']='<a href="exec:gs ''true.goto''" id="avs_backtoup_btn">'
+	$args['open.stat']='<a href="exec:$GAME_VALUE[''screen.floor'']=''STATS'' & gs ''true.goto''" id="avs_openstat_btn">'
+	$args['open.objs']='<a href="exec:$GAME_VALUE[''screen.floor'']=''OBJS'' & gs ''true.goto''" id="avs_openobjs_btn">'
+	if $AVS_PLAYERTYPE['type']="" or $AVS_PLAYERTYPE='':
+		!@ классический плеер. Может быть форк для андроид
 		if arrsize('$print')>0:
-		! описательные моменты выводятся поверх всех прочих текстов
+			!@ описательные моменты выводятся поверх всех прочих текстов
 			$args['result']+=$args['info.scroll']
-			$args['result']+='<br>'+$args['back.to.up']+'<br>'		
+			$args['result']+='<br><font color=#0000ff>[</font>'+$args['back.to.up']+'Назад</a><font color=#0000ff>]</font><br>'		
 		else
-		! если это не описательный момент, смотрим по значению переменной, отмечающей состояние экрана
+			!@ если это не описательный момент, смотрим по значению переменной, отмечающей состояние экрана
 			if $args['back.href']<>"&nbsp;":
 				if $GAME_VALUE['screen.floor']='STATS' or $GAME_VALUE['screen.floor']='OBJS':
-					$args['tools']+=$args['back.to.page']+' &nbsp; &nbsp; '
+					!@ если открыта статистика, или предметы, выводим кнопку ЗАКРЫТЬ
+					$args['tools']+='<font color=#0000ff>[</font>'+$args['back.to.page']+'Закрыть</a><font color=#0000ff>]</font> &nbsp; &nbsp; '
 				else
+					!@ если ни предметы, ни статистика не открыты, выводим кнопку НАЗАД
 					$args['tools']+='<font color=#0000ff>[</font>'+$args['back.href']+'<font color=#0000ff>]</font> &nbsp; &nbsp; '
 				end
 				if $GAME_VALUE['screen.floor']='STATS':
+					!@ если открыта статистика, ссылка неактивна
 					$args['tools']+='<font color=#888888>[<<fast["now"]>>|<<power["now"]>>|<<social["now"]>>]</font> &nbsp; &nbsp; '
 				else
-					$args['tools']+='<font color=#0000ff>[</font><a href="exec:$GAME_VALUE[''screen.floor'']=''STATS'' & gs ''true.goto''"><<fast["now"]>>|<<power["now"]>>|<<social["now"]>></a><font color=#0000ff>]</font> &nbsp; &nbsp; '
+					$args['tools']+='<font color=#0000ff>[</font>'+$args['open.stat']+'<<fast["now"]>>|<<power["now"]>>|<<social["now"]>></a><font color=#0000ff>]</font> &nbsp; &nbsp; '
 				end
 				if $GAME_VALUE['screen.floor']='OBJS':
+					!@ если открыты предметы, ссылка не активна
 					$args['tools']+='<font color=#888888>[Предметы]</font>'
 				else
-					$args['tools']+='<font color=#0000ff>[</font><a href="exec:$GAME_VALUE[''screen.floor'']=''OBJS'' & gs ''true.goto''">Предметы</a><font color=#0000ff>]</font>'
+					$args['tools']+='<font color=#0000ff>[</font>'+$args['open.objs']+'Предметы</a><font color=#0000ff>]</font>'
 				end
-				!$args['tools']+=' ['+$args['nextpage']+']'
 			end
 			if $GAME_VALUE['screen.floor']='STATS':
-				$args['result']+='<b><mark:1>'+$args['tools']+'</b>'+'<br><br>'
+				!@ при включенной статистике выводим статы
+				$args['result']+='<b>'+$args['tools']+'</b>'+'<br><br>'
 				$args['result']+=$args['stat']
-				$args['result']+='<br><br>'+'<b><mark:2>'+$args['tools']+'</b>'
+				$args['result']+='<br><br>'+'<b>'+$args['tools']+'</b>'
 				$args['result']+='<h2><a href="exec:gosub ''avs.save'',6">Быстрое сохранение</a></h2>'
 				$args['result']+='<h2><a href="exec:gosub ''avs.save'',7">Быстрая загрузка</a></h2>'
 				$args['result']+='<h2><a href="exec:gosub ''avs.save'',4">Загрузить контрольную точку</a></h2>'
 			elseif $GAME_VALUE['screen.floor']='OBJS':
-				$args['result']+='<b><mark:3>'+$args['tools']+'</b>'+'<br><br>'
+				!@ при включенных предметах, выводим предметы
+				$args['result']+='<b>'+$args['tools']+'</b>'+'<br><br>'
 				$args['result']+=$args['objs.scroll']
-				$args['result']+='<br><br>'+'<b><mark:4>'+$args['tools']+'</b>'
+				$args['result']+='<br><br>'+'<b>'+$args['tools']+'</b>'
 			else
-				! стандартный экран, т.е. сами локации
-				! строка инструментов выводится только, если $args['back.href']<>"&nbsp;"
-				$args['result']+='<b><mark:5>'+$args['tools']+'</b>'
+				!@ стандартный экран, т.е. сами локации
+				if $args['back.href']<>"&nbsp;":$args['result']+='<b>'+$args['tools']+'</b>'
 				$args['result']+='<h2>'+$args['result.head']+'</h2>'
 				$args['result']+=$args[0]
 				$args['result']+=$args['print.down.log']
 				$args['result']+=$args['colontitle']
-				$args['result']+='<br>'+'<b><mark:6>'+$args['tools']+'</b>'
+				if $args['back.href']<>"&nbsp;":$args['result']+='<br>'+'<b>'+$args['tools']+'</b>'
+			end
+		end
+	elseif $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
+		!@ для плееров версии quest navigator и qSpider
+		if arrsize('$print')>0:
+			!@ описательные моменты выводятся поверх всех прочих текстов
+			$args['result']+=$args['info.scroll']
+			$args['result']+='<span class="avs_text_minibtn">['+$args['back.to.up']+'Назад</a>]</span><br>'		
+		else
+			!@ если это не описательный момент, смотрим по значению переменной, отмечающей состояние экрана
+			if $args['back.href']<>"&nbsp;":
+				if $GAME_VALUE['screen.floor']='STATS' or $GAME_VALUE['screen.floor']='OBJS':
+					!@ если открыта статистика, или предметы, выводим кнопку ЗАКРЫТЬ
+					$args['tools']+='<span class="avs_text_minibtn">['+$args['back.to.page']+'Закрыть</a>]</span> &nbsp; &nbsp; '
+				else
+					!@ если ни предметы, ни статистика не открыты, выводим кнопку НАЗАД
+					$args['tools']+='<span class="avs_text_minibtn">['+$args['back.href']+']</span> &nbsp; &nbsp; '
+				end
+				if $GAME_VALUE['screen.floor']='STATS':
+					!@ если открыта статистика, ссылка неактивна
+					$args['tools']+='<span class="avs_text_minibtn_disactive">[<<fast["now"]>>|<<power["now"]>>|<<social["now"]>>]</span> &nbsp; &nbsp; '
+				else
+					$args['tools']+='<span class="avs_text_minibtn">['+$args['open.stat']+'<<fast["now"]>>|<<power["now"]>>|<<social["now"]>></a>]</span> &nbsp; &nbsp; '
+				end
+				if $GAME_VALUE['screen.floor']='OBJS':
+					!@ если открыты предметы, ссылка не активна
+					$args['tools']+='<span class="avs_text_minibtn_disactive">[Предметы]</span>'
+				else
+					$args['tools']+='<span class="avs_text_minibtn">['+$args['open.objs']+'Предметы</a>]</span>'
+				end
+			end
+			if $GAME_VALUE['screen.floor']='STATS':
+				!@ при включенной статистике выводим статы
+				$args['result']+=$args['tools']+'<br><br>'
+				$args['result']+=$args['stat']
+				$args['result']+='<br><br>'+$args['tools']
+				$args['result']+='<h2><a href="exec:gosub ''avs.save'',6">Быстрое сохранение</a></h2>'
+				$args['result']+='<h2><a href="exec:gosub ''avs.save'',7">Быстрая загрузка</a></h2>'
+				$args['result']+='<h2><a href="exec:gosub ''avs.save'',4">Загрузить контрольную точку</a></h2>'
+			elseif $GAME_VALUE['screen.floor']='OBJS':
+				!@ при включенных предметах, выводим предметы
+				$args['result']+=$args['tools']+'<br><br>'
+				$args['result']+=$args['objs.scroll']
+				$args['result']+='<br><br>'+$args['tools']
+			else
+				!@ стандартный экран, т.е. сами локации
+				if $args['back.href']<>"&nbsp;":$args['result']+=$args['tools']
+				$args['result']+='<h2>'+$args['result.head']+'</h2>'
+				$args['result']+=$args[0]
+				$args['result']+=$args['print.down.log']
+				$args['result']+=$args['colontitle']
+				if $args['back.href']<>"&nbsp;":$args['result']+='<br>'+$args['tools']
 			end
 		end
 		if $AVS_PLAYERTYPE['type']="QN": $args['result']='<div class="avs_game_mini_all">'+$args['result']+"</div>"
+	end
 end
 killvar '$print'
 killvar '$print_down'
