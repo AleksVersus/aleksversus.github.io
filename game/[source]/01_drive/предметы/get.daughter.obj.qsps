@@ -13,12 +13,12 @@ $args[3] = $args[3]	&	!	дополнительная проверка.
 $args['gdo']='false'
 args['pos']=-1
 :for
-if $AVS_PLAYERTYPE['type']="QN":
+if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
 	args['pos']=arrpos('$position_array',$args[0],args['pos']+1)
 else
 	args['pos']=arrpos(args['pos']+1,'$position_array',$args[0])
 end
-if args['pos']!-1 and args['i']!args['pos']:
+if args['pos']<>-1 and args['i']<>args['pos']:
 	args['i']=args['pos']
 	if $args[1]='' or $strfind($object_array[args['pos']],$args[1])!'':
 		if $args[3]='' or $strfind($run_array[args['pos']],$args[3])!'':

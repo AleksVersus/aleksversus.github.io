@@ -3,7 +3,7 @@ if $args[0]='': $args[0]=$curloc
 $args[1]=$args[1]
 args[9]=-1
 :for
-if $AVS_PLAYERTYPE['type']="QN":
+if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
 	args[9]=arrcomp('$object_array','[\s\S]*\[:место_в_рюкзаке:\][\s\S]*',args[9]+1)
 else
 	args[9]=arrcomp(args[9]+1,'$object_array','[\s\S]*\[:место_в_рюкзаке:\][\s\S]*')
