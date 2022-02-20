@@ -1,9 +1,8 @@
-# prv.obj.inBag
-! локация проверяет наличие предмета в рюкзаке и выдаёт его ид
+QSP-Game ! локация проверяет наличие предмета в рюкзаке и выдаёт его ид
 ! сначала происходи поиск предмета, потом проверяется его наличие в рюкзаке
-
-$args[0]=$args[0]
-if $args[1]='': $args['type']='<body>' else $args['type']=$args[1]
+# prv.obj.inBag
+$args[0]=$args[0]	& !@ идентификатор вида
+if $args[1]='': $args['type']='<body>' else $args['type']=$args[1]	& !@ метка размещения. Идентификатор класса
 args['pit']=-1
 :for
 if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":

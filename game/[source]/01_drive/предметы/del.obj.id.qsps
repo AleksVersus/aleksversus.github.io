@@ -1,5 +1,5 @@
+QSP-Game ! Удаляет предмет по ай-дишнику из таблицы объектов
 # del.obj.id
-! Удаляет предмет по ай-дишнику
 $args[0] = $args[0]
 args['pos']=arrpos('$id_array',$args[0])
 killvar '$id_array',args['pos']

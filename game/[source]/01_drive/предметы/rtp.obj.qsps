@@ -1,10 +1,11 @@
-# rtp.obj
-! меняет два объекта местами. полезно для сортировки
+QSP-Game ! меняет два объекта местами. полезно для сортировки
 $args[0] = $args[0]	&	!	ай-ди одного объекта
 $args[1] = $args[1]	&	!	ай-ди другого объекта
+# rtp.obj
+$args[9]=$args[9]	& !@ инициализация аргументов
 args['pos0'] = arrpos('$id_array',$args[0])
 args['pos1'] = arrpos('$id_array',$args[1])
-! запоминаем данные из нулевого объекта
+!@ запоминаем данные из нулевого объекта
 $args['obj0']=$object_array[args['pos0']]
 $args['p0']=$position_array[args['pos0']]
 $args['in0']=$include_array[args['pos0']]
@@ -12,7 +13,7 @@ args['kolvo0']=kolvo_array[args['pos0']]
 args['charge0']=charge_array[args['pos0']]
 $args['respawn0']=$respawn_array[args['pos0']]
 $args['run0']=$run_array[args['pos0']]
-! заменяем нулевой объект первым
+!@ заменяем нулевой объект первым
 $id_array[args['pos0']]=$args[1]
 $object_array[args['pos0']]=$object_array[args['pos1']]
 $position_array[args['pos0']]=$position_array[args['pos1']]
@@ -21,7 +22,7 @@ kolvo_array[args['pos0']]=kolvo_array[args['pos1']]
 charge_array[args['pos0']]=charge_array[args['pos1']]
 $respawn_array[args['pos0']]=$respawn_array[args['pos1']]
 $run_array[args['pos0']]=$run_array[args['pos1']]
-! заменяем первый объект данными из нулевого
+!@ заменяем первый объект данными из нулевого
 $id_array[args['pos1']]=$args[0]
 $object_array[args['pos1']]=$args['obj0']
 $position_array[args['pos1']]=$args['p0']
