@@ -22,42 +22,52 @@ if arrsize('$temp_id')>0:
 		args['cube.enemy']=rand(2,12)	& !@ выброшенные противником на кубиках очки
 		args['might.enemy']=GAME_WAR['ratch.fast.'+$temp_id[0]]+args['cube.enemy']	& !@ сила атаки противника
 		args['pit']=arrpos('$id_array',$temp_id[0])	& !@ расположение противника в таблице объектов (т.о.)
+		!@ список параметров для получения силы атаки противника
 		$args['attacks.all']+="[emight:<<args['might.enemy']>>] [ecube:<<args['cube.enemy']>>] [eblow:<<GAME_WAR['ratch.blow.'+$temp_id[0]]>>]"
-		! сравниваем можности
+		!@ сравниваем силу атаки
 		if args['might.enemy']>args['might.hero']:
-		! противник наносит урон.
-			gosub 'power',-GAME_WAR['ratch.blow.'+$temp_id[0]],'war'
-			$GAME_WAR_LOG[]=$func('war.txt','eblow',$temp_id[0],$args['attacks.all'])
-			if instr($GAME_WAR['DIN.'+$curloc],'!war.powerdown!')!0:
+		!@ если сила удара противника больше силы удара героя, наносим урон герою
+			gosub 'power',-GAME_WAR['ratch.blow.'+$temp_id[0]],'war'	& !@ уменьшаем здоровье герою
+			$GAME_WAR_LOG[]=$func('war.txt','eblow',$temp_id[0],$args['attacks.all'])	& !@ добавляем в лог надпись о нанесении урона
+			!@ если есть какой-то навешанный на боёвку скрипт, запускаем
+			if instr($GAME_WAR['DIN.'+$curloc],'!war.powerdown!')<>0:
 				gosub 'run.dynamic.script','!war.powerdown!','//run.this.dynamic//',$GAME_WAR['DIN.'+$curloc]
 			end
+			!@ если здоровье героя упало ниже 1, игрок проиграл, добавляем надпись в лог
 			if power['now']<1:
 				$GAME_WAR_LOG[]=$func('war.txt','pdeath',$temp_id[0],$args['attacks.all'])
 			end
 		elseif args['might.enemy']<args['might.hero'] and $temp_id[0]=$args[0]:
-			GAME_WAR['ratch.power.'+$temp_id[0]]-=2
+		!@ если сила удара героя больше силы противника, и это противник, выбранный героем для атаки
+			GAME_WAR['ratch.power.'+$temp_id[0]]-=2	& !@ уменьшаем здоровье противника
+			!@ добавляем в список параметров текущее здоровье противника:
 			$args['attacks.all']+=" [epower:<<GAME_WAR['ratch.power.'+$temp_id[0]]>>]"
-			$GAME_WAR_LOG[]=$func('war.txt','pblow',$temp_id[0],$args['attacks.all'])
+			$GAME_WAR_LOG[]=$func('war.txt','pblow',$temp_id[0],$args['attacks.all'])	& !@ вносим в лог текст
 			if GAME_WAR['ratch.power.'+$temp_id[0]]<1:
-				$GAME_WAR_LOG[]=$func('war.txt','edeath',$temp_id[0],$args['attacks.all'])
+			!@ если здоровье противника упало ниже единицы
+				$GAME_WAR_LOG[]=$func('war.txt','edeath',$temp_id[0],$args['attacks.all'])	& !@ вносим в лог текст
+				!@ отмечаем, что противник мёртв соответствующим текстом
 				$GAME_WAR['ratch.dead.'+$temp_id[0]]=$func('base.txt','ed',$func('get.tag.cont',$object_array[args['pit']],'sex'))
-				GAME_WAR['death.enemy']+=1
-				$GAME_WAR['select.enemy']=''
+				GAME_WAR['death.enemy']+=1	& !@ число убитых противников увеличивается
+				$GAME_WAR['select.enemy']=''	& !@ снимаем выделение с противника
 			end
-			if instr($GAME_WAR['DIN.'+$curloc],'!war.ratchdown!')!0:
+			!@ если есть какой-то навешанный на боёвку скрипт, запускаем:
+			if instr($GAME_WAR['DIN.'+$curloc],'!war.ratchdown!')<>0:
 				gosub 'run.dynamic.script','!war.ratchdown!','//run.this.dynamic//',$GAME_WAR['DIN.'+$curloc]
 			end
-		elseif args['might.enemy']<=args['might.hero'] and $temp_id[0]!$args[0]:
-			$GAME_WAR_LOG[]=$func('war.txt','pblock',$temp_id[0],$args['attacks.all'])
+		elseif args['might.enemy']<=args['might.hero'] and $temp_id[0]<>$args[0]:
+		!@ если сила удара героя не меньше силы противника, и противник не выделен
+			$GAME_WAR_LOG[]=$func('war.txt','pblock',$temp_id[0],$args['attacks.all'])	& !@ вносим текст в лог
 		else
+		!@ силы ударов совпадают, вносим соответствующий текст
 			$GAME_WAR_LOG[]=$func('war.txt','block',$temp_id[0],$args['attacks.all'])
 		end
 	end
-	killvar '$temp_id',0
-	jump 'for'
+	killvar '$temp_id',0	& !@ удаляем айди рассматриваемого противника из списка
+	jump 'for'	& !@ повторяем
 end
-killvar '$temp_id'
-GAME_WAR['round']+=1
-gosub 'int.war.prove'
-gosub 'int.war'
+killvar '$temp_id'	& !@ на всякий случай удаляем массив
+GAME_WAR['round']+=1	& !@ увеличиваем число раундов
+gosub 'int.war.prove'	& !@ проверяем победу, либо поражение
+gosub 'int.war'	& !@ перезапускаем интерпретатор боя
 --- int.war.attack ---------------------------------
