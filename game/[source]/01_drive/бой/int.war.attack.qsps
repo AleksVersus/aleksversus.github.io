@@ -1,16 +1,18 @@
+QSP-Game ! локация, выполняющая стандартную атаку
 # int.war.attack
-! локация, выполняющая стандартную атаку
-$args[0] = $args[0]	&	!	идентификатор выбранного противника
-$GAME_WAR['select.enemy']=$args[0]
-$GAME_WAR_LOG[]="<font size=+1><b>Раунд <<GAME_WAR['round']+1>>.</b></font>"
-! сначала определяем собственные параметры
-! получаем мощность удара из текущей ловкости и случайного числа
-args['cube.hero']=rand(2,12)
-args['might.hero']=fast['now']+args['cube.hero']+GAME_WAR['hero.fast']
-! получаем список противников
+$args[0] = $args[0]	&	!@ идентификатор выбранного противника
+$GAME_WAR['select.enemy']=$args[0]	& !@ отмечаем выбранного противника
+$GAME_WAR_LOG[]=$func('base.txt','war.round')	& !@ добавляем в лог номер раунда
+!@ сначала определяем собственные параметры
+!@ получаем мощность удара из текущей ловкости и случайного числа
+args['cube.hero']=rand(2,12)	& !@ выброшенные на кубиках очки
+args['might.hero']=fast['now']+args['cube.hero']+GAME_WAR['hero.fast']	& !@ мощность удара героя (сила атаки героя)
+!@ получаем список противников:
+killvar '$temp_id'
 gosub 'get.daughter.obj',$curloc,'<ratch>','$temp_id'
-args['i']=0
+!@ ----------------------------------------- циклом перебираем противников ----------------------------------------------------
 :for
+!@ список параметров для получения силы атаки:
 $args['attacks.all']="[pfast:<<fast['now']>>] [pcube:<<args['cube.hero']>>] [pfbns:<<GAME_WAR['hero.fast']>>]"
 if arrsize('$temp_id')>0:
 	if GAME_WAR['ratch.power.'+$temp_id[0]]>0:

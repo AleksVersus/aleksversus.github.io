@@ -587,5 +587,14 @@ if $args['add.colors and attributes']!'':
 	$args['/n.a']=$GAME_INTERFACE['/print.'+$args['add.colors and attributes']+'.attrib']
 	$args['res']='<font color=#'+$args['n.c']+'>'+$args['n.a']+$args['res']+$args['/n.a']+'</font>'
 end
+:лог боя
+if $args[0]='war.round':
+	!@ номера раундов
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['res']='<span class="avs_text_warround">Раунд <<GAME_WAR["round"]+1>></span>'
+	else
+		$args['res']="<font size=+1><b>Раунд <<GAME_WAR['round']+1>>.</b></font>"
+	end
+end
 $result=$args['res']
 --- base.txt ---------------------------------
