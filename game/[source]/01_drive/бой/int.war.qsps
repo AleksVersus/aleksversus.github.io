@@ -1,57 +1,58 @@
+QSP-Game ! интерпретатор боя. Основная локация для интерпретации боя, вызывается без аргументов.
 # int.war
-! интерпретатор боя
-if $GAME_WAR['thiswar.'+$curloc]!'':
-	if instr($GAME_WAR['DIN.'+$curloc],'!war.round!')!0:
+if $GAME_WAR['thiswar.'+$curloc]<>'':
+	!@ если состояние боя не сброшено, можно выполнить скрипт
+	if instr($GAME_WAR['DIN.'+$curloc],'!war.round!')<>0:
 		gosub 'run.dynamic.script','!war.round!','//run.this.dynamic//',$GAME_WAR['DIN.'+$curloc]
 	end
 end
 if $GAME_WAR['thiswar.'+$curloc]='':
-! если это первый вызов интерпретатора на данной локации
-	!получаем исходники чего только можно:
-	gosub $curloc
-	! запоминаем исходники
+!@ если это первый вызов интерпретатора на данной локации
+	gosub $curloc & !@ получаем исходники чего только можно:
+	!@ запоминаем исходники
 	$GAME_WAR['заголовок.'+$curloc]=$lvar['заголовок']
-	if $lvar['исходник']!'':
+	if $lvar['исходник']<>'':
 		$GAME_WAR['исходник.'+$curloc]=$lvar['исходник']
 	else
 		$GAME_WAR['исходник.'+$curloc]=$strfind($maintxt,'<avs-main>([\s\S]*)<\/avs-main>',1)
 	end
-	$GAME_WAR['exit.'+$curloc]=$lvar['exit']			&	!	перейти на локацию такую-то в случае победы
-	$GAME_WAR['DIN.'+$curloc]=$lvar['динамический код']	&	!	перейти на локацию такую-то в случае победы
-	$GAME_WAR['thiswar.'+$curloc]='war'					&	!	состояние боя
-	! штрафы и бонусы герою
-	GAME_WAR['hero.fast']=lvar['штраф.ловк']
-	!
-	killvar '$lvar'
-	! получаем список рэтчей:
-	gosub 'get.daughter.obj',$curloc,'<ratch>','$temp_id'
-	GAME_WAR['enemy.count']=arrsize('$temp_id')
-	args['i']=0
+	$GAME_WAR['exit.'+$curloc]=$lvar['exit']			&	!@	перейти на локацию такую-то в случае победы
+	$GAME_WAR['DIN.'+$curloc]=$lvar['динамический код']	&	!@	перейти на локацию такую-то в случае победы
+	$GAME_WAR['thiswar.'+$curloc]='war'					&	!@	переключаем состояние боя в режим боя
+	GAME_WAR['hero.fast']=lvar['штраф.ловк'] & !@ штрафы и бонусы герою
+	killvar '$lvar'	& !@ удаляем временные значения
+	killvar '$temp_id'	& !@ на всякий случай удаляем временный массив
+	gosub 'get.daughter.obj',$curloc,'<ratch>','$temp_id' & !@ получаем список противников (список их айди)
+	GAME_WAR['enemy.count']=arrsize('$temp_id')	& !@ число противников соответствует размеру списка
+	!@ args['i']=0	& !@ счётчик для отладки. Сейчас он не нужен
 	:full_ratch
 	if arrsize('$temp_id')>0:
-		$args['ratch.body']=$object_array[arrpos('$id_array',$temp_id[0])]
-		GAME_WAR['ratch.power.'+$temp_id[0]]=func('get.tag.num',$args['ratch.body'],'power')
-		GAME_WAR['ratch.power.max.'+$temp_id[0]]=GAME_WAR['ratch.power.'+$temp_id[0]]
-		GAME_WAR['ratch.fast.'+$temp_id[0]]=func('get.tag.num',$args['ratch.body'],'fast')
-		GAME_WAR['ratch.fast.max.'+$temp_id[0]]
-		args['blow']=func('get.tag.num',$args['ratch.body'],'blow')
-		if args['blow']=0: args['blow']=2
-		GAME_WAR['ratch.blow.'+$temp_id[0]]=args['blow']
-		args['i']+=1
-		killvar '$temp_id',0
-		jump 'full_ratch'
+		$args['ratch.body']=$object_array[arrpos('$id_array',$temp_id[0])]	& !@ получаем полное описание противника
+		GAME_WAR['ratch.power.'+$temp_id[0]]=func('get.tag.num',$args['ratch.body'],'power')	& !@ здоровье противника
+		GAME_WAR['ratch.power.max.'+$temp_id[0]]=GAME_WAR['ratch.power.'+$temp_id[0]]	& !@ максимальное здоровье противника
+		GAME_WAR['ratch.fast.'+$temp_id[0]]=func('get.tag.num',$args['ratch.body'],'fast')	& !@ ловкость противника
+		GAME_WAR['ratch.fast.max.'+$temp_id[0]]	& !@ максимальная ловкость противника
+		args['blow']=func('get.tag.num',$args['ratch.body'],'blow')	& !@ сила удара противника...
+		if args['blow']=0: args['blow']=2							& !@ ...по умолчанию 2
+		GAME_WAR['ratch.blow.'+$temp_id[0]]=args['blow']	& !@ записываем силу удара
+		!@ args['i']+=1
+		killvar '$temp_id',0	& !@ удаляем айди из списка
+		jump 'full_ratch'	& !@ повторяем
 	end
-	killvar '$temp_id'
-	! обновляем экран соответственно новым установкам
+	killvar '$temp_id'	& !@ на всякий случай удаляем временный массив
+	!@ обновляем экран соответственно новым установкам
 	gosub 'int.war.screen',$curloc
 elseif $GAME_WAR['thiswar.'+$curloc]='war':
+	!@ обновляем экран в режиме боя
 	gosub 'int.war.screen',$curloc
 elseif $GAME_WAR['thiswar.'+$curloc]='victory':
+	!@ обновляем экран в режиме победы
 	gosub 'int.war.screen',$curloc,"victory"
 elseif $GAME_WAR['thiswar.'+$curloc]='lose':
+	!@ обновляем экран в режиме поражения
 	gosub 'int.war.screen',$curloc,"lose"
 elseif $GAME_WAR['thiswar.'+$curloc]='prelose':
+	!@ обновляем экран в режим предпоражения. Этот режим означает, что вы не погибли, но проиграли бой
 	gosub 'int.war.screen',$curloc,"prelose"
 end
-
 --- int.war ---------------------------------

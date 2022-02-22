@@ -184,3 +184,7 @@
 .avs_text_infoscroll {
 	color: 000088;
 }
+.avs_text_warround {
+	font-weight: bolder;
+	font-size: smaller;
+}
