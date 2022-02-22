@@ -1,11 +1,14 @@
+QSP-Game ! локация проверки победы/поражения
 # int.war.prove
-! локация проверки победы/поражения
-gosub 'get.daughter.obj',$curloc,'<ratch>','$temp_id'
+killvar '$temp_id'	& !@ на всякий случай удаляем временный массив
+gosub 'get.daughter.obj',$curloc,'<ratch>','$temp_id'	& !@ получаем список врагов
 if GAME_WAR['enemy.count']<=GAME_WAR['death.enemy']:
-	$GAME_WAR['thiswar.'+$curloc]='victory'
+	!@ если число противников сравнялось с числом смертей
+	$GAME_WAR['thiswar.'+$curloc]='victory'	& !@ объявляем победу
 elseif power['now']<1:
-	$GAME_WAR['thiswar.'+$curloc]='lose'
-	$GAME_VALUE['power.lose']='poweroff'
+	!@ если здоровье героя упало до нуля
+	$GAME_WAR['thiswar.'+$curloc]='lose'	& !@ объявляем поражение
+	$GAME_VALUE['power.lose']='poweroff'	& !@ выставляем режим проигрыша в игре
 end
 killvar '$temp_id'
 --- int.war.prove ---------------------------------

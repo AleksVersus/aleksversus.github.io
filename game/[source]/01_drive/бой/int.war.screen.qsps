@@ -1,65 +1,68 @@
+QSP-Game ! надстройка для боевого обновления экрана
+$args[0] = $args[0]	& !@ идентификатор локации
+$args[1] = $args[1]	&	!	режим победа, поражение и т.д.
 # int.war.screen
-! надстройка для боевого обновления экрана
-$args[0] = $args[0]
-$args[1] = $args[1]	&	!	режим
-if instr($GAME_WAR['DIN.'+$curloc],'!war.refresh!')!0:
+$args[9]=$args[9]
+if instr($GAME_WAR['DIN.'+$curloc],'!war.refresh!')<>0:
+	!@ если это необходимо, выполняем скрипт
 	gosub 'run.dynamic.script','!war.refresh!','//run.this.dynamic//',$GAME_WAR['DIN.'+$curloc]
 end
-$args['на экран']=$func('int.DIN',$GAME_WAR['исходник.'+$args[0]])
-! добавляем лог боя
+$args['на экран']=$func('int.DIN',$GAME_WAR['исходник.'+$args[0]])	& !@ генерируем кадр из исходника
+!@ добавляем лог боя
 if GAME_VALUE['war.log']<1:
 	$args['на экран']+='<br><br>'+$func('#array.prnt#','$GAME_WAR_LOG','[only result]')+'<br>'
 else
 	$args['на экран']+='<br><br>'+$func('#array.prnt#','$GAME_WAR_LOG','[only result]','',arrsize('$GAME_WAR_LOG')-GAME_VALUE['war.log'])+'<br>'
 end
-! идём по списку рэтчей. генерируем микротаблицу
+!@ идём по списку рэтчей. генерируем микротаблицу
 $args['table'] = '<table width=100% cellpadding=5 cellspacing=0>'
+killvar '$temp_id'	& !@ на всякий случай удаляем временный массив
 gosub 'get.daughter.obj',$curloc,'<ratch>','$temp_id'
-args['i']=0
 :for
 if arrsize('$temp_id')>0:
-	! если в данной ячейке есть идентификатор. Получаем имя рэтча в именительном падеже
-	args['pit']=arrpos('$id_array',$temp_id[0])
-	$args['name']='<b>'+$func('get.n.p',$object_array[args['pit']],'И')+'</b>'
-	$args['po']="Сила: <<GAME_WAR['ratch.power.'+$temp_id[0]]>>/<<GAME_WAR['ratch.power.max.'+$temp_id[0]]>>		Ловкость: <<GAME_WAR['ratch.fast.'+$temp_id[0]]>>"
-	$args['fight']=''
-	! если здоровье рэтча больше нуля, генерируем ссылки боя
+	!@ если в данной ячейке есть идентификатор. Получаем имя рэтча в именительном падеже
+	args['pit']=arrpos('$id_array',$temp_id[0])	& !@ 	& !@ находим в таблице объектов противника из списка
+	$args['name']='<b>'+$func('get.n.p',$object_array[args['pit']],'И')+'</b>'	& !@ получаем имя
+	$args['po']="Сила: <<GAME_WAR['ratch.power.'+$temp_id[0]]>>/<<GAME_WAR['ratch.power.max.'+$temp_id[0]]>>		Ловкость: <<GAME_WAR['ratch.fast.'+$temp_id[0]]>>"	& !@ получаем текст с параметрами противника
+	$args['fight']=''	& !@ текст боя обнуляем
+	!@ если здоровье рэтча больше нуля, генерируем ссылки боя
 	if GAME_WAR['ratch.power.'+$temp_id[0]]>0:
-		! сражение-ссылки
+		!@ сражение-ссылки
 		if $GAME_WAR['select.enemy']='' or $GAME_WAR['select.enemy']=$temp_id[0]:
 			$args['fight']+=$func('base.txt','attack',$temp_id[0])
 		else
 			$args['fight']+=$func('base.txt','eo')
 		end
-		! уничтожить из бластера ссылки
-		! ищем бластер
-		$args['pos.bl']=$func('prv.obj.inBag','бластер')
-		! проверяем заряды
-		if $args['pos.bl']!"" and charge_array[arrpos('$id_array',$args['pos.bl'])]>0 and instr($tvar['костыль.заголовок'],'<non-blaster>')=0:
-			$args['fight']+='<br>'+$func('base.txt','blaster-attack',$temp_id[0])
+		!@ уничтожить из бластера ссылки
+		$args['pos.bl']=$func('prv.obj.inBag','бластер')	& !@ ищем бластер
+		if $args['pos.bl']<>"" and charge_array[arrpos('$id_array',$args['pos.bl'])]>0 and instr($tvar['костыль.заголовок'],'<non-blaster>')=0:
+			!@ если бластер найден, заряжен и им можно пользоваться
+			$args['fight']+='<br>'+$func('base.txt','blaster-attack',$temp_id[0])	& !@ генерируем ссылку
 		end
 	else
+		!@ если здоровье противника меньше одного, получаем фразу смерти и не выводим параметры
 		$args['po']=$GAME_WAR['ratch.dead.'+$temp_id[0]]
 		$args['fight']='&nbsp;'
 	end
-	! теперь когда у нас есть вся нужная инфа, формируем строки
-	$args['table']+='<tr name=n<<args["i"]+1>> bgcolor=#d0d0d0><td width=50%>'+$args['name']+'<br><font size=-1 color=#444444>'+$args['po']+'</font></td><td align=right>'+$args['fight']+'</td></tr>'
-	if $AVS_PLAYERTYPE['size']<>"MINI": $args['table']+='<tr name=b<<args["i"]+1>>><td width=50% height=2><img src="px.png" height=2></td><td align=right height=2><img src="px.png" height=2></td></tr>'
-	args['i']+=1
-	killvar '$temp_id',0
-	args['i']+=1
-	jump 'for'
+	!@ теперь когда у нас есть вся нужная инфа, формируем строки
+	$args['table']+='<tr bgcolor=#d0d0d0><td width=50%>'+$args['name']+'<br><font size=-1 color=#444444>'+$args['po']+'</font></td><td align=right>'+$args['fight']+'</td></tr>'	& !@ строка таблицы с именем параметрами и ссылками
+	if $AVS_PLAYERTYPE['size']<>"MINI": $args['table']+='<tr><td width=50% height=2><img src="px.png" height=2></td><td align=right height=2><img src="px.png" height=2></td></tr>'	& !@ разделитель для всяких плееров, кроме mini
+	killvar '$temp_id',0	& !@ удаляем противника из списка
+	jump 'for'	& !@ повторяем
 end
-killvar '$temp_id'
-$args['table']+='</table>'
-$args['список предметов']=$func('int.loc.obj',$curloc)
+killvar '$temp_id'	& !@ на всякий случай удаляем временный массив
+$args['table']+='</table>'	& !@ закрываем внешнюю таблицу
+$args['список предметов']=$func('int.loc.obj',$curloc)	& !@ получаем список предметов
+! в зависимости от режима генерируем таблицу победы или поражения, или предпоражения
 if $args[1]='victory': $args['table']=$func('base.txt','wv',$GAME_WAR['exit.'+$curloc],$GAME_WAR['prewin.txt'])
 if $args[1]='lose': $args['table']=$func('base.txt','wl') & $args['список предметов']=''
 if $args[1]='prelose': $args['table']=$func('base.txt','wp',$GAME_WAR['exit.'+$curloc],$GAME_WAR['prelose.txt'])	&	$args['список предметов']=''
-$args['на экран']+='<br>'+$args['table']+'<br>'
-
-*clr
+$args['на экран']+='<br>'+$args['table']+'<br>'	& !@ добаляем эту таблицу на экран
+!@ 
+*clr	& !@ очищаем экран
+!@ выводим новый кадр
 *pl $func('int.screen',$args['на экран'],$args['список предметов'],$GAME_WAR['заголовок.'+$args[0]],$GAME_VALUE['interface'])
+!@ костыль для прокрутки экрана вниз
 wait 1
 *pl
 --- int.war.screen ---------------------------------
