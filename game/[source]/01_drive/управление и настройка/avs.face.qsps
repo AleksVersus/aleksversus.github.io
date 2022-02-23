@@ -20,7 +20,6 @@ if $args[0]='test':
 		$args['main.table']+=$args['screen']
 	end
 	*pl $args['main.table']
-	gs 'int.inventory','test'
 end
 disablescroll=1
 ! $floor[]	!	уровни экранов настроек
