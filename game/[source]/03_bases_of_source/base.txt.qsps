@@ -101,6 +101,7 @@ if $args[0] = 'table.mainsets':
 		$args['res']+='<tr '+$args['12']+'><td align=center >'+$args['1.12']+'</td><td align=center>11</td><td align=center>20</td><td align=center>5</td></tr>'
 		$args['res']+='</table>'
 	end
+	jump 'end_keep'
 end
 if $args[0]='table.numbers':
 !@ отрисовка таблички с числами удачи и неудачи
@@ -135,145 +136,113 @@ if $args[0]='table.numbers':
 	$args['res']+='<tr name=luck bgcolor=#e1ffe1><td align=left><span style="color:#000000;">Числа удачи:</span></td><td align=center><span style="color:#000000;font-weight:bolder;">'+$args['luck']+'</span></td></tr>'
 	$args['res']+='<tr name=unluck bgcolor=#ffe1e1><td align=left><span style="color:#000000;">Числа неудачи:</span></td><td align=center><span style="color:#000000;text-decoration:line-through;">'+$args['unluck']+'</span></td></tr>'
 	$args['res']+='</table>'
+	jump 'end_keep'
 end
 if $args[0] = 'table.char':
-	if $AVS_PLAYERTYPE['type']="QN":
+!@ отрисовка таблички характеристик персонажа (героя)
+	if $AVS_PLAYERTYPE['size']="MINI":
+		!@ для мобильной версии табличка растягивается на ширину страницы
+		$args['res']='<table width=100% cellspacing=0>'
+	elseif $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']='qSpider':
+		!@ для навигатора и паука поведение таблички определяется стилями CSS
 		$args['res']='<table cellspacing=0 class="avs_game_stat_table">'
 	else
-		if $AVS_PLAYERTYPE['size']="MINI":
-			$args['res']='<table width=100% cellspacing=0>'
-		else
-			$args['res']='<table width=280 cellspacing=0>'
-		end
+		!@ для классического плеера ширина таблички равна 280 пикс.
+		$args['res']='<table width=280 cellspacing=0>'
 	end
-	$args['res']+='<tr name=fst bgcolor=#'+$GAME_INTERFACE['stat.fast.bgcolor']+'><td align=left><font color=#'+$GAME_INTERFACE['stat.fast.color']+'>Ловкость:</font></td><td align=right><font color=#'+$GAME_INTERFACE['stat.fast.color']+'>'+$GAME_INTERFACE['stat.fast.attrib']+'<<fast["now"]>>/<b><<fast["start"]>></b>'+$GAME_INTERFACE['/stat.fast.attrib']+'</font></td></tr>'
-	$args['res']+='<tr name=pwr bgcolor=#'+$GAME_INTERFACE['stat.power.bgcolor']+'><td align=left><font color=#'+$GAME_INTERFACE['stat.power.color']+'>Сила:</font></td><td align=right><font color=#'+$GAME_INTERFACE['stat.power.color']+'>'+$GAME_INTERFACE['stat.power.attrib']+'<<power["now"]>>/<b><<power["start"]>></b>'+$GAME_INTERFACE['/stat.power.attrib']+'</font></td></tr>'
-	$args['res']+='<tr name=scl bgcolor=#'+$GAME_INTERFACE['stat.social.bgcolor']+'><td align=left><font color=#'+$GAME_INTERFACE['stat.social.color']+'>Обаяние:</font></td><td align=right><font color=#'+$GAME_INTERFACE['stat.social.color']+'>'+$GAME_INTERFACE['stat.social.attrib']+'<<social["now"]>>/<b><<social["start"]>></b>'+$GAME_INTERFACE['/stat.social.attrib']+'</font></td></tr>'
+	$args['res']+='<tr name=fst bgcolor=#e1ffff><td align=left><span style="color:#000000;">Ловкость:</span></td><td align=right><span style="color:#000000;"><<fast["now"]>>/<b><<fast["start"]>></b></span></td></tr>'
+	$args['res']+='<tr name=pwr bgcolor=#ffffe1><td align=left><span style="color:#000000;">Сила:</span></td><td align=right><span style="color:#000000;"><<power["now"]>>/<b><<power["start"]>></b></span></td></tr>'
+	$args['res']+='<tr name=scl bgcolor=#fff0ff><td align=left><span style="color:#000000;">Обаяние:</span></td><td align=right><span style="color:#000000;"><<social["now"]>>/<b><<social["start"]>></b></span></td></tr>'
 	$args['res']+='</table>'
+	jump 'end_keep'
 end
 if $args[0] = 'table.blast':
-	if $AVS_PLAYERTYPE['type']="QN":
+!@ вывод таблички предметов
+	if $AVS_PLAYERTYPE['size']="MINI":
+		!@ для мобильной версии таблица растягивается на весь экран
+		$args['res']='<table width=100% cellspacing=0>'
+	elseif $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']='qSpider':
+		!@ для навигатора и паука таблица поведенствуется через CSS
 		$args['res']='<table class="avs_game_objs_table">'
 	else
-		if $AVS_PLAYERTYPE['size']="MINI":
-			$args['res']='<table width=100% cellspacing=0>'
-		else
-			$args['res']='<table width=280 cellspacing=0>'
-		end
+		!@ для классического плеера ширина таблицы 280 пикселей
+		$args['res']='<table width=280 cellspacing=0>'
 	end
-	gosub 'get.daughter.obj','INVENTORY','','$temp_id'
+	killvar '$temp_id'	& !@ на всякий случай удаляем временный массив
+	gosub 'get.daughter.obj','INVENTORY','','$temp_id'	& !@ получаем список предметов (вернее их идентификаторов)
 	:blast
 	if arrsize('$temp_id')>0:
-		! строка объекта часть тела
+		!@ строка объекта часть тела в таблице данных:
 		args['pos.body']=arrpos('$id_array',$temp_id[0])
-		! строка дочернего объекта
+		!@ строка дочернего объекта в таблице данных
 		args['pos.obj']=arrpos('$position_array',$temp_id[0])
-		! если дочерний объект есть, выводим его
-		$args['hide']='false'
-		if args['pos.obj']!-1:
-			if instr($object_array[args['pos.obj']],'[hide.inInv]')!0: $args['hide']='true'
-			if instr($object_array[args['pos.obj']],'[quest]')!0:
-			! подсветка квестового предмета
-				$args['color']=$GAME_INTERFACE['obj.quest.color']
-				$args['attrib']=$GAME_INTERFACE['obj.quest.attrib']
-				$args['/attrib']=$GAME_INTERFACE['/obj.quest.attrib']
-				$args['bgcolor']=$GAME_INTERFACE['obj.quest.bgcolor']
-			elseif instr($object_array[args['pos.body']],'[:место_в_рюкзаке:]')=0:
-			! подсветка активного предмета
-				$args['color']=$GAME_INTERFACE['obj.active.color']
-				$args['attrib']=$GAME_INTERFACE['obj.active.attrib']
-				$args['/attrib']=$GAME_INTERFACE['/obj.active.attrib']
-				$args['bgcolor']=$GAME_INTERFACE['obj.active.bgcolor']
+		$args['hide']='false'	& !@ нужно ли скрыть предмет, на начальном этапе - нет
+		if args['pos.obj']<>-1:
+			!@ если дочерний объект есть, пытаемся вывести его
+			if instr($object_array[args['pos.obj']],'[hide.inInv]')<>0:
+				$args['hide']='true'	& !@ в свойствах предмета прописано скрытие в инвентаре, нет смысла считать всякие плюхи
 			else
-			! подсветка неактивного предмета
-				$args['color']=$GAME_INTERFACE['obj.unactive.color']
-				$args['attrib']=$GAME_INTERFACE['obj.unactive.attrib']
-				$args['/attrib']=$GAME_INTERFACE['/obj.unactive.attrib']
-				$args['bgcolor']=$GAME_INTERFACE['obj.unactive.bgcolor']
+				!@ если предмет не скрыт, считаем плюхи
+				if instr($object_array[args['pos.obj']],'[quest]')<>0:
+				!@ подсветка квестового предмета
+					$args['color']='114444'
+					$args['attrib']='<b>'
+					$args['/attrib']='</b>'
+					$args['bgcolor']='fcfcfc'
+				elseif instr($object_array[args['pos.body']],'[:место_в_рюкзаке:]')=0:
+				!@ подсветка активного предмета
+					$args['color']='008888'
+					$args['attrib']='<b>'
+					$args['/attrib']='</b>'
+					$args['bgcolor']='fcfcfc'
+				else
+				!@ подсветка неактивного предмета
+					$args['color']='008888'
+					$args['attrib']=''
+					$args['/attrib']=''
+					$args['bgcolor']='fcfcfc'
+				end
+				!@ генерируем ссылку на обработчик предмета
+				$args['name']='<a href="exec:gosub ''onObjClick'',''<<$id_array[args["pos.obj"]]>>''" class="avs_text_gsobjint" class="plain">'
+				$args['name']+='<font color=#'+$args['color']+'>'+$args['attrib']
+				$args['name']+=$func('get.word.padez',$func('get.tag.cont',$object_array[args['pos.obj']],'name'),'И')
+				$args['name']+=$args['/attrib']+'</font></a>'
+				args['charge']=charge_array[args['pos.obj']]	& !@ текущий заряд
+				args['maxcharge']=func('get.tag.num',$object_array[args['pos.obj']],'maxchrg')	& !@ получаем максимальный уровень заряда
+				if instr($object_array[args['pos.obj']],'[maxchrg:')<>0 and args['maxcharge']=0:
+					!@ если максимальный уровень не получен, но в признаках был определён
+					$args['ch']='<span style="color:#000000;">'+$str(args['charge'])+'<span style="font-weight:bold;font-size:large">/∞</span></span>'
+				elseif instr($object_array[args['pos.obj']],'[maxchrg:')<>0 and args['maxcharge']<>0:
+					!@ если максимальный уровень получен
+					$args['ch']='<span style="color:#000000;">'+$str(args['charge'])+'<span style="font-weight:bold;">/'+$str(args['maxcharge'])+'</span>'
+				else
+					$args['ch']='&nbsp;'
+				end
 			end
-			$args['name']='<a href="exec:gosub ''onObjClick'',''<<$id_array[args["pos.obj"]]>>''" title="вызов обработчика предмета" class="plain">'
-			$args['name']+='<font color=#'+$args['color']+'>'+$args['attrib']
-			$args['name']+=$func('get.word.padez',$func('get.tag.cont',$object_array[args['pos.obj']],'name'),'И')
-			$args['name']+=$args['/attrib']+'</font></a>'
-			args['charge']=charge_array[args['pos.obj']]
-			args['maxcharge']=func('get.tag.num',$object_array[args['pos.obj']],'maxchrg')
-			if instr($object_array[args['pos.obj']],'[maxchrg:')!0 and args['maxcharge']=0:
-				$args['ch']="<font color=#"+$GAME_INTERFACE['obj.charge.color']+'>'+$GAME_INTERFACE['obj.charge.attrib']+str(args['charge'])+$GAME_INTERFACE['/obj.charge.attrib']+'</font><font color=#'+$GAME_INTERFACE['obj.maxcharge.color']+'>'+$GAME_INTERFACE['obj.maxcharge.attrib']+'/<font size=+1>∞</font>'+$GAME_INTERFACE['/obj.maxcharge.attrib']+'</font>'
-			elseif instr($object_array[args['pos.obj']],'[maxchrg:')!0 and args['maxcharge']!0:
-				$args['ch']="<font color=#"+$GAME_INTERFACE['obj.charge.color']+'>'+$GAME_INTERFACE['obj.charge.attrib']+str(args['charge'])+$GAME_INTERFACE['/obj.charge.attrib']+'</font><font color=#'+$GAME_INTERFACE['obj.maxcharge.color']+'>'+$GAME_INTERFACE['obj.maxcharge.attrib']+'/'+str(args['maxcharge'])+$GAME_INTERFACE['/obj.maxcharge.attrib']+'</font>'
+		else
+			!@ если дочернего объекта нет, можно вывести часть теле или рюкзака
+			if instr($object_array[args['pos.body']],'[hide.inInv]')<>0:
+				!@ если часть теле скрыта в инвентаре, не высчитываем плюшки
+				$args['hide']='true'
 			else
+				!@ высчитываем плюшки
+				$args['color']='888888'
+				$args['attrib']=''
+				$args['/attrib']=''
+				$args['name']='<font color=#'+$args['color']+'>'+$args['attrib']
+				$args['name']+=$func('get.tag.cont',$object_array[args['pos.body']],'name')
+				$args['name']+=$args['/attrib']+'</font>'
+				$args['bgcolor']='fcfcfc'
 				$args['ch']='&nbsp;'
 			end
-		else
-			if instr($object_array[args['pos.body']],'[hide.inInv]')!0: $args['hide']='true'
-			$args['color']=$GAME_INTERFACE['obj.space.color']
-			$args['attrib']=$GAME_INTERFACE['obj.space.attrib']
-			$args['/attrib']=$GAME_INTERFACE['/obj.space.attrib']
-			$args['name']='<font color=#'+$args['color']+'>'+$args['attrib']
-			$args['name']+=$func('get.tag.cont',$object_array[args['pos.body']],'name')
-			$args['name']+=$args['/attrib']+'</font>'
-			$args['bgcolor']=$GAME_INTERFACE['obj.space.bgcolor']
-			$args['ch']='&nbsp;'
 		end
 		if $args['hide']='false':
+			!@ если предмет не скрыт, добавляем его, как строку в таблицу
 			$args['res']+='<tr name=blastobj bgcolor=#'+$args['bgcolor']+'><td align=left>'+$args['name']+'</td><td align=right>'+$args['ch']+'</td></tr>'
 		end
-		killvar 'temp_id',0
+		killvar 'temp_id',0	& !@ удаляем идентификатор предмета из списка
 		jump 'blast'
 	end
-	$args['res']+='</table>'
-end
-if $args[0]='table.mlast':
-	if $AVS_PLAYERTYPE['type']="QN":
-		$args['res']='<table class="avs_game_objs_table">'
-	else
-		if $AVS_PLAYERTYPE['size']="MINI":
-			$args['res']='<table width=100% cellspacing=0>'
-		else
-			$args['res']='<table width=280 cellspacing=0>'
-		end
-	end
-		args['i']=0
-		:table_mlyad
-		if args['i']<11:
-			$args['ch']='&nbsp;'
-			if args['i']<3:
-				$args['color']=$GAME_INTERFACE['obj.quest.color']
-				$args['attrib']=$GAME_INTERFACE['obj.quest.attrib']
-				$args['/attrib']=$GAME_INTERFACE['/obj.quest.attrib']
-				$args['bgcolor']=$GAME_INTERFACE['obj.quest.bgcolor']
-				$args['obj']='Квестовый предмет'
-				if args['i']=2:
-					$args['ch']="<font color=#"+$GAME_INTERFACE['obj.charge.color']+'>'+$GAME_INTERFACE['obj.charge.attrib']+str(5)+$GAME_INTERFACE['/obj.charge.attrib']+'</font><font color=#'+$GAME_INTERFACE['obj.maxcharge.color']+'>'+$GAME_INTERFACE['obj.maxcharge.attrib']+'/<font size=+1>∞</font>'+$GAME_INTERFACE['/obj.maxcharge.attrib']+'</font>'
-				elseif args['i']=1:
-					$args['ch']="<font color=#"+$GAME_INTERFACE['obj.charge.color']+'>'+$GAME_INTERFACE['obj.charge.attrib']+str(4)+$GAME_INTERFACE['/obj.charge.attrib']+'</font><font color=#'+$GAME_INTERFACE['obj.maxcharge.color']+'>'+$GAME_INTERFACE['obj.maxcharge.attrib']+'/'+str(8)+$GAME_INTERFACE['/obj.maxcharge.attrib']+'</font>'
-				end
-			elseif args['i']<5:
-				$args['color']=$GAME_INTERFACE['obj.active.color']
-				$args['attrib']=$GAME_INTERFACE['obj.active.attrib']
-				$args['/attrib']=$GAME_INTERFACE['/obj.active.attrib']
-				$args['bgcolor']=$GAME_INTERFACE['obj.active.bgcolor']
-				$args['obj']='Активный предмет'
-			elseif args['i']<8:
-				$args['color']=$GAME_INTERFACE['obj.unactive.color']
-				$args['attrib']=$GAME_INTERFACE['obj.unactive.attrib']
-				$args['/attrib']=$GAME_INTERFACE['/obj.unactive.attrib']
-				$args['bgcolor']=$GAME_INTERFACE['obj.unactive.bgcolor']
-				$args['obj']='Неактивный предмет'
-			else
-				$args['color']=$GAME_INTERFACE['obj.space.color']
-				$args['attrib']=$GAME_INTERFACE['obj.space.attrib']
-				$args['/attrib']=$GAME_INTERFACE['/obj.space.attrib']
-				$args['bgcolor']=$GAME_INTERFACE['obj.space.bgcolor']
-				$args['obj']='Место в рюкзаке'
-			end
-			$args['name']='<font color=#'+$args['color']+'>'+$args['attrib']
-			$args['name']+=$args['obj']
-			$args['name']+=$args['/attrib']+'</font>'
-			$args['res']+='<tr name=blastobj bgcolor=#'+$args['bgcolor']+'><td align=left>'+$args['name']+'</td><td align=right>'+$args['ch']+'</td></tr>'
-			args['i']+=1
-			jump 'table_mlyad'
-		end
 	$args['res']+='</table>'
 end
 :невозможные_действия
@@ -283,31 +252,39 @@ if $args[0]='f':
 	if $args[1]='лицо': $args['res']='Вы не можете надеть ещё одну маску на лицо.'
 	if $args[1]='голова': $args['res']='Вы не можете надеть ещё один головной убор.'
 	if $args[1]='пояс_фляга': $args['res']='У вас уже есть фляга.'
+	if $args[1]='плечи': $args['res']='У вас на плечах уже что-то надето.'
+	if $args[1]='шея': $args['res']='У вас на шее уже что-то надето.'
+	$args['add.colors and attributes']='nope'
 end
 if $args[0]='невозможное_действие':
 	$args['res']="Пример невозможного действия."
+	$args['add.colors and attributes']='nope'
 end
 if $args[0]='empt':
 	$args['res']='Сосуд пуст.'
+	$args['add.colors and attributes']='nope'
 end
 if $args[0]='n':
 	$args['res']='Нельзя выбросить этот предмет. Возможно он необходим для выполнения задания.'
+	$args['add.colors and attributes']='nope'
 end
 if $args[0]='notspec':
 	$args['res']='Нет подходящих условий для использования предмета.'
+	$args['add.colors and attributes']='nope'
 end
 if $args[0]='notput':
 	$args['res']='Здесь и сейчас вы не можете выбросить этот предмет.'
+	$args['add.colors and attributes']='nope'
 end
 if $args[0]='discharge':
 	$args['res']='Этим предметом больше нельзя воспользоваться.'
+	$args['add.colors and attributes']='nope'
 end
 if $args[0]='gift.no':
 	$args['res']='К сожалению, в кошельке больше не осталось монет.'
-end
-if $args[0]='f' or $args[0]='n' or $args[0]='notspec' or $args[0]='notput' or $args[0]='discharge' or $args[0]='невозможное_действие':
 	$args['add.colors and attributes']='nope'
 end
+
 :одевание
 if $args[0]='used':
 	if $args[1]='лицо': $args['res']='Вы надели '+$args[2]+'.'
@@ -322,37 +299,40 @@ end
 :взять
 if $args[0]='взять':
 	$args['res']="Пример действия подъёма."
+	$args['add.colors and attributes']='take'
 end
 if $args[0]='add':
 	$args['name']=$func('get.word.padez',$func('get.tag.cont',$object_array[arrpos('$id_array',$args[1])],'name'),'В')
 	$args['res']='Вы взяли '+$args['name']+'.'
+	$args['add.colors and attributes']='take'
 end
 if $args[0]='get':
 	$args['name']=$func('get.word.padez',$func('get.tag.cont',$object_array[arrpos('$id_array',$args[1])],'name'),'И')
 	$args['res']='Получены '+$args['name']+'.'
-end
-if $args[0]='add' or $args[0]='get' or $args[0]='взять':
 	$args['add.colors and attributes']='take'
 end
+
 :выбросить
 if $args[0]='выбросить':
 	$args['res']="Пример действия выбрасывания."
+	$args['add.colors and attributes']='put'
 end
 if $args[0]='put':
 	$args['name']=$func('get.word.padez',$func('get.tag.cont',$object_array[arrpos('$id_array',$args[1])],'name'),'В')
 	$args['res']='Вы выбросили '+$args['name']+'.'
+	$args['add.colors and attributes']='put'
 end
 if $args[0]='gift':
 	$args['name']=$func('get.word.padez',$func('get.tag.cont',$object_array[arrpos('$id_array',$args[1])],'name'),'В')
 	$args['res']='Вы отдали '+$args['name']+'.'
+	$args['add.colors and attributes']='put'
 end
 if $args[0]='s':
 	$args['name']=$func('get.word.padez',$func('get.tag.cont',$object_array[arrpos('$id_array',$args[1])],'name'),'В')
 	$args['res']='Вы продали '+$args['name']+'.'
-end
-if $args[0]='put' or $args[0]='gift' or $args[0]='s' or $args[0]='выбросить':
 	$args['add.colors and attributes']='put'
 end
+
 :лог боя
 if $args[0]='war.round':
 	!@ номера раундов
@@ -361,10 +341,15 @@ if $args[0]='war.round':
 	else
 		$args['res']="<font size=+1><b>Раунд <<GAME_WAR['round']+1>>.</b></font>"
 	end
+	jump 'end_keep'
 end
 if $args[0]='war':
-	$args['res']='<avs-enemy><br><br><br><center><a href="exec:gosub ''int.war''" title="вызов обработчика боя" class="plain"><font size=+1>Сражаться</font></a></center></avs-enemy>
-'
+	$args['href']='<a href="exec:gosub ''int.war''" title="вызов обработчика боя" class="plain">'
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['res']='<avs-enemy><br><br><br><center>'+$args['href']+'<span style="font-size:large">Сражаться</span></a></center></avs-enemy><br>'
+	else
+		$args['res']='<avs-enemy><br><br><br><center>'+$args['href']+'<font size=+1>Сражаться</font></a></center></avs-enemy><br>'
+	end
 end
 if $args[0]='sell':
 	$args['res']='<br><br><br><center>Чтобы продать предмет, нужно щёлкнуть по его названию и в появившемся меню выбрать пункт "Продать".</center>'
@@ -372,7 +357,14 @@ if $args[0]='sell':
 end
 if $args[0]='ed':
 	args['rand']=rand(1,10)
-	$args['res']='<font color=#998888>'
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['open.f']='<span style="color:#998888;">'
+		$args['close.f']='</span>'
+	else
+		$args['open.f']='<font color=#998888>'
+		$args['close.f']='</font>'
+	end
+	$args['res']=$args['open.f']
 	if $args[1]='female':
 		if args['rand']=1: $args['res']+='Уснула навеки...'
 		if args['rand']=2: $args['res']+='Покойся с миром...'
@@ -396,7 +388,7 @@ if $args[0]='ed':
 		if args['rand']=9: $args['res']+='Теперь не угрожает вашей безопасности...'
 		if args['rand']=10: $args['res']+='Ему уже ничего не нужно...'
 	end
-	$args['res']+='</font>'
+	$args['res']+=$args['close.f']
 end
 if $args[0]='attack':
 	$args['res']='<a href="exec:gosub ''int.war.attack'',''<<$args[1]>>''"><font color=#886600>Сражаться</font></a>'
@@ -442,7 +434,7 @@ if $args[0]='wl':
 end
 :GAME_OVER
 if $args[0]='go':
-! ПОБЕДА В ИГРЕ !!!
+!@ ПОБЕДА В ИГРЕ !!!
 	$args['res']='<br><br><center><a href="exec:goto ''[start]''" class="plain"><font size=+1>Победа!!! Игра пройдена.</font><br><font size=-1>(вернуться в главное меню)</font></a></center>'
 end
 if $args[0]='off':
@@ -499,8 +491,8 @@ end
 :выводим знания
 if $args[0] = 'table.knew':
 	$args['res']='<br><br><table cellspacing=0 width=100%>'
-	if $GAME_INTERFACE['note.variants']!'2': $args['res']+='<tr name=note bgcolor=#'+$GAME_INTERFACE['note.even.bgcolor']+'><td align=left>Ваши записи:</td></tr>'
-	if $args[1]!'test':
+	if $GAME_INTERFACE['note.variants']<>'2': $args['res']+='<tr name=note bgcolor=#'+$GAME_INTERFACE['note.even.bgcolor']+'><td align=left>Ваши записи:</td></tr>'
+	if $args[1]<>'test':
 		gosub 'get.daughter.obj','KNOWLEDGE','','$temp_id'
 		args['b']=arrsize('$temp_id')
 	else
@@ -521,7 +513,7 @@ if $args[0] = 'table.knew':
 			if args['i']=4: $args['name']='Скрытые заметки не отображаются.'
 			if args['i']=5: $args['name']='Образец записи, которая помогла вам в пути. Выполненное задание или совет, которому вы последовали.'
 		end
-		if instr($object_array[args['pos.obj']],'[выполнено]')!0 or ($args[1]='test' and args['i']=5):
+		if instr($object_array[args['pos.obj']],'[выполнено]')<>0 or ($args[1]='test' and args['i']=5):
 			$args['fc']=$GAME_INTERFACE['note.fin.color']
 			$args['fc.attrib']=$GAME_INTERFACE['note.fin.attrib']
 			$args['/fc.attrib']=$GAME_INTERFACE['/note.fin.attrib']
@@ -674,5 +666,7 @@ end
 if $args[0]='bag.drop':
 	$args['res']='<span style="color:#886600;">Рюкзак выброшен. Вам больше некуда складывать вещи.</span>'
 end
+!@ выход и возвращение результата
+:end_keep
 $result=$args['res']
 --- base.txt ---------------------------------
