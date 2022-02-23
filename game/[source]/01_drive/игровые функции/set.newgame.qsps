@@ -23,7 +23,6 @@ if $args[0]='kill':
 end
 if $GAME_INTERFACE['sets.refresh']='' or $args[0]<>'kill':
 	! основные настройки
-	if $args[0]='kill' or $args[0]='war.cubes': 	$GAME_INTERFACE['war.cubes']='hide'		&	!	очки кубиков в тексте описания боя hide - скрывать show - показывать
 	if $args[0]='kill' or $args[0]='refresh': 		$GAME_INTERFACE['refresh']=''			&	!	принудительно обновить настройки интерфейса страница.сброс - сбросить к стандартным настройкам плеера
 	if $args[0]='kill' or $args[0]='objs': 			$GAME_INTERFACE['objs']='hide'			&	!	окно инвентаря. hide - скрывать show - показывать
 	if $args[0]='kill' or $args[0]='stat': 			$GAME_INTERFACE['stat']='hide'			&	!	окно дополнительного описания. hide - скрывать show - показывать

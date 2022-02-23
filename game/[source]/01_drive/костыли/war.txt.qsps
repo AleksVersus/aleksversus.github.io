@@ -68,10 +68,6 @@ end
 $args['text.list']=$func('get.tag.cont',$args['enemy.txt'],$args['text.type'])
 $args['text']=$func('get.tag.cont',$args['text.list'],str(args['num']))
 :replaced
-if $GAME_INTERFACE['war.cubes']='show': $args['war.cubes.e']="<sub><font color=#440000>[<<args['enemy.cube']>>]</font></sub>"
-if $GAME_INTERFACE['war.cubes']='show': $args['war.cubes.p']="<sub><font color=#004400>[<<args['hero.cube']>>]</font></sub>"
-$args['text']=$replace($args['text'],'[ecube]',$args['war.cubes.e'])
-$args['text']=$replace($args['text'],'[pcube]',$args['war.cubes.p'])
 $args['text']=$replace($args['text'],'[eblow]',"<sub><font color=#440000>[<<args['enemy.might']>>]</font></sub>")
 if args['hero.bns']>0:
 	$args['+']="+<<args['hero.bns']>>"
