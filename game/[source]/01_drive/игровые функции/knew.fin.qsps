@@ -1,7 +1,9 @@
+QSP-Game Знание использованао
 # knew.fin
-$args[0]=$args[0]
-$args['knew']=$func('prv.obj.inBag',$args[0],'<KNOWLEDGE>')
-if $args['knew']!'':
+$args[0]=$args[0]	& !@ идентификатор вида знания
+$args['knew']=$func('prv.obj.inBag',$args[0],'<KNOWLEDGE>')	& !@ находим в списке приобретённых знаний
+if $args['knew']<>'':
+	!@ отмечаем, что знание использовано
 	$object_array[arrpos('$id_array',$args['knew'])]+='[выполнено]'
 end
 --- knew.fin ---------------------------------
