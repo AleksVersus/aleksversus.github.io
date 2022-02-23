@@ -648,5 +648,9 @@ end
 if $args[0]='liquid.nopeflask':
 	$args['res']='<span style="color:#880000;">У вас нет фляги.</span>'
 end
+:выбросить_рюкзак
+if $args[0]='bag.drop':
+	$args['res']='<span style="color:#886600;">Рюкзак выброшен. Вам больше некуда складывать вещи.</span>'
+end
 $result=$args['res']
 --- base.txt ---------------------------------

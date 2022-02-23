@@ -1,20 +1,23 @@
+QSP-Game Локация выбрасывания рюкзака
 # put.bag
-if $args[0]='': $args[0]=$curloc
-$args[1]=$args[1]
-args[9]=-1
+args[9]=-1	& !@ стартовая позиция поиска
+if $args[0]='': $args[0]=$curloc	& !@ если не указано, куда выбросить рюкзак, выбрасываем на текущей локации
 :for
+!@ ищем предмет в рюкзаке
 if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
 	args[9]=arrcomp('$object_array','[\s\S]*\[:место_в_рюкзаке:\][\s\S]*',args[9]+1)
 else
 	args[9]=arrcomp(args[9]+1,'$object_array','[\s\S]*\[:место_в_рюкзаке:\][\s\S]*')
 end
-if args[9]!-1:
+if args[9]<>-1:
+	!@ если находим предмет в рюкзаке, скидываем предмет на локацию
 	$position_array[args[9]]=$args[0]
 	jump 'for'
 end
-gosub 'crt.obj','','','<obj> [hide.onloc]'
-$print[]='<font color=#886600>Рюкзак выброшен. Вам больше некуда складывать вещи.</font>'
-if $args[1]!'//nope.goto//':
+!@ gosub 'crt.obj','','','<obj> [hide.onloc]'	& !@ создаём скрытый на локации предмет (не помню зачем)
+$print[]=$func('base.txt','bag.drop')	& !@ добавить текст о выбрасывании рюкзака в пул
+if $args[1]<>'//nope.goto//':
+	!@ если не запрещено, перезаходим на локацию
 	time['goto']=1
 	goto $args[0]
 end

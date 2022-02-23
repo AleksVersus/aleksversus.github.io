@@ -8,6 +8,8 @@
 if strcomp($user_text,'p\d+')<>0:
 	$GAME_VALUE['interface']='[game]'
 	goto 'page.'+$strfind($user_text,'\d+')
+elseif $user_text='objs':
+	*pl $func('uc.obj')
 elseif $user_text='log':
 	*pl $func('#array.prnt#','$log_error')
 elseif $user_text='way':
