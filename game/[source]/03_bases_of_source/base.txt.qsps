@@ -1,7 +1,7 @@
-# base.txt
-! выводит нужный текст
+QSP-Game ! выводит нужный текст
 $args[0] = $args[0]	&	!	какой текст выбрать
-$args[1] = $args[1]	&	!	модификации текста
+$args[1], $args[2], $args[3] и т.д.	&	!	модификации текста
+# base.txt
 $args[9] = $args[9]
 if $args[0] = 'table.mainsets':
 	if $AVS_PLAYERTYPE['size']="MINI":
@@ -465,6 +465,15 @@ end
 if $args[0]='fst' or $args[0]='soc':
 	if args[1]>args[2]: $args['add.colors and attributes']='noit' else $args['add.colors and attributes']='ysit'
 end
+if $args[0]='fst.lose':
+	$args['res']='<a href="exec:time[''goto'']=1 & goto ''page.<<args[1]>>''" class="plain">Вы оказались не слишком ловки в этот раз.</a>'
+end
+if $args[0]='fst.win':
+	$args['res']='<a href="exec:time[''goto'']=1 & goto ''page.<<args[1]>>''" class="plain">В этот раз вы оказались достаточно ловки.</a>'
+end
+if $args[0]='fst.prove':
+	$args['res']='<a href="exec:gosub ''fast'',''cube''" class="plain">Проверить ловкость</a>'
+end
 :выводим знания
 if $args[0] = 'table.knew':
 	$args['res']='<br><br><table cellspacing=0 width=100%>'
@@ -607,6 +616,16 @@ if $args[0]='blaster.incharge' or $args[0]='blaster.decharge':
 	end
 	if $args[0]='blaster.incharge': $args['res']='<span style="color:#<<$args["c"]>>">Заряд бластера увеличивается: +<<args[1]>></span>'
 	if $args[0]='blaster.decharge': $args['res']='<span style="color:#<<$args["c"]>>">Заряд бластера уменьшается: <<args[1]>></span>'
+end
+:жидкость
+if $args[0]='liquid.drop':
+	$args['res']='<span style="color:#884400;">Вы вылили <<$args[1]>> из фляги.</span>'
+end
+if $args[0]='liquid.full':
+	$args['res']='<span style="color:#008888;">Вы наполнили флягу <<$args[1]>>.</span>'
+end
+if $args[0]='liquid.nopeflask':
+	$args['res']='<span style="color:#880000;">У вас нет фляги.</span>'
 end
 $result=$args['res']
 --- base.txt ---------------------------------
