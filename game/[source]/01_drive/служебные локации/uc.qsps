@@ -10,6 +10,14 @@ if strcomp($user_text,'p\d+')<>0:
 	goto 'page.'+$strfind($user_text,'\d+')
 elseif $user_text='objs':
 	*pl $func('uc.obj')
+elseif $user_text='eb' or $user_text='endless bug':
+	if $GAME_VALUE['endlessbag']<>'true':
+		$GAME_VALUE['endlessbag']='true'
+		*pl "Включён бесконечный рюкзак."
+	else
+		$GAME_VALUE['endlessbag']=''
+		*pl "Бесконечный рюкзак выключен."
+	end
 elseif $user_text='log':
 	*pl $func('#array.prnt#','$log_error')
 elseif $user_text='way':
