@@ -113,6 +113,7 @@ $args['p8']='С уважением,<br>Aleks Versus'
 				if $args['p<<args["j"]>>.<<args["i"]>>']<>'':
 					$args['screen']+='<p class="pgf">'+$args['p<<args["j"]>>.<<args["i"]>>']+'</p>'
 					if args['i']=2 and args['j']=1:
+						if $AVS_PLAYERTYPE['size']="MINI": $args['screen']+="<br>"	& !@ без этого отступа табличка приклеивается к строке
 						$args['screen']+=$func('base.txt','table.mainsets')
 					end
 					args['i']+=1
@@ -164,6 +165,7 @@ $args['p8']='С уважением,<br>Aleks Versus'
 							$args['screen']+=$replace($args['p<<args["j"]>>.<<args["i"]>>'],'<span class="yello_text">','<span style="color:#888800;">')
 						$args['screen']+='</p>'
 						if args['i']=2 and args['j']=1:
+							if $AVS_PLAYERTYPE['size']="MINI": $args['screen']+="<br>"	& !@ без этого отступа табличка приклеивается к строке
 							$args['screen']+=$func('base.txt','table.mainsets')
 						end
 						args['i']+=1
