@@ -103,6 +103,8 @@ if $args[0] = 'table.mainsets':
 	end
 end
 if $args[0]='table.numbers':
+!@ отрисовка таблички с числами удачи и неудачи
+	!@ циклом добавляем к списку чисел удачи числа, записанные в массиве $num_luck
 	args['i']=0
 	:numluck
 	if args['i']<arrsize('$num_luck') and args['i']<6:
@@ -111,25 +113,27 @@ if $args[0]='table.numbers':
 		if args['i']<arrsize('$num_luck'): $args['luck']+=',&nbsp;'
 		jump 'numluck'
 	end
+	!@ так же циклом добавляем к списку чисел неудачи числа, записанные в массив $num_unluck
 	args['i']=0
 	:unluck
 	if args['i']<arrsize('$num_unluck') and args['i']<6:
-		$args['unluck']+='<s>'+$num_unluck[args['i']]+'</s>'
+		$args['unluck']+=$num_unluck[args['i']]
 		args['i']+=1
 		if args['i']<arrsize('$num_unluck'): $args['unluck']+=',&nbsp;'
 		jump 'unluck'
 	end
-	if $AVS_PLAYERTYPE['type']="QN":
+	if $AVS_PLAYERTYPE['size']="MINI":
+		!@ в любом плеере mini таблица растягивается на 100% экрана
+			$args['res']='<table width=100% cellspacing=0>'
+	elseif $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
+		!@ в навигаторе и qSpider поведение таблицы определяется стилями
 		$args['res']='<table cellspacing=0 class="avs_game_stat_table">'
 	else
-		if $AVS_PLAYERTYPE['size']="MINI":
-			$args['res']='<table width=100% cellspacing=0>'
-		else
-			$args['res']='<table width=280 cellspacing=0>'
-		end
+		!@ в классическом плеере табличка всегда размером в 280 пикселей
+		$args['res']='<table width=280 cellspacing=0>'
 	end
-	$args['res']+='<tr name=luck bgcolor=#'+$GAME_INTERFACE['stat.luck.bgcolor']+'><td align=left><font color=#'+$GAME_INTERFACE['stat.luck.color']+'>'+$GAME_INTERFACE['stat.luck.attrib']+'Числа удачи:'+$GAME_INTERFACE['/stat.luck.attrib']+'</font></td><td align=center><font color=#'+$GAME_INTERFACE['stat.luck.color']+'>'+$GAME_INTERFACE['stat.luck.attrib']+'<b>'+$args['luck']+'</b>'+$GAME_INTERFACE['/stat.luck.attrib']+'</font></td></tr>'
-	$args['res']+='<tr name=unluck bgcolor=#'+$GAME_INTERFACE['stat.unluck.bgcolor']+'><td align=left><font color=#'+$GAME_INTERFACE['stat.unluck.color']+'>'+$GAME_INTERFACE['stat.unluck.attrib']+'Числа неудачи:'+$GAME_INTERFACE['/stat.unluck.attrib']+'</font></td><td align=center><font color=#'+$GAME_INTERFACE['stat.unluck.color']+'>'+$GAME_INTERFACE['stat.unluck.attrib']+$args['unluck']+$GAME_INTERFACE['/stat.unluck.attrib']+'</font></td></tr>'
+	$args['res']+='<tr name=luck bgcolor=#e1ffe1><td align=left><span style="color:#000000;">Числа удачи:</span></td><td align=center><span style="color:#000000;font-weight:bolder;">'+$args['luck']+'</span></td></tr>'
+	$args['res']+='<tr name=unluck bgcolor=#ffe1e1><td align=left><span style="color:#000000;">Числа неудачи:</span></td><td align=center><span style="color:#000000;text-decoration:line-through;">'+$args['unluck']+'</span></td></tr>'
 	$args['res']+='</table>'
 end
 if $args[0] = 'table.char':
