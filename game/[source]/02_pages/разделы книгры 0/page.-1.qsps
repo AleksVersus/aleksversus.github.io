@@ -1,5 +1,5 @@
+QSP-Game ! НЕПОСРЕДСТВЕННО НАЧАЛО ИГРЫ. ПОЛУЧАЕМ ВСЕ ОСНОВНЫЕ ХАРАКТЕРИСТИКИ И ПРЕДНАСТРОЙКИ
 # page.-1
-! НЕПОСРЕДСТВЕННО НАЧАЛО ИГРЫ. ПОЛУЧАЕМ ВСЕ ОСНОВНЫЕ ХАРАКТЕРИСТИКИ И ПРЕДНАСТРОЙКИ
 $lvar['заголовок']={Выбор характеристик}
 $lvar['колонтитул']={nope}
 gosub 'set.mainsets',val($args[0])
@@ -9,6 +9,5 @@ $lvar['исходник']={<p align=justify><font color=#004400><i>&nbsp;&nbsp;&
 showinput 1
 if здесь_был[$curloc]=0:
 	gosub 'set.presets'
-	if $AVS_PLAYERTYPE['size']="MINI": $GAME_INTERFACE['next.href']='true'
 end
 --- page.-1 ---------------------------------

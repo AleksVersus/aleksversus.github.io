@@ -24,79 +24,10 @@ end
 if $GAME_INTERFACE['sets.refresh']='' or $args[0]<>'kill':
 	! основные настройки
 	if $args[0]='kill' or $args[0]='refresh': 		$GAME_INTERFACE['refresh']=''			&	!	принудительно обновить настройки интерфейса страница.сброс - сбросить к стандартным настройкам плеера
-	if $args[0]='kill' or $args[0]='objs': 			$GAME_INTERFACE['objs']='hide'			&	!	окно инвентаря. hide - скрывать show - показывать
-	if $args[0]='kill' or $args[0]='stat': 			$GAME_INTERFACE['stat']='hide'			&	!	окно дополнительного описания. hide - скрывать show - показывать
 	if $args[0]='kill' or $args[0]='back.href':		$GAME_INTERFACE['back.href']='false'	&	!	кнопка отката: false - не отображается true - отображается
 	if $args[0]='kill' or $args[0]='next.href': 	$GAME_INTERFACE['next.href']='false'	&	!	кнопка пролистывания: false - на экране отображаются кнопки настроек true - отображается кнопка пролистывания
-	if $args[0]='kill' or $args[0]='main.bgcolor':	$GAME_INTERFACE['main.bgcolor']='ffffff'&	!	основной цвет фона. Стандартный
-	if $args[0]='kill' or $args[0]='main.text.color':$GAME_INTERFACE['main.text.color']=''	&	!	основной цвет шрифта. Стандартный
 	! тонкие настройки
-		! ------------------------------------------------------------- заголовки --------------------------------------------------------------
-			! состояния заголовков
-			if $args[0]='kill' or $args[0]='head.variants':    $GAME_INTERFACE['head.variants']='3'				&	!	вариант. Как выглядит заголовок
-			! аттрибуты заголовков
-			if $args[0]='kill' or $args[0]='head.simpl.color':  $GAME_INTERFACE['head.simpl.color']='008899'	&	!	цвет простого заголовка
-			if $args[0]='kill' or $args[0]='head.chpnt.color':  $GAME_INTERFACE['head.chpnt.color']='994400'	&	!	цвет заголовка в чекпоинте
-			if $args[0]='kill' or $args[0]='head.simpl.attrib': $GAME_INTERFACE['head.simpl.attrib']='<b>'		&	!	открывающие теги <b><i><u>
-			if $args[0]='kill' or $args[0]='head.simpl.attrib': $GAME_INTERFACE['/head.simpl.attrib']='</b>'	&	!	открывающие теги <b><i><u>
-			if $args[0]='kill' or $args[0]='head.chpnt.attrib': $GAME_INTERFACE['head.chpnt.attrib']='<b>'		&	!	открывающие теги <b><i><u>
-			if $args[0]='kill' or $args[0]='head.chpnt.attrib': $GAME_INTERFACE['/head.chpnt.attrib']='</b>'	&	!	открывающие теги <b><i><u>
-			if $args[0]='kill' or $args[0]='head.simpl.size':   $GAME_INTERFACE['head.simpl.size']='size=6'		&	!	размер шрифта
-			if $args[0]='kill' or $args[0]='head.chpnt.size':   $GAME_INTERFACE['head.chpnt.size']='size=6'		&	!	размер шрифта
-			if $args[0]='kill' or $args[0]='head.simpl.bgcolor':$GAME_INTERFACE['head.simpl.bgcolor']=''		&	!	размер шрифта
-			if $args[0]='kill' or $args[0]='head.chpnt.bgcolor':$GAME_INTERFACE['head.chpnt.bgcolor']=''		&	!	размер шрифта
-		! ------------------------------------------------------------- заголовки --------------------------------------------------------------
-		
-		! -------------------------------------------------------- основное описание -------------------------------------------------------------
-			! аттрибуты гиперссылок в тексте основного описания /а так же всех прочих гиперссылок/
-			if $args[0]='kill' or $args[0]='href.inText.color':  $GAME_INTERFACE['href.inText.color']='008888'	&	!	цвет гиперссылок
-			if $args[0]='kill' or $args[0]='href.inText.attrib': $GAME_INTERFACE['href.inText.attrib']=''		&	!	открывающие теги <b><i><u>
-			if $args[0]='kill' or $args[0]='href.inText.attrib': $GAME_INTERFACE['/href.inText.attrib']=''		&	!	закрывающие теги
-			! аттрибуты вводных фраз об изменении статов
-			if $args[0]='kill' or $args[0]='print.stat.color':  $GAME_INTERFACE['print.stat.color']='008800'	&	!	цвет гиперссылок
-			if $args[0]='kill' or $args[0]='print.stat.attrib': $GAME_INTERFACE['print.stat.attrib']='<i>'		&	!	открывающие теги <b><i><u>
-			if $args[0]='kill' or $args[0]='print.stat.attrib': $GAME_INTERFACE['/print.stat.attrib']='</i>'	&	!	закрывающие теги
-			! аттрибуты фраз о недостатке навыка
-			if $args[0]='kill' or $args[0]='print.noit.color':  $GAME_INTERFACE['print.noit.color']='662222'	&	!	цвет гиперссылок
-			if $args[0]='kill' or $args[0]='print.noit.attrib': $GAME_INTERFACE['print.noit.attrib']=''			&	!	открывающие теги <b><i><u>
-			if $args[0]='kill' or $args[0]='print.noit.attrib': $GAME_INTERFACE['/print.noit.attrib']=''		&	!	закрывающие теги
-			! аттрибуты фраз о достатке навыка
-			if $args[0]='kill' or $args[0]='print.ysit.color':  $GAME_INTERFACE['print.ysit.color']='226622'	&	!	цвет гиперссылок
-			if $args[0]='kill' or $args[0]='print.ysit.attrib': $GAME_INTERFACE['print.ysit.attrib']=''			&	!	открывающие теги <b><i><u>
-			if $args[0]='kill' or $args[0]='print.ysit.attrib': $GAME_INTERFACE['/print.ysit.attrib']=''		&	!	закрывающие теги
-			! надпись, предлагающая проверку навыка
-			if $args[0]='kill' or $args[0]='print.prov.color':  $GAME_INTERFACE['print.prov.color']='339900'	&	!	цвет гиперссылок
-			if $args[0]='kill' or $args[0]='print.prov.attrib': $GAME_INTERFACE['print.prov.attrib']=''			&	!	открывающие теги <b><i><u>
-			if $args[0]='kill' or $args[0]='print.prov.attrib': $GAME_INTERFACE['/print.prov.attrib']=''		&	!	закрывающие теги
-			! настройки цветов основного описания
-			if $args[0]='kill' or $args[0]='maintxt.text.color':  $GAME_INTERFACE['maintxt.text.color']=''				&	!	цвет текста
-			if $args[0]='kill' or $args[0]='maintxt.text.attrib': $GAME_INTERFACE['maintxt.text.attrib']=''				&	!	открывающие теги <b><i><u>
-			if $args[0]='kill' or $args[0]='maintxt.text.attrib': $GAME_INTERFACE['/maintxt.text.attrib']=''				&	!	закрывающие теги
-			if $args[0]='kill' or $args[0]='maintxt.bgcolor':  $GAME_INTERFACE['maintxt.bgcolor']=''			&	!	цвет фона
-		! -------------------------------------------------------- основное описание -------------------------------------------------------------
-		
-		! ------------------------------------------------------- предметы на локации ------------------------------------------------------------
-			! аттрибуты ссылок на предметы, сброшенные на локации
-			if $args[0]='kill' or $args[0]='href.objLoc.color':  $GAME_INTERFACE['href.objLoc.color']='008888'	&	!	цвет гиперссылок
-			if $args[0]='kill' or $args[0]='href.objLoc.attrib': $GAME_INTERFACE['href.objLoc.attrib']=''		&	!	открывающие теги <b><i><u>
-			if $args[0]='kill' or $args[0]='href.objLoc.attrib': $GAME_INTERFACE['/href.objLoc.attrib']=''		&	!	закрывающие теги
-			! настройки блока
-			if $args[0]='kill' or $args[0]='objLoc.bgcolor':  $GAME_INTERFACE['objLoc.bgcolor']='f0ffff'		&	!	цвет фона
-			if $args[0]='kill' or $args[0]='objLoc.variants': $GAME_INTERFACE['objLoc.variants']='1'			&	!	вариант 1- показать 2 -скрыть
-		! ------------------------------------------------------- предметы на локации ------------------------------------------------------------
-		
-		! -------------------------------------------------------- кнопки назад и вперёд ---------------------------------------------------------
-			! атрибуты ссылки назад
-			if $args[0]='kill' or $args[0]='href.back.color':  $GAME_INTERFACE['href.back.color']='008888'		&	!	цвет гиперссылок
-			if $args[0]='kill' or $args[0]='href.back.attrib': $GAME_INTERFACE['href.back.attrib']='<b>'		&	!	открывающие теги <b><i><u>
-			if $args[0]='kill' or $args[0]='href.back.attrib': $GAME_INTERFACE['/href.back.attrib']='</b>'		&	!	закрывающие теги
-			if $args[0]='kill' or $args[0]='href.back.bgcolor': $GAME_INTERFACE['href.back.bgcolor']=''			&	!	цвет фона
-			! аттрибуты кнопки next
-			if $args[0]='kill' or $args[0]='href.next.color':  $GAME_INTERFACE['href.next.color']='008888'		&	!	цвет гиперссылок
-			if $args[0]='kill' or $args[0]='href.next.attrib': $GAME_INTERFACE['href.next.attrib']=''			&	!	открывающие теги <b><i><u>
-			if $args[0]='kill' or $args[0]='href.next.attrib': $GAME_INTERFACE['/href.next.attrib']=''			&	!	закрывающие теги
-			if $args[0]='kill' or $args[0]='href.next.bgcolor':$GAME_INTERFACE['href.next.bgcolor']=''			&	!	цвет фона
-		! -------------------------------------------------------- кнопки назад и вперёд ---------------------------------------------------------
+
 		
 		! --------------------------------------------------------------- предметы ---------------------------------------------------------------
 			! аттрибуты квестовых предметов

@@ -77,17 +77,17 @@ end
 	end
 	:print.noit
 	if $floor[]='print.noit':
-		$GAME_INTERFACE['screen.settings']+='<font color=#'+$GAME_INTERFACE['print.noit.color']+'>'+$GAME_INTERFACE['print.noit.attrib']+'Тебовалось навыка 99. Ваш навык 88.'+$GAME_INTERFACE['/print.noit.attrib']+'</font>'
+		$GAME_INTERFACE['screen.settings']+='<font color=#662222>Тебовалось навыка 99. Ваш навык 88.</font>'
 		$args['settings.screen']+=$func("avs.sets.color","print.noit","")
 	end
 	:print.ysit
 	if $floor[]='print.ysit':
-		$GAME_INTERFACE['screen.settings']+='<font color=#'+$GAME_INTERFACE['print.ysit.color']+'>'+$GAME_INTERFACE['print.ysit.attrib']+'Тебовалось навыка 88. Ваш навык 99.'+$GAME_INTERFACE['/print.ysit.attrib']+'</font>'
+		$GAME_INTERFACE['screen.settings']+='<font color=#226622>Тебовалось навыка 88. Ваш навык 99.</font>'
 		$args['settings.screen']+=$func("avs.sets.color","print.ysit","")
 	end
 	:print.prov
 	if $floor[]='print.prov':
-		$GAME_INTERFACE['screen.settings']+='<font color=#'+$GAME_INTERFACE['print.prov.color']+'>'+$GAME_INTERFACE['print.prov.attrib']+'ПРОВЕРЬТЕ СВОЙ НАВЫК'+$GAME_INTERFACE['/print.prov.attrib']+'</font>.'
+		$GAME_INTERFACE['screen.settings']+='<font color=#339900>ПРОВЕРЬТЕ СВОЙ НАВЫК</font>.'
 		$args['settings.screen']+=$func("avs.sets.color","print.prov","")
 	end
 :head

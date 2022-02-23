@@ -2,8 +2,8 @@
 if $args[0]='test':
 ! тонкая настройка внешнего вида игры
 	$args['text']="<p align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Здесь вы можете настроить внешний вид игры. Например, так выглядит основной текст страницы. Чтобы изменить его, нужно выбрать соответствующи пункт в меню настроек, которые расположены ниже.
-     Доступны тонкие настройки фонов и шрифтов почти для всех элементов страницы. Вы можете настроить внешний вид инвентаря, блока статистики, блока дополнительных текстов (<span style='color:#<<$GAME_INTERFACE['print.stat.color']>>'><<$GAME_INTERFACE['print.stat.attrib']>>Так выглядят пояснительные тексты в основном описании<<$GAME_INTERFACE['/print.stat.attrib']>></span>) и блока заметок. А <span style='color:#<<$GAME_INTERFACE['href.inText.color']>>;'><<$GAME_INTERFACE['href.inText.attrib']>>вот так выглядят гиперссылки,<<$GAME_INTERFACE['/href.inText.attrib']>></span> встречающиеся в тексте. Их внешний вид вы тоже можете настроить.</p>"
-	$args['obj']="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color:#<<$GAME_INTERFACE['href.objLoc.color']>>;'><<$GAME_INTERFACE['href.objLoc.attrib']>>Взять некий предмет с локации<<$GAME_INTERFACE['/href.objLoc.attrib']>></span><br>"
+     Доступны тонкие настройки фонов и шрифтов почти для всех элементов страницы. Вы можете настроить внешний вид инвентаря, блока статистики, блока дополнительных текстов (<span style='color:#<<$GAME_INTERFACE['print.stat.color']>>'><<$GAME_INTERFACE['print.stat.attrib']>>Так выглядят пояснительные тексты в основном описании<<$GAME_INTERFACE['/print.stat.attrib']>></span>) и блока заметок. А <span style='color:#008888;'>вот так выглядят гиперссылки,</span> встречающиеся в тексте. Их внешний вид вы тоже можете настроить.</p>"
+	$args['obj']="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color:#008888;'>Взять некий предмет с локации</span><br>"
 	$args['obj']+=$args['obj']+$args['obj']
 	$args['settings']=$func('base.face',$floor[])
 	$args['screen']=$func('int.screen',$args['text']+'<br>'+$args['settings'],$args['obj'],'test','[game]','колонтитул')

@@ -7,8 +7,7 @@ if $func('get.daughter.obj',$args[0],'<obj>','$temp_id')='true':
 		$args['name'] = $func('get.word.padez',$func('get.tag.cont',$args['obj'],'name'),'В')
 		if instr($args['obj'],'[hide.onloc]')=0 and $strfind($lvar['исходник'],'\[obj\]\s*'+$temp_id[0]+'\s*\|')='':
 			$args['res']+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="exec:gosub ''add.obj'',''<<$temp_id[0]>>''" title="добавление предмета" class="plain">'
-			$args['res']+='<font color=#'+$GAME_INTERFACE['href.objLoc.color']+'>'+$GAME_INTERFACE['href.objLoc.attrib']+'Взять '+$args['name']
-			$args['res']+=$GAME_INTERFACE['/href.objLoc.attrib']+'</font></a><br>'
+			$args['res']+='<font color=#008888>Взять '+$args['name']+'</font></a><br>'
 		end
 		killvar '$temp_id',0
 		jump 'for'
