@@ -4,12 +4,12 @@ $args[0] = $args[0]
 args[1] = args[1]+1
 ! проверка на наличие динамических конструкций
 :next_str
-if $strfind($args[0],'<DIN(\d+):[\s\S]*?:\1DIN>')!'':
+if $strfind($args[0],'<DIN(\d+):[\s\S]*?:\1DIN>')<>'':
 	$args['sup']=$args[0]	&	!	запоминаем текущее положение дел
 	:still_DIN
 	! получаем строку, в которой должен присутствовать <DIN1::1DIN>
 	$args['sup']=$strfind($args['sup'],'<DIN(\d+):[\s\S]*?:\1DIN>')
-	if $args['sup']!"":
+	if $args['sup']<>"":
 		! если подобная строка получена, убираем концы
 		$args['sup.mem'] = $args['sup']	&	!	запоминаем, как выглядела строка до отбрасывания концов
 		$args['sup']=$strfind($args['sup'],'<DIN(\d+):([\s\S]*?):\1DIN>',2)
@@ -22,18 +22,18 @@ if $strfind($args[0],'<DIN(\d+):[\s\S]*?:\1DIN>')!'':
 		$args[0] = $replace($args[0],$args['sup.mem'],$args['sup.new'])
 	end
 	jump 'next_str'
-elseif $strfind($args[0],'\[page=\d+\][\s\S]*?\[\/page\]')!'':
+elseif $strfind($args[0],'\[page=\d+\][\s\S]*?\[\/page\]')<>'':
 	$args['new.text'] = $strfind($args[0],'\[page=\d+\][\s\S]*?\[\/page\]')
 	$args[0] = $replace($args[0],$args['new.text'],$func('href.page',$args['new.text']))
 	jump 'next_str'
-elseif $strfind($args[0],'\[(\D+)\][\s\S]*?\[\/\1\]')!'':
+elseif $strfind($args[0],'\[(\D+)\][\s\S]*?\[\/\1\]')<>'':
 	$args['new.text'] = $strfind($args[0],'\[(\D+)\][\s\S]*?\[\/\1\]')	&	!	получаем тегированную строку
 	$args['tag'] = $strfind($args[0],'\[(\D+)\][\s\S]*?\[\/\1\]',1)	&	!	получаем тег
 	$args['string']=$func('get.tag.cont',$args['new.text'],$args['tag'])	&	!	извлекаем строку из тегов
 	! внимание. Далее следует рекурсивное обращение к текущей локации!!!
 	!*pl 'Уровень рекурсии: <<args[1]>>'
 	!*pl 'Строка без тегов: '+$args['string']
-	if $strfind($args['string'],'\[(\D+)\][\s\S]*?\[\/\1\]')!'':
+	if $strfind($args['string'],'\[(\D+)\][\s\S]*?\[\/\1\]')<>'':
 		!*pl 'Поскольку текущая строка содержит вложенный тег, вызываем процедуру снова.'
 		$args['new.str']=$replace($args['new.text'],$args['string'],$func('int.DIN',$args['string'],args[1]))
 		$args[0]=$replace($args[0],$args['new.text'],$args['new.str'])
@@ -42,7 +42,7 @@ elseif $strfind($args[0],'\[(\D+)\][\s\S]*?\[\/\1\]')!'':
 	end
 	$args[0] = $replace($args[0],$args['new.text'],$func('int.DINSTR',$args['new.text']))
 	jump 'next_str'
-elseif $strfind($args[0],'<a l:href="#n_\d+">[\s\S]+?<\/a>')!'':
+elseif $strfind($args[0],'<a l:href="#n_\d+">[\s\S]+?<\/a>')<>'':
 	$args['new.text'] = $strfind($args[0],'<a l:href="#n_\d+">[\s\S]+?<\/a>')
 	$args[0] = $replace($args[0],$args['new.text'],$func('href.page',$args['new.text']))
 	jump 'next_str'

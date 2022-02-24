@@ -1,3 +1,4 @@
+QSP-Game код данной локации выполняется непосредственно перед сохранением
 # onGameSave
 killvar '$print'
 killvar '$print_down'

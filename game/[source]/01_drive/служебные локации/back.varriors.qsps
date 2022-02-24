@@ -1,34 +1,21 @@
+QSP-Game локация отвечает за работу кнопки отката на шаг назад
 # back.varriors
-$args[0] = $args[0]	&	!	управление
+$args[0] = $args[0]	&	!@	управление
 args['состояние']=arrsize('$survived_location')-2
-! состояние по текущей локации arrsize-1
-! состояние по предыдущей локации arrsize-2
+!@ состояние по текущей локации arrsize-1
+!@ состояние по предыдущей локации arrsize-2
 $args['переменные']=$survived_varriors[args['состояние']]
 $args['локация']=$survived_location[args['состояние']]
 if $args[0]='':
-! переходим на предыдущую локацию
+!@ переходим на предыдущую локацию
 	time['goto']=1
-	!{killvar '$GAME_INTERFACE'
-	killvar '$GAME_VALUE'
-	killvar 'fast' & killvar 'power' & killvar 'social'
-	killvar '$id_array'
-	killvar '$object_array'
-	killvar '$position_array'
-	killvar 'kolvo_array'
-	killvar 'charge_array'
-	killvar '$run_array'
-	killvar '$num_unluck'
-	killvar '$num_luck'
-	killvar 'здесь_был'
-	killvar 'удача_восст'
-	killvar 'checkpoint'}
 	$GAME_VALUE['back.code']='back'
 	goto $args['локация']
 elseif $args[0]='back':
-! если мы уже перешли на предыдущую локацию. Удаляем знания о текущей (с которой перешли)
+!@ если мы уже перешли на предыдущую локацию. Удаляем знания о текущей (с которой перешли)
 	killvar '$survived_location',arrsize('$survived_location')-1
 	killvar '$survived_varriors',arrsize('$survived_varriors')-1
-	!killvar '$GAME_INTERFACE'
+	!@killvar '$GAME_INTERFACE'
 	killvar '$GAME_VALUE'
 	killvar 'fast' & killvar 'power' & killvar 'social'
 	killvar '$id_array'
@@ -42,7 +29,7 @@ elseif $args[0]='back':
 	killvar 'здесь_был'
 	killvar 'удача_восст'
 	killvar 'checkpoint'
-	! восстанавливаем значения
+	!@ восстанавливаем значения
 	dynamic $args['переменные']
 end
 --- back.varriors ---------------------------------

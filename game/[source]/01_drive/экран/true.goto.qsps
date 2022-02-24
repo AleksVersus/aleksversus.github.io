@@ -1,5 +1,7 @@
 # true.goto
+
 if $GAME_WAR['thiswar.'+$curloc]='':
+	
 	goto $curloc
 elseif $GAME_WAR['thiswar.'+$curloc]='war':
 	gosub 'int.war.screen',$curloc

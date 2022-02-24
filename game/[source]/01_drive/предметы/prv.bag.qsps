@@ -18,8 +18,8 @@ if arrsize('$temp_id')>0:
 	args['pos']=arrpos('$position_array',$temp_id[0])	&	!@ получаем расположение предмета, который лежит в данной позиции, в т.о.
 	if $args[2] = '' or instr($object_array[args['pit']],'[:'+$args[2]+':]'):
 		if $args[1]='id' and $id_array[args['pos']]=$args[0]: jump 'exit'
-		if $args[1]='regexp' and $strfind($object_array[args['pos']],$args[0])!'': jump 'exit'
-		if $args[1]='regrun' and $strfind($run_array[args['pos']],$args[0])!'': jump 'exit'
+		if $args[1]='regexp' and $strfind($object_array[args['pos']],$args[0])<>'': jump 'exit'
+		if $args[1]='regrun' and $strfind($run_array[args['pos']],$args[0])<>'': jump 'exit'
 		if $args[0]='' and $args[1]='' and args['pos']=-1: jump 'exit'
 	end
 	killvar '$temp_id',0

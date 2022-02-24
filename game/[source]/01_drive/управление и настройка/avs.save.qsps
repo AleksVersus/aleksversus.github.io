@@ -1,14 +1,15 @@
 # avs.save
-killvar '$temp_menu'
+
 ! локация организует меню для сохраннения и загрузки состояний игры
 ! Меню генерится и обрабатывается только этой локацией. Реализовано за счёт того, что локации
 ! обрабатывающей пункт меню, передаётся аргументом номер выбранного пункта. Годится только для
 ! меню фиксированного размера.
-$args['save.name']=$func('#zero#',4-len(str(save['count']+1)))+str(save['count']+1)+'_'
+$args['save.name']=$func('#zero#',4-len($str(save['count']+1)))+$str(save['count']+1)+'_'
 $args['loc']=$strfind($curloc,'\d+')
 $args['save.name']+=$func('#zero#',3-len($args['loc']))+$args['loc']
 if args[0]=0:
 	! генерим меню
+	killvar '$temp_menu'
 	$temp_menu[]="Сохранить:avs.save"
 	$temp_menu[]="Загрузить:avs.save"
 	$temp_menu[]='-:-'
@@ -87,7 +88,7 @@ elseif args[0]=999:
 		$print[]=$func('base.txt','nosave')
 	end
 end
-if args[0]<>0:
+if args[0]<>0 and args[0]<>999:
 	time['goto']=1
 	gosub 'true.goto'
 end
