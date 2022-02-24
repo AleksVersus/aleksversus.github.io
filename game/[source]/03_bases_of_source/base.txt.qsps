@@ -615,13 +615,14 @@ end
 if $args[0]='note.objLoc':
 	$args['res']="<font  size=-1>Предметы на локации:</font><br><br>"
 end
-if $args[0]='button.close':
-	$args['res']="[Закрыть настройки интерфейса]"
-end
 :отдать предмет
 if $args[0]='help.putobj':
 	$args['res']='Чтобы отдать предмет, просто щёлкните по его названию и выберите во всплывающем меню пункт "Выбросить". Ссылка перехода активируется после сброса необходимого количества предметов.'
-	$args['add.colors and attributes']='stat'
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['res']='<span class="avs_text_print_stat">'+$args['res']+'</span>'
+	else
+		$args['res']='<span style="color:#008800;"><i>'+$args['res']+'</i></span>'
+	end
 end
 !Общая схема модернизации текстовки в соответствии с настройками
 if $args['add.colors and attributes']!'':
