@@ -471,8 +471,18 @@ end
 if $args[0]='изменение_стата':
 	$args['res']='Изменение состояния.'
 end
+:обаяние
 if $args[0]='soc':
 	$args['res']='Требовалось обаяния <<args[1]>>. Ваше обаяние <<args[2]>>.'
+end
+if $args[0]='soc.prove':
+	$args['res']='<a href="exec:gosub ''social'',''cube''" class="plain">Проверить обаяние</a>'
+end
+if $args[0]='soc.lose':
+	$args['res']='<a href="exec:time[''goto'']=1 & social[''now'']-=1 & goto ''page.<<args[1]>>''" class="plain">Вам не удалось убедить собеседника в этот раз.</a>'
+end
+if $args[0]='soc.win':
+	$args['res']='<a href="exec:time[''goto'']=1 & social[''now'']+=1 & goto ''page.<<args[1]>>''" class="plain">В этот раз вам удалось убедить собеседника.</a>'
 end
 :ловкость
 if $args[0]='fst':
