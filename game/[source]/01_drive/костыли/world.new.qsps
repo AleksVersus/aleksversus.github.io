@@ -1,7 +1,7 @@
+QSP-Game ! локация выбирает новый мир из списка оставшихся
 # world.new
-! локация выбирает новый мир из списка оставшихся
-args[0] = args[0]	&	!	номер страницы по умолчанию
-gosub 'get.daughter.obj','KNOWLEDGE','\[t:выход:t\]'	&	!	получаем список найденных ворот
+args[0] = args[0]	&	!@	номер страницы по умолчанию
+gosub 'get.daughter.obj','KNOWLEDGE','\[t:выход:t\]'	&	!@	получаем список найденных ворот
 if arrsize('$temp_id')<2:
 	killvar '$temp_id'
 	args['res.page']=args[0]
@@ -41,10 +41,10 @@ end
 if args['res.page']=290 or args['res.page']=366 or args['res.page']=178 or args['res.page']=393:
 	killvar '$new_world',arrpos('$new_world','345')
 end
-if arrsize('$new_world')!0:
+if arrsize('$new_world')<>0:
 	$result = $new_world[rand(0,arrsize('$new_world')-1)]
 else
-	$result = str(args['res.page'])
+	$result = $str(args['res.page'])
 end
 killvar '$new_world'
 --- world.new ---------------------------------
