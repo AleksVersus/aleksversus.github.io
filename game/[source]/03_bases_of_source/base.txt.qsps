@@ -490,42 +490,29 @@ if $args[0]='fst.prove':
 end
 :выводим знания
 if $args[0] = 'table.knew':
+!@ табличка со знаниями
 	$args['res']='<br><br><table cellspacing=0 width=100%>'
-	if $GAME_INTERFACE['note.variants']<>'2': $args['res']+='<tr name=note bgcolor=#'+$GAME_INTERFACE['note.even.bgcolor']+'><td align=left>Ваши записи:</td></tr>'
-	if $args[1]<>'test':
-		gosub 'get.daughter.obj','KNOWLEDGE','','$temp_id'
-		args['b']=arrsize('$temp_id')
-	else
-		args['b']=5
-	end
+	$args['res']+='<tr name=note bgcolor=#f9f9f9><td align=left>Ваши записи:</td></tr>'
+	killvar '$temp_id'	& !@ на всякий случай удаляем временный массив
+	gosub 'get.daughter.obj','KNOWLEDGE','','$temp_id'
+	args['b']=arrsize('$temp_id')
 	args['t']=0
 	:knew
-	if arrsize('$temp_id')>0 or (args['i']<=args['b'] and $args[1]='test'):
-		! строка объекта часть тела
-		if args['i'] mod 2 =0: $args['color']=$GAME_INTERFACE['note.even.bgcolor'] else $args['color']=$GAME_INTERFACE['note.odd.bgcolor']
+	if arrsize('$temp_id')>0:
+		!@ строка объекта знание. Для чётных и нечётных строк отличается заливка бэкгрануда
+		if args['i'] mod 2 =0: $args['color']='f9f9f9' else $args['color']='fdfdfd'
 		args['pos.obj']=arrpos('$id_array',$temp_id[0])
 		$args['name']=$func('get.tag.cont',$object_array[args['pos.obj']],'name')
-		if $args[1]='test':
-			if args['i']=0: $args['name']='Образец чётной записи. Номер ноль!'
-			if args['i']=1: $args['name']='Образец нечётной записи. Номер один!'
-			if args['i']=2: $args['name']='Ещё один образец записи.'
-			if args['i']=3: $args['name']='Записи могут быть длинными-длинными, например такие, как эта. На самом деле не важно, как длинна запись, она всё равно будет отображаться на экране.'
-			if args['i']=4: $args['name']='Скрытые заметки не отображаются.'
-			if args['i']=5: $args['name']='Образец записи, которая помогла вам в пути. Выполненное задание или совет, которому вы последовали.'
-		end
-		if instr($object_array[args['pos.obj']],'[выполнено]')<>0 or ($args[1]='test' and args['i']=5):
-			$args['fc']=$GAME_INTERFACE['note.fin.color']
-			$args['fc.attrib']=$GAME_INTERFACE['note.fin.attrib']
-			$args['/fc.attrib']=$GAME_INTERFACE['/note.fin.attrib']
+		if instr($object_array[args['pos.obj']],'[выполнено]')<>0:
+			!@ если задание выполнено, определяем одни настройки цвета
+			$args['fc']='aaaaaa'
 			$args['fin']=' (Сделано)'
 		else
-			$args['fc']=$GAME_INTERFACE['note.new.color']
-			$args['fc.attrib']=$GAME_INTERFACE['note.new.attrib']
-			$args['/fc.attrib']=$GAME_INTERFACE['/note.new.attrib']
+			$args['fc']='8888ff'
 			$args['fin']=''
 		end
 		if instr($object_array[args['pos.obj']],'[hide]')=0 or $args[1]='test':
-			$args['res']+='<tr name=notetext bgcolor=#'+$args['color']+'><td align=left><font color=#'+$args['fc']+'>'+$args['fc.attrib']+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+$args['name']+$args['fin']+$args['/fc.attrib']+'</font></td></tr>'
+			$args['res']+='<tr bgcolor=#<<$args["color"]>> name=notetext><td align=left><span style="color:#<<$args["fc"]>>;"><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<<$args["name"]>><<$args["fin"]>></i></font></td></tr>'
 			args['t']+=1
 		end
 		killvar 'temp_id',0
@@ -534,6 +521,8 @@ if $args[0] = 'table.knew':
 	end
 	$args['res']+='</table>'
 	if args['b']=0 or args['t']=0: $args['res']=''
+	killvar '$temp_id'
+	jump 'end_keep'
 end
 :game
 if $args[0]='game.enemy':
