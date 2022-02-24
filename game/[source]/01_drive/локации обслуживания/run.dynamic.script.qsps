@@ -1,9 +1,11 @@
-# run.dynamic.script
+QSP-Game Запуск динамических скриптов на предметах
 $args[0] = $args[0]	&	!	управляющая конструкция
 $args[1] = $args[1]	&	!	ай-ди предмета, который обрабатываем, новый предмет| включение надстройки
 $args[2] = $args[2]	&	!	ай-ди предмета, который обрабатываем, старый предмет/ динамический код, который нужно выполнить
 $args[3] = $args[3]	&	!	прочая информация
-if $args[1]!'//run.this.dynamic//':
+# run.dynamic.script
+$args[9]=$args[9]	& !@ инициализируем аргументы
+if $args[1]<>'//run.this.dynamic//':
 	args['pit']=arrpos('$id_array',$args[1])
 	$args['dynamic']='$args[9] = $args[9]	&	!	строка инициализирующая аргументы
 '+$run_array[args['pit']]
@@ -13,6 +15,6 @@ else
 	$args[1]=$curloc
 	$args[2]=''
 end
-$args['rds']=DYNEVAL($args['dynamic'],$args[0],$args[1],$args[2],$args[3])
+$args['rds']=$DYNEVAL($args['dynamic'],$args[0],$args[1],$args[2],$args[3])
 $result=$args['rds']
 --- run.dynamic.script ---------------------------------
