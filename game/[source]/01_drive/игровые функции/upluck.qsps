@@ -1,16 +1,23 @@
+QSP-Game ! локация выводит гиперссылки для восстановления чисел
 # upluck
-! локация выводит гиперссылки для восстановления чисел
 $args['resu']='&nbsp;'
 if удача_восст[$curloc]=0 and arrsize('$num_unluck')>0:
-	$args['resu']+='<font size=+1><b>'
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['open.f']+='<span style="font-size:large;font-weight:bolder;">'
+		$args['close.f']+='</span>'
+	else
+		$args['open.f']+='<font size=+1><b>'
+		$args['close.f']+='</b></font>'
+	end
+	$args['resu']+=$args['open.f']
 	:fuck_luck
 	if args[9]<arrsize('$num_unluck') and args[9]<6:
-		if args[9]!0: $args['resu']+=',	'
+		if args[9]<>0: $args['resu']+=',	'
 		$args['resu']+='<a href="exec:gosub ''upluck.num'',''<<$num_unluck[args[9]]>>''" title="upluck" class="plain">'+$num_unluck[args[9]]+'</a>'
 		args[9]+=1
 		jump 'fuck_luck'
 	end
-	$args['resu']+='</b></font>'
+	$args['resu']+=$args['close.f']
 end
 $result=$args['resu']
 --- upluck ---------------------------------

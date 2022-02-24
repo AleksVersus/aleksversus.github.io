@@ -1,9 +1,11 @@
+QSP-Game локация отвечает за восстановление числа в ранг удачных
+$args[0] - выбранное число
 # upluck.num
-$args[0] = $args[0]
-args[1]=arrpos('$num_unluck',$args[0])
-$num_luck[]=$num_unluck[args[1]]
-killvar '$num_unluck',args[1]
-удача_восст[$curloc]=1
-time['goto']=1
+$args[9] = $args[9]	& !@ инициализируем аргументы
+args[1]=arrpos('$num_unluck',$args[0])	& !@ расположение числа в списке чисел неудачи
+$num_luck[]=$num_unluck[args[1]]	& !@ вносим число в массив чисел удачи
+killvar '$num_unluck',args[1]	& !@ убираем число из списка чисел неудачи
+удача_восст[$curloc]=1	& !@ отмечаем восстановление удачи на локации
+time['goto']=1	& !@ делаем нормальный переход на локацию
 goto $curloc
 --- upluck.num ---------------------------------
