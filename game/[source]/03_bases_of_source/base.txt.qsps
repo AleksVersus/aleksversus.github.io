@@ -718,7 +718,6 @@ if $args['add.colors and attributes']='used':
 		$args['res']='<font color=#008800>'+$args['res']+'</font>'
 	end
 end
-
 :зарядить_разрядить_бластер
 if $args[0]='blaster.incharge' or $args[0]='blaster.decharge':
 	if $AVS_PLAYERTYPE['size']="MINI":
