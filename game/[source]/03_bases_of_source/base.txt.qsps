@@ -512,7 +512,7 @@ if $args[0] = 'table.knew':
 			$args['fin']=''
 		end
 		if instr($object_array[args['pos.obj']],'[hide]')=0 or $args[1]='test':
-			$args['res']+='<tr bgcolor=#<<$args["color"]>> name=notetext><td align=left><span style="color:#<<$args["fc"]>>;"><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<<$args["name"]>><<$args["fin"]>></i></font></td></tr>'
+			$args['res']+='<tr bgcolor=#<<$args["color"]>> name=notetext><td align=left><span style="color:#<<$args["fc"]>>;"><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<<$args["name"]>><<$args["fin"]>></i></span></td></tr>'
 			args['t']+=1
 		end
 		killvar 'temp_id',0
@@ -526,6 +526,7 @@ if $args[0] = 'table.knew':
 end
 :game
 if $args[0]='game.enemy':
+	!@ выводим тексты по миниигре в кости
 	$args['win']=$func('get.word.inPos',$args[1],1)
 	$args['lose']=$func('get.word.inPos',$args[1],2)
 	tvar['cube.hero']=tvar['cube.hero.1']+tvar['cube.hero.2']
