@@ -1,30 +1,31 @@
+QSP-Game пункт меню "съесть предмет"
 # menu.eat
 if $args[0] = '': $args[0] = $OOC['id']
 args['sit']=arrpos('$id_array',$args[0])
 $args['obj']=$object_array[args['sit']]
 $args['eating']=$func('get.tag.cont',$args['obj'],'eating')
 $args['np']=$func('get.tag.cont',$args['obj'],'np')
-if instr($args['np'],'[еда]')!0: kolvo_array[args['sit']]-=1
-if instr($args['np'],'[напиток]')!0:
+if instr($args['np'],'[еда]')<>0: kolvo_array[args['sit']]-=1
+if instr($args['np'],'[напиток]')<>0:
 	if charge_array[args['sit']]>0:
 		charge_array[args['sit']]-=1
 	else
 		$print[]=$func('base.txt','empt') & jump 'ext'
 	end
 end
-if instr($args['np'],'[лекарство]')!0:
-	if $GAME_VALUE['приём лекарства']!'разрешён':
+if instr($args['np'],'[лекарство]')<>0:
+	if $GAME_VALUE['приём лекарства']<>'разрешён':
 		$print[]=$func('base.obj','notspec') & jump 'ext'
 	else
 		kolvo_array[args['sit']]-=1
 	end
 end
 dynamic $args['eating'],$args[0]
-if instr($run_array[args['pit']],'!eating!')!0: $args['eat'] = $func('run.dynamic.script','!eating!',$args[0])
+if instr($run_array[args['pit']],'!eating!')<>0: $args['eat'] = $func('run.dynamic.script','!eating!',$args[0])
 if kolvo_array[args['sit']]<1: gosub 'del.obj.id',$args[0]
 if charge_array[args['sit']]<1:
 	args['pot']=arrpos('$position_array',$args[0])
-	if args['pot']!-1: gosub 'del.obj.id',$id_array[args['pot']]
+	if args['pot']<>-1: gosub 'del.obj.id',$id_array[args['pot']]
 end
 :ext
 time['goto']=1

@@ -1,5 +1,5 @@
+QSP-Game ! локация выполняет динамическое меню
 # menu.dynamic
-! локация выполняет динамическое меню
 if $args[0] = '': $args[0] = $OOC['id']
 gosub 'run.dynamic.script','!menu.run!',$args[0],'','',args[0]
 :ext

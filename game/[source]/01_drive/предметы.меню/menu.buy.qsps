@@ -1,3 +1,4 @@
+QSP-Game пункт меню покупки предмета
 # menu.buy
 if $args[0] = '': $args[0] = $OOC['id']
 $args['m']=$func('get.daughter.obj',$args[0],'\[np:[\s\S]*\[монета\][\s\S]*:np\]')

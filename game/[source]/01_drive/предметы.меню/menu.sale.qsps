@@ -1,3 +1,4 @@
+QSP-Game Пункт меню продажи предмета
 # menu.sale
 if $args[0] = '': $args[0] = $OOC['id']
 $args['монеты']=$func('get.tag.cont',$tvar['костыль.заголовок'],'avs-money')
