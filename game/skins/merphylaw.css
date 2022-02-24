@@ -191,3 +191,39 @@
 .avs_text_gsobjint {
 	/* вызов обработчика предмета */
 }
+.avs_text_objonloc {
+	font-size: small;
+}
+.avs_text_print_stat {
+	color: #008800;
+	font-style: italic;
+}
+.avs_text_print_save {
+	color: #990066;
+	font-weight: bolder;
+}
+.avs_text_print_stup {
+	color: #000044;
+	font-style: italic;
+}
+.avs_text_print_put {
+	color: #886600;
+}
+.avs_text_print_nope {
+	color: #880000;
+}
+.avs_text_print_take {
+	color: #008888;
+}
+.avs_text_print_used {
+	color: #008800;
+}
+.avs_text_print_prov {
+	color: #339900;
+}
+.avs_text_print_noit {
+	color: #662222;
+}
+.avs_text_print_ysit {
+	color: #226622;
+}

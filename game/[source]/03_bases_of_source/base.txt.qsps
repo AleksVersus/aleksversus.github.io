@@ -353,7 +353,11 @@ if $args[0]='war':
 end
 if $args[0]='sell':
 	$args['res']='<br><br><br><center>Чтобы продать предмет, нужно щёлкнуть по его названию и в появившемся меню выбрать пункт "Продать".</center>'
-	$args['add.colors and attributes']='stat'
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['res']='<div class="avs_text_print_stat">'+$args['res']+'</div>'
+	else
+		$args['res']='<font color=#008800><i>'+$args['res']+'</i></font>'
+	end
 end
 if $args[0]='ed':
 	args['rand']=rand(1,10)
@@ -444,30 +448,28 @@ if $args[0]='pow':
 	if args[1]<0:	$args['res']='СИЛА уменьшается на <<-args[1]>>'
 	if args[1]>0:	$args['res']='СИЛА увеличивается на <<args[1]>>'
 	if args[1]=0:	$args['res']='СИЛА неизменна'
+	$args['add.colors and attributes']='stat'
 end
 if $args[0]='lovk':
 	if args[1]<0:	$args['res']='ЛОВКОСТЬ уменьшается на <<-args[1]>>'
 	if args[1]>0:	$args['res']='ЛОВКОСТЬ увеличивается на <<args[1]>>'
 	if args[1]=0:	$args['res']='ЛОВКОСТЬ неизменна'
-end
-if $args[0]='pow' or $args[0]='lovk':
 	$args['add.colors and attributes']='stat'
 end
 if $args[0]='powup':
 	if args[1]<0:	$args['res']='СИЛА уменьшается: <<args[1]>>'
 	if args[1]>0:	$args['res']='СИЛА увеличивается: +<<args[1]>>'
 	if args[1]=0:	$args['res']='СИЛА не изменилась.'
+	$args['add.colors and attributes']='stup'
 end
 if $args[0]='lovkup':
 	if args[1]<0:	$args['res']='ЛОВКОСТЬ уменьшается: <<args[1]>>'
 	if args[1]>0:	$args['res']='ЛОВКОСТЬ увеличивается: +<<args[1]>>'
 	if args[1]=0:	$args['res']='ЛОВКОСТЬ не изменилась.'
+	$args['add.colors and attributes']='stup'
 end
 if $args[0]='изменение_стата':
 	$args['res']='Изменение состояния.'
-end
-if $args[0]='powup' or $args[0]='lovkup' or $args[0]='изменение_стата':
-	$args['add.colors and attributes']='stup'
 end
 if $args[0]='soc':
 	$args['res']='Требовалось обаяния <<args[1]>>. Ваше обаяние <<args[2]>>.'
@@ -547,32 +549,33 @@ if $args[0]='game.enemy':
 		$args['res']=$args['выпало']+'<br>У противника выпало больше очков, чем у вас.<br>[page='+$args['lose']+']Выиграл он![/page]'
 	end
 	$args['res']='<br><br><p align=center>'+$args['res']+'</p>'
-	$args['add.colors and attributes']='stup'
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['res']='<div class="avs_text_print_stup">'+$args['res']+'</div>'
+	else
+		$args['res']='<font color=#000044><i>'+$args['res']+'</i></font>'
+	end
 end
 :сохранения
 if $args[0]='сохранения':
-	$args['res']='Пример текста при сохранении.'
+	$args['res']='Пример текста при сохранении.' & $args['add.colors and attributes']='save'
 end
 if $args[0]='nosave':
-	$args['res']='Сейчас нельзя сохранить игру.'
+	$args['res']='Сейчас нельзя сохранить игру.' & $args['add.colors and attributes']='save'
 end
 if $args[0]='save':
-	$args['res']='Игра сохранена.'
+	$args['res']='Игра сохранена.' & $args['add.colors and attributes']='save'
 end
 if $args[0]='chpload':
-	$args['res']='Контрольная точка загружена.'
+	$args['res']='Контрольная точка загружена.' & $args['add.colors and attributes']='save'
 end
 if $args[0]='qckload':
-	$args['res']='Быстрое сохранение загружено.'
+	$args['res']='Быстрое сохранение загружено.' & $args['add.colors and attributes']='save'
 end
 if $args[0]='notchp':
-	$args['res']='Контрольные точки ещё не созданы.'
+	$args['res']='Контрольные точки ещё не созданы.' & $args['add.colors and attributes']='save'
 end
 if $args[0]='notqck':
-	$args['res']='Быстрые сохранения не сделаны.'
-end
-if $args[0]='nosave' or $args[0]='chpload' or $args[0]='qckload' or $args[0]='notchp' or $args[0]='save' or $args[0]='notqck' or $args[0]='сохранения':
-	$args['add.colors and attributes']='save'
+	$args['res']='Быстрые сохранения не сделаны.' & $args['add.colors and attributes']='save'
 end
 :текст_по_модификатору_вероятностей
 if $args[0]='vm':
@@ -613,24 +616,99 @@ if $args[0]='vm_5':
 	$args['res']='<span style="color:#880000;">Произошла ошибка. Сделайте скриншот и обратитесь к разработчику</span>'
 end
 if $args[0]='note.objLoc':
-	$args['res']="<font  size=-1>Предметы на локации:</font><br><br>"
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['res']="<span class=""avs_text_objonloc"">Предметы на локации:</span><br><br>"
+	else
+		$args['res']="<font size=-1>Предметы на локации:</font><br><br>"
+	end
 end
 :отдать предмет
 if $args[0]='help.putobj':
 	$args['res']='Чтобы отдать предмет, просто щёлкните по его названию и выберите во всплывающем меню пункт "Выбросить". Ссылка перехода активируется после сброса необходимого количества предметов.'
+	$args['add.colors and attributes']='stat'
+end
+!@ Общая схема стилизации текстовки
+if $args['add.colors and attributes']='put':
+	!@ аналог print.put...
 	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
-		$args['res']='<span class="avs_text_print_stat">'+$args['res']+'</span>'
+		$args['res']='<div class="avs_text_print_put">'+$args['res']+'</div>'
+	else
+		$args['res']='<font color=#886600>'+$args['res']+'</font>'
+	end
+end
+if $args['add.colors and attributes']='stat':
+	!@ аналог print.stat...
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['res']='<div class="avs_text_print_stat">'+$args['res']+'</div>'
 	else
 		$args['res']='<span style="color:#008800;"><i>'+$args['res']+'</i></span>'
 	end
 end
-!Общая схема модернизации текстовки в соответствии с настройками
-if $args['add.colors and attributes']!'':
-	$args['n.c']=$GAME_INTERFACE['print.'+$args['add.colors and attributes']+'.color']
-	$args['n.a']=$GAME_INTERFACE['print.'+$args['add.colors and attributes']+'.attrib']
-	$args['/n.a']=$GAME_INTERFACE['/print.'+$args['add.colors and attributes']+'.attrib']
-	$args['res']='<font color=#'+$args['n.c']+'>'+$args['n.a']+$args['res']+$args['/n.a']+'</font>'
+if $args['add.colors and attributes']='save':
+	!@ аналог print.save...
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['res']='<span class="avs_text_print_save">'+$args['res']+'</span>'
+	else
+		$args['res']='<span style="color:#990066;"><b>'+$args['res']+'</b></span>'
+	end
 end
+if $args['add.colors and attributes']='stup':
+	!@ аналог print.stup
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['res']='<div class="avs_text_print_stup">'+$args['res']+'</div>'
+	else
+		$args['res']='<font color=#000044><i>'+$args['res']+'</i></font>'
+	end
+end
+if $args['add.colors and attributes']='nope':
+	!@ аналог print.nope
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['res']='<div class="avs_text_print_nope">'+$args['res']+'</div>'
+	else
+		$args['res']='<font color=#880000>'+$args['res']+'</font>'
+	end
+end
+if $args['add.colors and attributes']='noit':
+	!@ аналог print.noit
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['res']='<div class="avs_text_print_noit">'+$args['res']+'</div>'
+	else
+		$args['res']='<font color=#662222>'+$args['res']+'</font>'
+	end
+end
+if $args['add.colors and attributes']='ysit':
+	!@ аналог print.ysit
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['res']='<div class="avs_text_print_ysit">'+$args['res']+'</div>'
+	else
+		$args['res']='<font color=#226622>'+$args['res']+'</font>'
+	end
+end
+if $args['add.colors and attributes']='prov':
+	!@ аналог print.prov
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['res']='<div class="avs_text_print_prov">'+$args['res']+'</div>'
+	else
+		$args['res']='<font color=#339900>'+$args['res']+'</font>'
+	end
+end
+if $args['add.colors and attributes']='take':
+	!@ аналог print.take
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['res']='<div class="avs_text_print_take">'+$args['res']+'</div>'
+	else
+		$args['res']='<font color=#008888>'+$args['res']+'</font>'
+	end
+end
+if $args['add.colors and attributes']='used':
+	!@ аналог print.used
+	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		$args['res']='<div class="avs_text_print_used">'+$args['res']+'</div>'
+	else
+		$args['res']='<font color=#008800>'+$args['res']+'</font>'
+	end
+end
+
 :зарядить_разрядить_бластер
 if $args[0]='blaster.incharge' or $args[0]='blaster.decharge':
 	if $AVS_PLAYERTYPE['size']="MINI":
