@@ -145,7 +145,7 @@ if $args[0] = 'table.char':
 		$args['res']='<table width=100% cellspacing=0>'
 	elseif $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']='qSpider':
 		!@ для навигатора и паука поведение таблички определяется стилями CSS
-		$args['res']='<table cellspacing=0 class="avs_game_stat_table">'
+		$args['res']='<table class="avs_game_stat_table">'
 	else
 		!@ для классического плеера ширина таблички равна 280 пикс.
 		$args['res']='<table width=280 cellspacing=0>'
@@ -203,7 +203,7 @@ if $args[0] = 'table.blast':
 					$args['bgcolor']='fcfcfc'
 				end
 				!@ генерируем ссылку на обработчик предмета
-				$args['name']='<a href="exec:gosub ''onObjClick'',''<<$id_array[args["pos.obj"]]>>''" class="avs_text_gsobjint" class="plain">'
+				$args['name']='<a href="exec:gosub ''onObjClick'',''<<$id_array[args["pos.obj"]]>>''" class="plain">'
 				$args['name']+='<font color=#'+$args['color']+'>'+$args['attrib']
 				$args['name']+=$func('get.word.padez',$func('get.tag.cont',$object_array[args['pos.obj']],'name'),'И')
 				$args['name']+=$args['/attrib']+'</font></a>'
@@ -522,7 +522,7 @@ if $args[0] = 'table.knew':
 		jump 'knew'
 	end
 	$args['res']+='</table>'
-	if args['b']=0 or args['t']=0: $args['res']=''
+	if args['b']=0 or args['t']=0: $args['res']='&nbsp;'
 	killvar '$temp_id'
 	jump 'end_keep'
 end

@@ -111,7 +111,16 @@ if instr($args[3],'[game]')=1:
 		$args['info.scroll']='&nbsp;'
 	end
 	!@ общая таблица из объектов и дополнительных текстов
-	$args['objs_n_info']='<table cellpadding=0 cellspacing=0 border=0 id="avs_game_objs_short">'
+	if $AVS_PLAYERTYPE['size']="MINI":
+		!@ для мобильной версии табличка растягивается на ширину страницы
+		$args['objs_n_info']=='<table width=100% cellpadding=0 cellspacing=0 border=0>'
+	elseif $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']='qSpider':
+		!@ для навигатора и паука поведение таблички определяется стилями CSS
+		$args['objs_n_info']='<table id="avs_game_objs_short">'
+	else
+		!@ для классического плеера ширина таблички равна 280 пикс.
+		$args['objs_n_info']='<table cellpadding=0 cellspacing=0 border=0 id="avs_game_objs_short">'
+	end
 		$args['objs_n_info']+='<tr name=blast><td>'
 			$args['objs_n_info']+=$args['objs.scroll']
 		$args['objs_n_info']+='</td></tr>'
