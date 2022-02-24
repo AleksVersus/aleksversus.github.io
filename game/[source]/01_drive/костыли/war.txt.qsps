@@ -1,9 +1,10 @@
-# war.txt
-! локация извлекает текущий текст из описания противника
+QSP-Game ! локация извлекает текущий текст из описания противника
 $args[0] = $args[0]	&	!	какого рода текст нужен
 $args[1] = $args[1]	&	!	идентификатор противника
 $args[2] = $args[2]	&	!	поступившие параметры
-! сначала ищем текст по роду
+# war.txt
+$args[9]=$args[9]	& !@ инициализация аргументов
+!@ сначала ищем текст по роду
 args['pit']=arrpos('$id_array',$args[1])
 $args['enemy']=$object_array[args['pit']]
 $args['name']=$func('get.n.p',$args['enemy'],'И')
@@ -66,7 +67,7 @@ elseif $args[0]='pdeath':
 	jump 'replaced'	
 end
 $args['text.list']=$func('get.tag.cont',$args['enemy.txt'],$args['text.type'])
-$args['text']=$func('get.tag.cont',$args['text.list'],str(args['num']))
+$args['text']=$func('get.tag.cont',$args['text.list'],$str(args['num']))
 :replaced
 $args['text']=$replace($args['text'],'[eblow]',"<sub><font color=#440000>[<<args['enemy.might']>>]</font></sub>")
 if args['hero.bns']>0:
