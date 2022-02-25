@@ -32,7 +32,7 @@ $args['p.13']='Благодарю сообщество <span class="yello_text">
 $args['p.14']='Ну и спасибо моим друзьям и родным, которые находили в себе силы не отвлекать меня в часы кропотливой и страстной работы. :)'
 $args['p.15']='Страница с онлайн-версией игры всегда доступна по ссылке: <a href="https://aleksversus.github.io/merphy_law/">aleksversus.github.io/merphy_law</a>'
 $args['p.16']='Страница проекта, где вы можете найти исходный код игры на QSP: <a href="https://github.com/AleksVersus/merphy_law">github.com/AleksVersus/merphy_law</a>'
-$args['p.17']='Если есть желание поддержать другие мои проекты, есть патреон: <a href="https://www.patreon.com/aleksversus">patreon.com/aleksversus</a>; есть бусти: <a href="https://boosty.to/aleksversus">boosty.to/aleksversus</a>; есть donation-alerts: <a href="https://www.donationalerts.com/r/aleksversus">donationalerts.com/r/aleksversus</a>.'
+$args['p.17']='Если есть желание поддержать другие мои проекты,<br>есть патреон: <a href="https://www.patreon.com/aleksversus">patreon.com/aleksversus</a>;<br>есть бусти: <a href="https://boosty.to/aleksversus">boosty.to/aleksversus</a>;<br>есть donation-alerts: <a href="https://www.donationalerts.com/r/aleksversus">donationalerts.com/r/aleksversus</a>.'
 !@ списки изменений
 $args['head.floor2.1']='Исправления в версии 1.0:'
 $args['li.01.1']='переходы между мирами осуществляются автоматически со случайным вбросом в непосещённые миры. Таким образом нет необходимости посещать параграфы с выбором следующего мира. Эти параграфы исключены.'
