@@ -1,0 +1,4 @@
+QSP-Game быстрое сохранение
+# save.quicksave
+gosub 'avs.save',6
+- save.quicksave -
