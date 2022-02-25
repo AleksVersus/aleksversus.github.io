@@ -1,5 +1,7 @@
+QSP-Game Генератор списка ссылок на подъём предметов
+Интерпретатор предметов на локации
 # int.loc.obj
-$args[0] = $args[0]	&	!	локация
+$args[0] = $args[0]	&	!@	идентификатор локации
 if $func('get.daughter.obj',$args[0],'<obj>','$temp_id')='true':
 	:for
 	if arrsize('$temp_id')>0:
