@@ -1,9 +1,0 @@
-# avs.face.refresh
-if $args[0]='close':
-	disablescroll=0
-	gs 'true.goto'
-else
-	gs 'set.Screen','страница.сброс'
-	gs 'avs.face','test'
-end
---- avs.face.refresh ---------------------------------
