@@ -1,5 +1,6 @@
-# int.DINCODE
+QSP-Game
 ! локация обрабатывает динамическую строку вида <DIN00:dynamic_code_text:00DIN>
+# int.DINCODE
 args['num.sup']=val($strfind($strfind($args[0],'<DIN\d+:'),'\d+'))
 $args[0]=$replace($replace($args[0],"<DIN<<args['num.sup']>>:"),":<<args['num.sup']>>DIN>")
 $args['int.DIN']=$DYNEVAL($args[0])
