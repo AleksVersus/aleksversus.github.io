@@ -111,7 +111,7 @@ if instr($args[3],'[game]')=1:
 	!@ общая таблица из объектов и дополнительных текстов
 	if $AVS_PLAYERTYPE['size']="MINI":
 		!@ для мобильной версии табличка растягивается на ширину страницы
-		$args['objs_n_info']=='<table width=100% cellpadding=0 cellspacing=0 border=0>'
+		$args['objs_n_info']='<table width=100% cellpadding=0 cellspacing=0 border=0>'
 	elseif $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']='qSpider':
 		!@ для навигатора и паука поведение таблички определяется стилями CSS
 		$args['objs_n_info']='<table id="avs_game_objs_short">'
