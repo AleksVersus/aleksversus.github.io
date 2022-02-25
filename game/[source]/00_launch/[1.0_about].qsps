@@ -30,6 +30,9 @@ $args['p.11']='Большое спасибо всем, кто так или ин
 $args['p.12']='В частности, <span class="yello_text">Ольге Владимировне Голотвиной</span> - автору «Вереницы...», за то, что создала эту интересную и весёлую игру, а так же за то, что позволила мне опубликовать порт; Нексу (<span class="yello_text">Nex</span>) - вечному хранителю платформы, за советы, за бесконечный энтузиазм и отрезвляющие умозаключения (ну и за многое другое, всего не перечислишь); Господину Леосану (<span class="yello_text">Leosan</span>) за великолепные критические замечания и общий тест книги-игры, а так же за то, что обнаружил мои сокрушительные ляпы; всему сообществу QSP, кто вольно или невольно поспособствовал появлению этого порта: <span class="yello_text">RomaDova</span>, <span class="yello_text">Oliver</span>, <span class="yello_text">Ajenta</span>, <span class="yello_text">Storm</span>, <span class="yello_text">Mioirel</span>, <span class="yello_text">Casralis</span> и другие (простите, кого не упомянул).'
 $args['p.13']='Благодарю сообщество <span class="yello_text">quest-book.ru</span> за посильную помощь в официальной публикации книги-игры. <span class="yello_text">Jumanjee</span>, <span class="yello_text">Таро</span>, <span class="yello_text">Maltiez</span>, <span class="yello_text">Arven</span>, спасибо вам.'
 $args['p.14']='Ну и спасибо моим друзьям и родным, которые находили в себе силы не отвлекать меня в часы кропотливой и страстной работы. :)'
+$args['p.15']='Страница с онлайн-версией игры всегда доступна по ссылке: <a href="https://aleksversus.github.io/merphy_law/">aleksversus.github.io/merphy_law</a>'
+$args['p.16']='Страница проекта, где вы можете найти исходный код игры на QSP: <a href="https://github.com/AleksVersus/merphy_law">github.com/AleksVersus/merphy_law</a>'
+$args['p.17']='Если есть желание поддержать другие мои проекты, есть патреон: <a href="https://www.patreon.com/aleksversus">patreon.com/aleksversus</a>; есть бусти: <a href="https://boosty.to/aleksversus">boosty.to/aleksversus</a>; есть donation-alerts: <a href="https://www.donationalerts.com/r/aleksversus">donationalerts.com/r/aleksversus</a>.'
 !@ списки изменений
 $args['head.floor2.1']='Исправления в версии 1.0:'
 $args['li.01.1']='переходы между мирами осуществляются автоматически со случайным вбросом в непосещённые миры. Таким образом нет необходимости посещать параграфы с выбором следующего мира. Эти параграфы исключены.'
@@ -95,6 +98,9 @@ $args['li.06.6']='Исправлены мелкие недочёты, связа
 
 $args['head.floor2.7']='Изменения и исправления в версии 3.2 (адаптация для qSpider и онлайн-версия):'
 $args['li.07.1']='Исправлены ошибки локаций 133 и 305 — создавались тупики из-за неверно закрытых кавычек.'
+$args['li.07.2']='Удалена часть с тонкими настройками, так как это больше не используется и недоступно.'
+$args['li.07.3']='Исправлена работа некоторых алгоритмов, комментарии полностью перенесены в исходники. Исходники можно посмотреть на https://github.com/AleksVersus/merphy_law.'
+$args['li.07.4']='Игра адаптирована для qSpider, исправлены моменты, которые приводили к выводу игры в qSpider.'
 $args['ending']='Если Вы обнаружили, что игра не запускается, или некорректно отображается в вашей версии плеера, напишите мне на aleksversus@mail.ru, посмотрим, что с этим можно сделать. Целенаправленно отслеживать и исправлять косяки отображения я больше не буду.'
 !@ if $AVS_PLAYERTYPE['size']<>"MINI":
 	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
