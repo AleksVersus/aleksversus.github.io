@@ -1,7 +1,6 @@
+QSP-Game ! локация преобразующая всяческие динамические тексты в готовый текст
 # int.DIN
-! локация преобразующая всяческие динамические тексты в готовый текст
-$args[0] = $args[0]
-args[1] = args[1]+1
+$args[0] = $args[0]	& !@ исходник текста
 ! проверка на наличие динамических конструкций
 :next_str
 if $strfind($args[0],'<DIN(\d+):[\s\S]*?:\1DIN>')<>'':
@@ -31,14 +30,10 @@ elseif $strfind($args[0],'\[(\D+)\][\s\S]*?\[\/\1\]')<>'':
 	$args['tag'] = $strfind($args[0],'\[(\D+)\][\s\S]*?\[\/\1\]',1)	&	!	получаем тег
 	$args['string']=$func('get.tag.cont',$args['new.text'],$args['tag'])	&	!	извлекаем строку из тегов
 	! внимание. Далее следует рекурсивное обращение к текущей локации!!!
-	!*pl 'Уровень рекурсии: <<args[1]>>'
-	!*pl 'Строка без тегов: '+$args['string']
 	if $strfind($args['string'],'\[(\D+)\][\s\S]*?\[\/\1\]')<>'':
-		!*pl 'Поскольку текущая строка содержит вложенный тег, вызываем процедуру снова.'
-		$args['new.str']=$replace($args['new.text'],$args['string'],$func('int.DIN',$args['string'],args[1]))
+		$args['new.str']=$replace($args['new.text'],$args['string'],$func('int.DIN',$args['string']))
 		$args[0]=$replace($args[0],$args['new.text'],$args['new.str'])
 		$args['new.text']=$args['new.str']
-		!*pl 'полученная строка: '+$args['new.text']
 	end
 	$args['new.string']=$func('int.DINSTR',$args['new.text'])
 	$args[0] = $replace($args[0],$args['new.text'],$args['new.string'])
