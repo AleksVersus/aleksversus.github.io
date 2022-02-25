@@ -40,7 +40,8 @@ elseif $strfind($args[0],'\[(\D+)\][\s\S]*?\[\/\1\]')<>'':
 		$args['new.text']=$args['new.str']
 		!*pl 'полученная строка: '+$args['new.text']
 	end
-	$args[0] = $replace($args[0],$args['new.text'],$func('int.DINSTR',$args['new.text']))
+	$args['new.string']=$func('int.DINSTR',$args['new.text'])
+	$args[0] = $replace($args[0],$args['new.text'],$args['new.string'])
 	jump 'next_str'
 elseif $strfind($args[0],'<a l:href="#n_\d+">[\s\S]+?<\/a>')<>'':
 	$args['new.text'] = $strfind($args[0],'<a l:href="#n_\d+">[\s\S]+?<\/a>')
