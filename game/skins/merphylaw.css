@@ -12,40 +12,47 @@
   width:25%;
   position:absolute;
   left:1%;
-  height:90%;
-  position:absolute;
+  height:95%;
+  overflow-y: auto;
+  box-sizing: border-box;
 	}
 	/* Элементы в левой колонке */
 	/* ссылка назад */
 	#avs_game_back {
 		text-align:right;
 		padding:3px;
+		box-sizing: border-box;
 	}
 	/* статистика */
 	#avs_game_statisctics {
 		position:absolute;
 		width:100%; 
 		text-align:right;
+        margin:0;
+        padding:0;
+        box-sizing: border-box;
 	}
 	/* обёрточная таблица */
-	#avs_game_stat_short{
+	.avs_game_stat_short{
 		width:100%;
 		border:0;
-		padding:0;
+		padding:0.25em;
 		border-spacing:0;
 	}
 	/*таблицы статистики*/
 	.avs_game_stat_table{
 		width:75%;
-		padding:0;
+		padding:0.25em;
 		border-spacing:0;
+        box-sizing: border-box;
 	}
 /*центральная колонка*/
 #avs_game_center_column {
   position:absolute;
-  left:27%;
-  width:46%;
-  height:100%;
+  left:26%;
+  width:48%;
+  height:98%;
+    box-sizing: border-box;
   }
 	/* Элементы в центральной колонке */
 	/* заголовок */
@@ -53,17 +60,22 @@
 		position:absolute;
 		top:0;
 		height:5%;
-	  	width:100%;
-	  	text-align:center;
-	  	overflow:hidden;
-    	}
+  	width:100%;
+  	text-align:center;
+  	overflow:hidden;
+        box-sizing: border-box;
+   }
 	/* статистика */
 	#avs_game_opinion {
 		position:absolute;
 		top:6%;
-    	height:80%;
-    	width:100%;
-    	overflow-y:auto;}
+  	height:80%;
+  	width:100%;
+  	overflow-y:auto;
+  	box-sizing:border-box;
+  	padding: 1em;
+  }
+
     /* колонтитул */
     #avs_game_colontitle {
     	position:absolute;
@@ -74,17 +86,19 @@
     
   /* правая колонка*/
   #avs_game_right_column {
-  width:25%;
-  height:90%;
-  position:absolute;
-  right:1%;
-  overflow-y:auto;
-	}
+    right:1%;
+    overflow-y:auto;
+    width:25%;
+    position:absolute;
+    height:95%;
+    box-sizing: border-box;
+  }
 	/* Элементы в правой колонке */
 	/* настройки */
 	#avs_game_sets {
 		text-align:left;
 		padding:3px;
+		box-sizing: border-box;
 	}
 	/* объекты */
 	#avs_game_objects {
@@ -97,7 +111,7 @@
 		border-spacing:0;
 	}
 	/* обёрточная таблица */
-	#avs_game_objs_short{
+	.avs_game_objs_short{
 		width:100%;
 		border:0;
 		padding:0;
@@ -109,6 +123,7 @@
 	height:80%;
 	width:95%;
 	padding:1em;
+	box-sizing: border-box;
 	overflow-y:auto;
 }
 

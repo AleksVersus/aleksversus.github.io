@@ -1,0 +1,39 @@
+/* стили для скроллбара */
+/* описание локации */
+#avs_game_opinion::-webkit-scrollbar {
+	background-color: #00000022;
+	width:0.25em;
+	border-radius: 0.5em;
+}
+
+/* ползунок */
+#avs_game_opinion::-webkit-scrollbar-thumb {
+	background-color: #00000088;
+	border-radius: 0.5em;
+}
+
+/* левая колонка */
+#avs_game_left_column::-webkit-scrollbar {
+	background-color: #88880022;
+	width:0.25em;
+	border-radius: 0.5em;
+}
+
+/* ползунок */
+#avs_game_left_column::-webkit-scrollbar-thumb {
+	background-color: #44440088;
+	border-radius: 0.5em;
+}
+
+/* правая колонка */
+#avs_game_right_column::-webkit-scrollbar {
+	background-color: #00888822;
+	width:0.25em;
+	border-radius: 0.5em;
+}
+
+/* ползунок */
+#avs_game_right_column::-webkit-scrollbar-thumb {
+	background-color: #00444488;
+	border-radius: 0.5em;
+}
