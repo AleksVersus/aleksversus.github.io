@@ -16,10 +16,10 @@ debug=1	& !@ включаем режим отладки. Сохранения б
 showinput 0	& !@ отключаем строку ввода на стартовом экране
 !@ проверка плеера:
 $AVS_PLAYERTYPE+=$func('player.prv')
-if $AVS_PLAYERTYPE='[qSpider]':
-	fsize=16	& !@ для qSpider нужен шрифт побольше
+if instr($AVS_PLAYERTYPE,'[qSpider]')<>0:
+	fsize=16
 else
-	fsize=12	& !@ включаем размер шрифта 12. На момент старта игры это оптимально
+	fsize=12
 end
 gosub 'set.Screen','обложка.чёрный'	&	!@ выставляем тему чёрной обложки
 '<qhtml>

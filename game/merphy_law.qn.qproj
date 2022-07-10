@@ -843,6 +843,7 @@
       <Location name="#sim#"/>
       <Location name="#sqrt#"/>
       <Location name="#invert#"/>
+      <Location name="#:#"/>
       <Location name="#zero#"/>
       <Location name="#rndstr#"/>
       <Location name="#re.rgb#"/>
