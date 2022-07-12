@@ -59,8 +59,7 @@
 	#avs_game_head {
 		position:absolute;
 		top:0;
-		/* height:5%; */
-		background-color: #ffff00;
+		height:5%; 
   	width:100%;
   	text-align:center;
   	overflow:hidden;

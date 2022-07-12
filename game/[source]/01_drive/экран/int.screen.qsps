@@ -220,6 +220,9 @@ if $AVS_PLAYERTYPE['size']<>"MINI":
 			if $args['nextpage']<>'': $args['result']+='<div id="avs_game_sets">'+$args['nextpage']+'</div>'
 			if $args['objs_n_info']<>'': $args['result']+='<div id="avs_game_objects">'+$args['objs_n_info']+'</div>'
 		$args['result']+='</div>'
+		if $AVS_PLAYERTYPE['type']="qSpider":
+			$args['result']='<div id="avs_main_screen">'+$args['result']+'</div>'
+		end
 	end
 else
 	!@ Здесь моделируется интерфейс для приложений на андроид или с маленькими экранами
