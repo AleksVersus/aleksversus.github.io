@@ -2,7 +2,7 @@
 	"project":
 	[
 		{
-			"build":"..\\merphy_law.qn.qsp",
+			"build":"..\\merphy_law.qsp",
 			"folders":
 			[
 				{
@@ -11,9 +11,7 @@
 			]
 		}
 	],
-	"start":"..\\merphy_law.qn.qsp",
-	"converter":"D:\\my\\GameDev\\QuestSoftPlayer\\QSP 570 QG 400b\\txt2gam.exe",
-	"player":"D:\\my\\GameDev\\QuestSoftPlayer\\QSP 570 QG 400b\\qspgui.exe",
+	"start":"..\\merphy_law.qsp",
 	"save_txt2gam":"True",
 	"preprocessor":"On"
 }

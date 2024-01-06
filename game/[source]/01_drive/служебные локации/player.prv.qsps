@@ -20,7 +20,7 @@ t or t
 
 , результат которого равен 1.
 # player.prv
-if $QSPVER<'5.8.0':
+if $QSPVER < '5.8.0':
 	!@ если это плеер версии 5.7.0, то мы имеем дело либо с классическим плеером, либо с навигатором
 t=1	& !@ для навигатора строка распознаётся как `t or t`
 tort=0	& !@ для классики строка распознаётся как `tort`
@@ -34,7 +34,11 @@ end
 killvar 'tort' & killvar 't'
 else
 	!@ если это плеер версии 5.8.0, то мы имеем дело либо с классическим, либо с qSpider
-	$args['result']='[qSpider]'
+	if instr($QSPVER, '(classic)'):
+		$args['result']=''
+	else:
+		$args['result']='[qSpider]'
+	end
 end
 $result=$args['result']
 
