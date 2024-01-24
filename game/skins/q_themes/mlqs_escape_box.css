@@ -5,7 +5,19 @@
   box-shadow: 0px 0px 16px 7px rgba(108, 202, 229, 0.2)
 }
 
-.qsp-button {
-  background: #888888;
+qsp-player .qsp-button,
+#portal-container .qsp-button {
+  cursor: pointer;
+  background-color: #888888;
+  color: #000000;
+}
+qsp-player .qsp-button:hover,
+#portal-container .qsp-button:hover {
+  background-color: #eeeeee;
+  color: #111111;
+  border-color: #000000;
 }
 
+.qsp-pause-screen-buttons{
+  width: auto;
+}
