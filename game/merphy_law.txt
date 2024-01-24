@@ -14,11 +14,6 @@ $usercom='uc'
 debug=1
 showinput 0
 $AVS_PLAYERTYPE+=$func('player.prv')
-if instr($AVS_PLAYERTYPE,'[qSpider]')<>0:
-	fsize=16
-else
-	fsize=12
-end
 gosub 'set.Screen','обложка.чёрный'
 '<qhtml>
 <center><table border=0><tr name=заголовок><td align=center><font color=#dddd00>ОЛЬГА ГОЛОТВИНА<br><font size=+3>ВЕРЕНИЦА МИРОВ</font><br>или<br><font size=+3>ВЫВОДЫ ИЗ ЗАКОНА МЕРФИ</font></font><br><font size=-3>Книга-игра</font></td></tr><tr name=text><td align=right>

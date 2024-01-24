@@ -6,7 +6,7 @@
 			"folders":[{"path":".\\game\\[source]"}]
 		}
 	],
-	"player":"C:\\Program Files\\qSpider\\qspider.exe",
+	"player":"C:\\Users\\aleks\\AppData\\Local\\qSpider\\qspider.exe",
 	"save_txt2gam":"True",
 	"preprocessor": "On",
 	"start":".\\game\\merphy_law.qsp"
