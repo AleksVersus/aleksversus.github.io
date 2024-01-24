@@ -14,9 +14,8 @@ $usercom='uc'
 debug=1
 showinput 0
 $AVS_PLAYERTYPE += $func('player.prv')
-$qspver
-$qspver('platform')
 gosub 'set.Screen','обложка.чёрный'
+if instr($AVS_PLAYERTYPE, '[MINI]')<>0 or instr($AVS_PLAYERTYPE, '[DESKTOP]')<>0: goto '[start]'
 '<center><table border=0><tr name=заголовок><td align=center><font color=#dddd00>ОЛЬГА ГОЛОТВИНА<br><font size=+3>ВЕРЕНИЦА МИРОВ</font><br>или<br><font size=+3>ВЫВОДЫ ИЗ ЗАКОНА МЕРФИ</font></font><br><font size=-3>Книга-игра</font></td></tr><tr name=text><td align=right>
 
 <center><font color=#008888>Каким плеером вы пользуетесь?</font></center>
@@ -29,10 +28,10 @@ QSP-Game локация, рассказывающая о текущей верс
 # [1.0_about]
 $fname = "Courier New"
 $args['head.floor1']='Несколько слов о текущем порте'
-$args['version']='Версия: 3.2'
+$args['version']='Версия: 3.3'
 $args['resolution']='Предпочтительное разрешение экрана не менее 740х535.'
 $args['href.back']='<a href="exec:goto ''[start]''" id="back_href" class="plain">&lt;&nbsp;назад</a>'
-if $AVS_PLAYERTYPE['size']='MINI' or $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+if $AVS_PLAYERTYPE['size']='MINI' or $AVS_PLAYERTYPE['type']='qSpider':
 	$args['save.about']='В ключевых моментах игра ведёт автоматическое сохранение в первый слот.'
 else
 	$args['save.about']='В ключевых моментах игра ведёт автоматическое сохранение в папку "save".'
@@ -118,7 +117,7 @@ $args['li.07.2']='Удалена часть с тонкими настройка
 $args['li.07.3']='Исправлена работа некоторых алгоритмов, комментарии полностью перенесены в исходники. Исходники можно посмотреть на https://github.com/AleksVersus/merphy_law.'
 $args['li.07.4']='Игра адаптирована для qSpider, исправлены моменты, которые приводили к вылету игры в qSpider.'
 $args['ending']='Если Вы обнаружили, что игра не запускается, или некорректно отображается в вашей версии плеера, напишите мне на aleksversus@mail.ru, посмотрим, что с этим можно сделать. Целенаправленно отслеживать и исправлять косяки отображения я больше не буду.'
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support'] = 'qSpider':
 		if $AVS_PLAYERTYPE['size']<>"MINI":
 			$args["styles.1"]='style="display:flex;align-justify:flex-start;"'
 			$args["styles.2"]=' style="font-size:0.9em;position: sticky; top: 0;"'
@@ -307,7 +306,7 @@ end
 $args['p6']='Надеюсь, эти сведения хоть немного помогут вам в прохождении.'
 $args['p7']='Приятной игры!'
 $args['p8']='С уважением,<br>Aleks Versus'
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support'] = 'qSpider':
 		if $AVS_PLAYERTYPE['size']<>"MINI":
 			$args["styles.1"]='style="display:flex;align-justify:flex-start;"'
 			$args["styles.2"]=' style="font-size:0.9em;position: sticky; top: 0;"'
@@ -428,12 +427,20 @@ gosub 'set.newgame','kill'
 $GAME_VALUE['interface']=''
 $save['game.number']=$func('#rndstr#',4,'буквы и цифры')
 if instr($AVS_PLAYERTYPE,"[MINI]")<>0: $AVS_PLAYERTYPE['size']="MINI" else $AVS_PLAYERTYPE['size']=""
-if instr($AVS_PLAYERTYPE,"[QN]")<>0:
-	$AVS_PLAYERTYPE['type']="QN"
-elseif instr($AVS_PLAYERTYPE,"[qSpider]")<>0:
-	$AVS_PLAYERTYPE['type']="qSpider"
+if instr($AVS_PLAYERTYPE,"[qSpider]")<>0:
+	$AVS_PLAYERTYPE['type'] = 'qSpider'
+	$AVS_PLAYERTYPE['html_support']="qSpider"
+elseif instr($AVS_PLAYERTYPE,"[CLASSIC]")<>0:
+	$AVS_PLAYERTYPE['type'] = 'classic'
+	$AVS_PLAYERTYPE['html_support']=""
 else
-	$AVS_PLAYERTYPE['type']=""
+	$AVS_PLAYERTYPE['type'] = ''
+	$AVS_PLAYERTYPE['html_support']=""
+end
+if instr($AVS_PLAYERTYPE,"[CLASSIC]")<>0 or instr($AVS_PLAYERTYPE,"[qSpider]")<>0:
+	$AVS_PLAYERTYPE['func_support'] = '5.8.0'
+else:
+	$AVS_PLAYERTYPE['func_support'] = ''
 end
 gosub 'set.Screen','обложка.чёрный'
 $args['author']='ОЛЬГА ГОЛОТВИНА'
@@ -447,7 +454,7 @@ $args['link.startgame']='<a href="exec:goto ''page.-1''" id="start_the_game" cla
 $args['link.gameplay']='<a href="exec:goto ''[1.1_gameplay]''" id="about_gameplay" class="plain">Об игре</a>'
 $args['link.release']='<a href="exec:goto ''[1.0_about]''" id="about_release" class="plain">О текущей версии</a>'
 if $AVS_PLAYERTYPE['size']<>"MINI":
-	if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
+	if $AVS_PLAYERTYPE['html_support']="qSpider":
 		$args['screen']+='<div class="main_cover">'
 			$args['screen']+='<span class="author">'+$args['author']+'</span><br>'
 			$args['screen']+='<span class="heading">'+$args['head.floor1']+'</span><br>'
@@ -483,7 +490,7 @@ if $AVS_PLAYERTYPE['size']<>"MINI":
 		$args['screen']+='</table></center>'
 	end
 else
-	if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
+	if $AVS_PLAYERTYPE['html_support']="qSpider":
 		$args['screen']+='<div class="main_cover">'
 			$args['screen']+='<span class="author">'+$args['author']+'</span><br>'
 			$args['screen']+='<span class="heading">'+$args['head.floor1']+'</span><br>'
@@ -842,13 +849,13 @@ if power['now']<1: nosave=1 else nosave=0
 
 QSP-Game Локация выбрасывания рюкзака
 # put.bag
-args[9]=-1
-if $args[0]='': $args[0]=$curloc
+args[9] = -1
+if $args[0] = '': $args[0]=$curloc
 :for
-if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
-	args[9]=arrcomp('$object_array','[\s\S]*\[:место_в_рюкзаке:\][\s\S]*',args[9]+1)
+if $AVS_PLAYERTYPE['func_support'] = '5.8.0':
+	args[9] = arrcomp('$object_array','[\s\S]*\[:место_в_рюкзаке:\][\s\S]*',args[9]+1)
 else
-	args[9]=arrcomp(args[9]+1,'$object_array','[\s\S]*\[:место_в_рюкзаке:\][\s\S]*')
+	args[9] = arrcomp(args[9]+1,'$object_array','[\s\S]*\[:место_в_рюкзаке:\][\s\S]*')
 end
 if args[9]<>-1:
 	$position_array[args[9]]=$args[0]
@@ -1024,7 +1031,7 @@ QSP-Game ! локация выводит гиперссылки для восс�
 # upluck
 $args['resu']='&nbsp;'
 if удача_восст[$curloc]=0 and arrsize('$num_unluck')>0:
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support'] = 'qSpider':
 		$args['open.f']+='<span style="font-size:large;font-weight:bolder;">'
 		$args['close.f']+='</span>'
 	else
@@ -1415,9 +1422,9 @@ if instr($args[2],'$')<>1: $args[2] = '$'+$args[2]
 $args['gdo']='false'
 args['pos']=-1
 :for
-if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
+if $AVS_PLAYERTYPE['func_support'] = '5.8.0':
 	args['pos']=arrpos('$position_array',$args[0],args['pos']+1)
-else
+else:
 	args['pos']=arrpos(args['pos']+1,'$position_array',$args[0])
 end
 if args['pos']<>-1 and args['i']<>args['pos']:
@@ -1484,7 +1491,7 @@ $args[0]=$args[0]
 if $args[1]='': $args['type']='<body>' else $args['type']=$args[1]
 args['pit']=-1
 :for
-if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
+if $AVS_PLAYERTYPE['func_support'] = '5.8.0':
 	args['pit']=arrcomp('$object_array','[\s\S]*\[:'+$args[0]+':\][\s\S]*',args['pit']+1)
 else
 	args['pit']=arrcomp(args['pit']+1,'$object_array','[\s\S]*\[:'+$args[0]+':\][\s\S]*')
@@ -1763,6 +1770,7 @@ QSP-Game
 ! обрабатывающей пункт меню, передаётся аргументом номер выбранного пункта. Годится только для
 ! меню фиксированного размера.
 # avs.save
+args[0] = args[0]
 $args['save.name']=$func('#zero#',4-len($str(save['count']+1)))+$str(save['count']+1)+'_'
 $args['loc']=$strfind($curloc,'\d+')
 $args['save.name']+=$func('#zero#',3-len($args['loc']))+$args['loc']
@@ -1776,36 +1784,37 @@ if args[0]=0:
 	else
 		$temp_menu[]="Загрузить чекпоинт:avs.save"
 	end
-	$temp_menu[]="-:-"
-	if $AVS_PLAYERTYPE['type']='qSpider':
-		$temp_menu[]="Быстрое сохранение [Q+S]:avs.save"
-	else
+	if $AVS_PLAYERTYPE['type']<>'qSpider':
+		$temp_menu[]="-:-"
 		$temp_menu[]="Быстрое сохранение:avs.save"
-	end
-	if $AVS_PLAYERTYPE['type']='qSpider':
-		$temp_menu[]="Быстрая загрузка [Q+A]:avs.save"
-	else
 		$temp_menu[]="Быстрая загрузка:avs.save"
 	end
 	menu '$temp_menu'
 	killvar '$temp_menu'
 elseif args[0]=1:
-	if nosave=0:
+	if nosave = 0:
 		save['count']+=1
-		savegame
 		if $GAME_VALUE['save.reserve']<>'false': 
-			if $AVS_PLAYERTYPE='': savegame 'save/'+$save['game.number']+'_'+$args['save.name']+'.sav'
+			if $AVS_PLAYERTYPE['type'] = 'classic' or $AVS_PLAYERTYPE['type'] = '':
+				savegame 'save/'+$save['game.number']+'_'+$args['save.name']+'.sav'
+			else:
+				savegame
+			end
 		end
 	else
 		$print[]=$func('base.txt','nosave')
 	end
 elseif args[0]=2:
-	opengame
+	if $AVS_PLAYERTYPE['type'] = 'qSpider':
+		opengame
+	else:
+		opengame
+	end
 elseif args[0]=4:
 	if save['check']>0:
-		if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']='qSpider':
-			opengame '1.sav'
-		else
+		if $AVS_PLAYERTYPE['type'] = 'qSpider':
+			opengame 'autosave'
+		else:
 			opengame 'save/autosave.sav'
 		end
 	else
@@ -1816,9 +1825,7 @@ elseif args[0]=6:
 		save['qs']+=1
 		save['count']+=1
 		$save['type']='quick'
-		if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']='qSpider':
-			savegame '2.sav'
-		else
+		if $AVS_PLAYERTYPE['type']<>'qSpider':
 			savegame 'save/quicksave.sav'
 			if $GAME_VALUE['save.reserve']<>'false': savegame 'save/'+$save['game.number']+'_'+$args['save.name']+'.sav'
 		end
@@ -1828,12 +1835,10 @@ elseif args[0]=6:
 	end
 elseif args[0]=7:
 	if save['qs']>0:
-		if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']='qSpider':
-			opengame '2.sav'
-		else
+		if $AVS_PLAYERTYPE['type']<>'qSpider':
 			opengame 'save/quicksave.sav'
 		end
-	else
+	else:
 		$print[]=$func('base.txt','notqck')
 	end
 elseif args[0]=999:
@@ -1841,8 +1846,8 @@ elseif args[0]=999:
 		save['check']+=1
 		save['count']+=1
 		$save['type']='auto'
-		if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']='qSpider':
-			savegame '1.sav'
+		if $AVS_PLAYERTYPE['type']='qSpider':
+			savegame 'autosave'
 		else
 			savegame 'save/autosave.sav'
 			if $GAME_VALUE['save.reserve']<>'false': savegame 'save/'+$save['game.number']+'_'+$args['save.name']+'.sav'
@@ -1885,14 +1890,6 @@ QSP-Game загрузка чекпоинта
 # save.checkpoint.load
 gosub 'avs.save',4
 - save.checkpoint.load -
-QSP-Game быстрая загрузка
-# save.quickload
-gosub 'avs.save',7
-- save.quickload -
-QSP-Game быстрое сохранение
-# save.quicksave
-gosub 'avs.save',6
-- save.quicksave -
 QSP-Game локация отвечает за работу кнопки отката на шаг назад
 # back.varriors
 $args[0] = $args[0]
@@ -1952,15 +1949,12 @@ QSP-Game служебная локация для обработки перех�
 		else
 			gosub 'back.varriors','back'
 		end
-		IF $AVS_PLAYERTYPE['type']="QN":
-			$args['controlJS']='<a name="controlJS" id="controlJS" href="#"></a>'
-		END
 	end
 	if arrsize('$id_watch')>100: killvar '$id_watch',0
 	$refresh_watch[]=$curloc
 	if arrsize('$refresh_watch')>9999: killvar '$refresh_watch',0
 if val($strfind($curloc,'\d+'))>0 and strcomp($curloc,'page\.\d+')<>0:
-	if ($AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider") and $GAME_HELP['QN']='':
+	if $AVS_PLAYERTYPE['type']="qSpider" and $GAME_HELP['QN']='':
 		$GAME_HELP['QN']='yep'
 		$print[] = '<span style="color:#880000;">Внимание!!! Контрольные точки сохраняются в первом слоте, быстрые сохранения - во втором.</span> <br>'
 	end
@@ -2081,40 +2075,21 @@ end
 --- onObjClick ---------------------------------
 
 QSP-Game Проверка запущенного плеера
-ВНИМАНИЕ!!! На момент написания этой локации существовал только костыльный способ определить, на каком плеере запущена игра
-Quest Navigator и QSP имеют одинаковую версию библиотек (5.7.0. на 27.06.2020), поэтому пользуемся этим.
-способ, предложенный newsash в теме http://qsp.su/index.php?option=com_agora&task=topic&id=658&Itemid=57:
-t=1
-tort=0
-if t _
-or _
-t:
-	"Игра запущена на Quest Navigator"
-else
-	"Игра запущена на Классике"
-end
-Данный способ работает благодаря разнице в интерпретации однострочной команды, разбитой на несколько строк.
-В классическом плеере оператору условия передаётся имя переменной tort, тогда как в Quest Navigator это выражение
-t or t
-, результат которого равен 1.
 # player.prv
 if $QSPVER < '5.8.0':
-t=1
-tort=0
-if t _
-or _
-t:
-	$args['result']='[QN]'
-else
 	$args['result']=''
-end
-killvar 'tort' & killvar 't'
 else
 	if instr($QSPVER, '(classic)'):
-		$args['result']=''
+		$args['result']='[CLASSIC]'
 	else:
 		$args['result']='[qSpider]'
 	end
+	$args['platform'] = $qspver('platform')
+	if $args['platform'] = 'Android':
+		$args['result'] += '[MINI]'
+	elseif $args['platform'] = 'Windows':
+		$args['result'] += '[DESKTOP]'
+	end 
 end
 $result=$args['result']
 --- player.prv ---------------------------------
@@ -2436,7 +2411,7 @@ else
 end
 if $args['colontitle']<>'' and $args['colontitle']<>'nope':
 	$args['colontitle']='-'+$args['colontitle']+'-'
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['colontitle']='<span class="avs_text_colontitle">'+$args['colontitle']+'</span>'
 	else
 		$args['colontitle']='<font color=#888888 size=1>'+$args['colontitle']+'</font>'
@@ -2445,13 +2420,13 @@ else
 	$args['colontitle']=''
 end
 if instr($args[2],'<checkpoint>')<>0:
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['result.head']='<span class="avs_text_head_chp">'+$args['head']+'</span>'
 	else
 		$args['result.head']='<font color=#994400 size=6><b>'+$args['head']+'</b></font>'
 	end
 elseif instr($args[2],'<checkpoint>')=0:
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['result.head']='<span class="avs_text_head_smp">'+$args['head']+'</span>'
 	else
 		$args['result.head']='<font color=#008899 size=6><b>'+$args['head']+'</b></font>'
@@ -2462,7 +2437,7 @@ if $GAME_INTERFACE['back.href']='true':
 	$args['hr.b']='<a href="exec:gosub ''back.varriors''" class="plain" id="avs_back_btn">'
 	$args['hr.b.n']='Назад'
 	$args['/hr.b']="</a>"
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['back.href']=$args['hr.b']+$args['hr.b.n']+$args['/hr.b']
 	else
 		$args['back.href']=$args['hr.b']+'<font color=#008888><b>'+$args['hr.b.n']+'</b></font>'+$args['/hr.b']
@@ -2485,7 +2460,7 @@ if instr($args[3],'[game]')=1:
 	$args['stat']+='</table>'
 	:предметы
 	$args['objs.scroll']=$func('base.txt','table.blast')
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['objs.scroll']=$args['objs.scroll']
 	else
 		$args['objs.scroll']="<table cellpadding=0 cellspacing=0><tr><td>"+$args['objs.scroll']+"</td></tr></table>"
@@ -2500,7 +2475,7 @@ if instr($args[3],'[game]')=1:
 				$args['r']+=$func('#array.prnt#','$print_down','[only result]')
 			end
 		end
-		if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+		if $AVS_PLAYERTYPE['html_support']='qSpider':
 			$args['r']='<span class="avs_text_infoscroll">'+$args['r']+'</span>'
 		else
 			$args['r']='<font color=#000088>'+$args['r']+'</font>'
@@ -2514,7 +2489,7 @@ if instr($args[3],'[game]')=1:
 	end
 	if $AVS_PLAYERTYPE['size']="MINI":
 		$args['objs_n_info']='<table width=100% cellpadding=0 cellspacing=0 border=0>'
-	elseif $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']='qSpider':
+	elseif $AVS_PLAYERTYPE['html_support'] = 'qSpider':
 		$args['objs_n_info']='<table class="avs_game_objs_short">'
 	else
 		$args['objs_n_info']='<table cellpadding=0 cellspacing=0 border=0>'
@@ -2548,7 +2523,7 @@ if $GAME_INTERFACE['next.href']='true':
 	$args['hr.np']='<a href="exec:power[''now'']=power[''start''] & $GAME_VALUE[''interface'']=''[game]'' & $GAME_INTERFACE[''refresh'']=''страница.сброс'' & goto ''page.<<$str(val($strfind($curloc,"\d+"))+1)>>''" id="avs_next_btn">'
 	$args['/hr.np']='</a>'
 	$args['hr.np.n']="next"
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['nextpage']=$args['hr.np']+$args['hr.np.n']+$args['/hr.np']
 	else
 		$args['nextpage']=$args['hr.np']+'<font color=#008888>'+$args['hr.np.n']+'</font>'+$args['/hr.np']
@@ -2557,7 +2532,7 @@ elseif (instr($args[3],'[game]')=1 or save['count']>0):
 	$args['hr.np.e']='<a href="exec:gosub ''avs.sets''" class="plain" id="avs_epsilon_btn">'
 	$args['hr.np.s']='<a href="exec:gosub ''avs.save''" class="plain" id="avs_septima_btn">'
 	$args['/hr.np']='</a>'
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support'] = 'qSpider':
 		$args['nextpage']+=$args['hr.np.e']+"é"+$args['/hr.np']
 		$args['nextpage']+='&nbsp;'
 		$args['nextpage']+=$args['hr.np.s']+"S"+$args['/hr.np']
@@ -2570,7 +2545,7 @@ else
 	$args['nextpage']='&nbsp;'
 end
 if $AVS_PLAYERTYPE['size']<>"MINI":
-	if $AVS_PLAYERTYPE['type']='' or $AVS_PLAYERTYPE='':
+	if $AVS_PLAYERTYPE['html_support'] = '':
 		$args['result']='<center><table cellpadding=10 border=0 width=100%>'
 			if $args['head']<>'':
 				$args['result']+='<tr name=head>'
@@ -2592,7 +2567,7 @@ if $AVS_PLAYERTYPE['size']<>"MINI":
 				$args['result']+='</tr>'
 			end
 		$args['result']+='</table></center>'
-	elseif $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
+	elseif $AVS_PLAYERTYPE['html_support'] = "qSpider":
 		if $args['stat']<>'' or $args['back.href']<>'':
 			$args['result']='<div id="avs_game_left_column">'
 				if $args['back.href']<>'': $args['result']+='<div id="avs_game_back">'+$args['back.href']+'</div>'
@@ -2608,16 +2583,14 @@ if $AVS_PLAYERTYPE['size']<>"MINI":
 			if $args['nextpage']<>'': $args['result']+='<div id="avs_game_sets">'+$args['nextpage']+'</div>'
 			if $args['objs_n_info']<>'': $args['result']+='<div id="avs_game_objects">'+$args['objs_n_info']+'</div>'
 		$args['result']+='</div>'
-		if $AVS_PLAYERTYPE['type']="qSpider":
-			$args['result']='<div id="avs_main_screen">'+$args['result']+'</div>'
-		end
+		$args['result']='<div id="avs_main_screen">'+$args['result']+'</div>'
 	end
 else
 	$args['back.to.page']='<a href="exec:$GAME_VALUE[''screen.floor'']='''' & gs ''true.goto''" id="avs_backtopage_btn">'
 	$args['back.to.up']='<a href="exec:gs ''true.goto''" id="avs_backtoup_btn">'
 	$args['open.stat']='<a href="exec:$GAME_VALUE[''screen.floor'']=''STATS'' & gs ''true.goto''" id="avs_openstat_btn">'
 	$args['open.objs']='<a href="exec:$GAME_VALUE[''screen.floor'']=''OBJS'' & gs ''true.goto''" id="avs_openobjs_btn">'
-	if $AVS_PLAYERTYPE['type']="" or $AVS_PLAYERTYPE='':
+	if $AVS_PLAYERTYPE['html_support'] = '':
 		if arrsize('$print')>0:
 			$args['result']+=$args['info.scroll']
 			$args['result']+='<br><font color=#0000ff>[</font>'+$args['back.to.up']+'Назад</a><font color=#0000ff>]</font><br>'		
@@ -2659,7 +2632,7 @@ else
 				if $args['back.href']<>"&nbsp;":$args['result']+='<br>'+'<b>'+$args['tools']+'</b>'
 			end
 		end
-	elseif $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
+	elseif $AVS_PLAYERTYPE['html_support'] = "qSpider":
 		if arrsize('$print')>0:
 			$args['result']+=$args['info.scroll']
 			$args['result']+='<span class="avs_text_minibtn">['+$args['back.to.up']+'Назад</a>]</span><br>'		
@@ -2701,7 +2674,6 @@ else
 				if $args['back.href']<>"&nbsp;":$args['result']+='<br>'+$args['tools']
 			end
 		end
-		if $AVS_PLAYERTYPE['type']="QN": $args['result']='<div class="avs_game_mini_all">'+$args['result']+"</div>"
 	end
 end
 killvar '$print'
@@ -2738,10 +2710,6 @@ elseif $args[0] = 'страница.сброс':
 	fcolor = rgb(0,0,0)
 	bcolor = rgb(255,255,255)
 	lcolor = rgb(0,136,136)
-end
-if (instr($AVS_PLAYERTYPE,'[QN]')<>0 or $AVS_PLAYERTYPE['type']="QN") and $args["bc"]<>'':
-	EXEC('JS:document.body.style.backgroundColor="#'+$args["bc"]+'";')
-	EXEC('JS:document.body.style.color="#<<$args["fc"]>>";')
 end
 $GAME_INTERFACE['refresh']=''
 --- set.Screen ---------------------------------
@@ -9907,7 +9875,7 @@ end
 if $args[0] = 'table.char':
 	if $AVS_PLAYERTYPE['size']="MINI":
 		$args['res']='<table width=100% cellspacing=0>'
-	elseif $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']='qSpider':
+	elseif $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']='<table class="avs_game_stat_table">'
 	else
 		$args['res']='<table width=280 cellspacing=0>'
@@ -9921,7 +9889,7 @@ end
 if $args[0] = 'table.blast':
 	if $AVS_PLAYERTYPE['size']="MINI":
 		$args['res']='<table width=100% cellspacing=0>'
-	elseif $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']='qSpider':
+	elseif $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']='<table class="avs_game_objs_table">'
 	else
 		$args['res']='<table width=280 cellspacing=0>'
@@ -10076,7 +10044,7 @@ if $args[0]='s':
 end
 :лог боя
 if $args[0]='war.round':
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']='<span class="avs_text_warround">Раунд <<GAME_WAR["round"]+1>></span>'
 	else
 		$args['res']="<font size=+1><b>Раунд <<GAME_WAR['round']+1>>.</b></font>"
@@ -10085,7 +10053,7 @@ if $args[0]='war.round':
 end
 if $args[0]='war':
 	$args['href']='<a href="exec:gosub ''int.war''" title="вызов обработчика боя" class="plain">'
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']='<avs-enemy><br><br><br><center>'+$args['href']+'<span style="font-size:large">Сражаться</span></a></center></avs-enemy><br>'
 	else
 		$args['res']='<avs-enemy><br><br><br><center>'+$args['href']+'<font size=+1>Сражаться</font></a></center></avs-enemy><br>'
@@ -10093,7 +10061,7 @@ if $args[0]='war':
 end
 if $args[0]='sell':
 	$args['res']='<br><br><br><center>Чтобы продать предмет, нужно щёлкнуть по его названию и в появившемся меню выбрать пункт "Продать".</center>'
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']='<div class="avs_text_print_stat">'+$args['res']+'</div>'
 	else
 		$args['res']='<font color=#008800><i>'+$args['res']+'</i></font>'
@@ -10101,7 +10069,7 @@ if $args[0]='sell':
 end
 if $args[0]='ed':
 	args['rand']=rand(1,10)
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['open.f']='<span style="color:#998888;">'
 		$args['close.f']='</span>'
 	else
@@ -10244,7 +10212,7 @@ if $args[0] = 'table.knew':
 	$args['res']='<br><br>'
 	if $AVS_PLAYERTYPE['size']="MINI":
 		$args['res']+='<table width=100% cellspacing=0>'
-	elseif $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']='qSpider':
+	elseif $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']+='<table class="avs_game_knews_table">'
 	else
 		$args['res']+='<table cellspacing=0 width=100%>'
@@ -10301,7 +10269,7 @@ if $args[0]='game.enemy':
 		$args['res']=$args['выпало']+'<br>У противника выпало больше очков, чем у вас.<br>[page='+$args['lose']+']Выиграл он![/page]'
 	end
 	$args['res']='<br><br><p align=center>'+$args['res']+'</p>'
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']='<div class="avs_text_print_stup">'+$args['res']+'</div>'
 	else
 		$args['res']='<font color=#000044><i>'+$args['res']+'</i></font>'
@@ -10368,7 +10336,7 @@ if $args[0]='vm_5':
 	$args['res']='<span style="color:#880000;">Произошла ошибка. Сделайте скриншот и обратитесь к разработчику</span>'
 end
 if $args[0]='note.objLoc':
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']="<span class=""avs_text_objonloc"">Предметы на локации:</span><br><br>"
 	else
 		$args['res']="<font size=-1>Предметы на локации:</font><br><br>"
@@ -10380,70 +10348,70 @@ if $args[0]='help.putobj':
 	$args['add.colors and attributes']='stat'
 end
 if $args['add.colors and attributes']='put':
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']='<div class="avs_text_print_put">'+$args['res']+'</div>'
 	else
 		$args['res']='<font color=#886600>'+$args['res']+'</font>'
 	end
 end
 if $args['add.colors and attributes']='stat':
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']='<div class="avs_text_print_stat">'+$args['res']+'</div>'
 	else
 		$args['res']='<span style="color:#008800;"><i>'+$args['res']+'</i></span>'
 	end
 end
 if $args['add.colors and attributes']='save':
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']='<span class="avs_text_print_save">'+$args['res']+'</span>'
 	else
 		$args['res']='<span style="color:#990066;"><b>'+$args['res']+'</b></span>'
 	end
 end
 if $args['add.colors and attributes']='stup':
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']='<div class="avs_text_print_stup">'+$args['res']+'</div>'
 	else
 		$args['res']='<font color=#000044><i>'+$args['res']+'</i></font>'
 	end
 end
 if $args['add.colors and attributes']='nope':
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']='<div class="avs_text_print_nope">'+$args['res']+'</div>'
 	else
 		$args['res']='<font color=#880000>'+$args['res']+'</font>'
 	end
 end
 if $args['add.colors and attributes']='noit':
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']='<div class="avs_text_print_noit">'+$args['res']+'</div>'
 	else
 		$args['res']='<font color=#662222>'+$args['res']+'</font>'
 	end
 end
 if $args['add.colors and attributes']='ysit':
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']='<div class="avs_text_print_ysit">'+$args['res']+'</div>'
 	else
 		$args['res']='<font color=#226622>'+$args['res']+'</font>'
 	end
 end
 if $args['add.colors and attributes']='prov':
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']='<div class="avs_text_print_prov">'+$args['res']+'</div>'
 	else
 		$args['res']='<font color=#339900>'+$args['res']+'</font>'
 	end
 end
 if $args['add.colors and attributes']='take':
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']='<div class="avs_text_print_take">'+$args['res']+'</div>'
 	else
 		$args['res']='<font color=#008888>'+$args['res']+'</font>'
 	end
 end
 if $args['add.colors and attributes']='used':
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support']='qSpider':
 		$args['res']='<div class="avs_text_print_used">'+$args['res']+'</div>'
 	else
 		$args['res']='<font color=#008800>'+$args['res']+'</font>'
@@ -10479,156 +10447,6 @@ end
 $result=$args['res']
 --- base.txt ---------------------------------
 
-# !--test--!
-if $user_text='logs':
-	$func('#array.prnt#','$log','[only result]')
-elseif instr(lcase($user_text),'sqrt')=1:
-	$args[0]=$trim($replace($replace($replace($user_text,'sqrt'),'('),')'))
-	if isnum($args[0])=0: $args[0]=$dyneval("$result=$str(<<$args[0]>>)")
-	$func('#sqrt#',$args[0])
-else
-	dynamic $user_text
-end
---- !--test--! ---------------------------------
-
-# !easy.math!
-if $args[0]="":
-	showobjs 0
-	showstat 0
-	showacts 0
-	$fname="Consolas"
-	usehtml=0
-	$usercom='!--test--!'	
-	"easy.math v 2.3.0 для QSP 5.7.0"
-	"
-	По всем вопросам и предложениям обращаться:
-
-	*	aleksversus@mail.ru
-	*	aleksversus.narod.ru
-	*	https://vk.com/id40090736
-	
-	Обучающие видео по программированию на QSP:
-	
-	*	https://www.youtube.com/channel/UCwX8RW2B9yTUFdlivtCGAgA
-
-	Любую функцию можно опробовать прямо здесь, введя её в поле ввода.
-
-	Для нормального функционирования библиотеки с Quest Navigator - в начале игры напишите следующую строку:
-
-		$AVS_PLAYERTYPE='[QN]'
-
-	"
-elseif $args[0]='version':
-	result=2300
-end
---- !easy.math! ---------------------------------
-
-# #+#
-$args[9]=$args[9]
-i_easy_math_plus=0
-:initial
-if i_easy_math_plus<9:
-	if $args[i_easy_math_plus]='': $args[i_easy_math_plus]=str(args[i_easy_math_plus]) else $args[i_easy_math_plus]=$args[i_easy_math_plus]
-	if instr($args[i_easy_math_plus],'-')=1: $args[i_easy_math_plus]=$replace($args[i_easy_math_plus],'-') & minus_easy_math_plus[i_easy_math_plus]=1
-	if instr($args[i_easy_math_plus],'.')=0: $args[i_easy_math_plus]+='.0'
-	if len(mid($args[i_easy_math_plus],instr($args[i_easy_math_plus],'.')+1))>len_easy_math_plus['pos']: len_easy_math_plus['pos']=len(mid($args[i_easy_math_plus],instr($args[i_easy_math_plus],'.')+1))
-	i_easy_math_plus+=1
-	jump 'initial'
-end
-i_easy_math_plus=0
-:к_целому
-if i_easy_math_plus<9:
-	$args[i_easy_math_plus]=$replace($args[i_easy_math_plus]+$func('#zero#',len_easy_math_plus['pos']-len(mid($args[i_easy_math_plus],instr($args[i_easy_math_plus],'.')+1))),'.')
-	i_easy_math_plus+=1
-	jump 'к_целому'
-end
-$args[9]='0'
-i_easy_math_plus=0
-:for
-if i_easy_math_plus<9:
-	args['max_len']=max(len($args[i_easy_math_plus]),len($args[i_easy_math_plus+1]))
-	o_easy_math_plus=1
-	:logic
-	if o_easy_math_plus>-1:
-		if minus_easy_math_plus[i_easy_math_plus+o_easy_math_plus]=1:
-			$args['<<o_easy_math_plus>>']=$func('#dev#',$func('#zero#',args['max_len']+2,'9'),$args[i_easy_math_plus+o_easy_math_plus])
-		else
-			$args['<<o_easy_math_plus>>']=$func('#zero#',args['max_len']-len($args[i_easy_math_plus+o_easy_math_plus])+2)+$args[i_easy_math_plus+o_easy_math_plus]
-		end
-		o_easy_math_plus-=1
-		jump 'logic'
-	end
-	$args['sum']=$func('#add#',$args['1'],$args['0'])
-	if val(mid($args['sum'],1,1))>0:
-		$args['sum']=$func('#dev#',$func('#zero#',args['max_len']+2,'9'),$args['sum'])
-		minus_easy_math_plus[i_easy_math_plus+1]=1
-	else
-		minus_easy_math_plus[i_easy_math_plus+1]=0
-	end
-	$args[i_easy_math_plus]=''
-	$args[i_easy_math_plus+1]=$args['sum']
-	i_easy_math_plus+=1
-	jump 'for'
-else
-	$result=mid($args[9],1,len($args[9])-len_easy_math_plus['pos'])+'.'+mid($args[9],len($args[9])-len_easy_math_plus['pos']+1)
-	$result=$func('#dz#',$result)
-	if minus_easy_math_plus[9]=1 and $result!'0': $result='-'+$result
-end
-killvar 'minus_easy_math_plus'
-killvar 'i_easy_math_plus'
-killvar 'o_easy_math_plus'
-killvar 'len_easy_math_plus'
---- #+# ---------------------------------
-
-# #+col#
-$args[9]=$args[9]
-if instr($args[1],'-')!0: $args['+']='-' else $args['+']='+'
-$args[1] = $replace($args[1],'-')
-dynamic 'r_col_plus = '+$func('#hex-dec#',mid($args[0],1,2))+$args['+']+$func('#hex-dec#',$args[1])
-dynamic 'g_col_plus = '+$func('#hex-dec#',mid($args[0],3,2))+$args['+']+$func('#hex-dec#',$args[1])
-dynamic 'b_col_plus = '+$func('#hex-dec#',mid($args[0],5,2))+$args['+']+$func('#hex-dec#',$args[1])
-if r_col_plus>255: r_col_plus=255
-if r_col_plus<0: r_col_plus=0
-if g_col_plus>255: g_col_plus=255
-if g_col_plus<0: g_col_plus=0
-if b_col_plus>255: b_col_plus=255
-if b_col_plus<0: b_col_plus=0
-$result['+col'] = $func('#dec-col#',r_col_plus)+$func('#dec-col#',g_col_plus)+$func('#dec-col#',b_col_plus)
-killvar 'r_col_plus'
-killvar 'g_col_plus'
-killvar 'b_col_plus'
---- #+col# ---------------------------------
-
-# #-#
-args[9]=args[9]
-result=iif(args[1]-args[0]>0,args[1]-args[0],args[0]-args[1])
---- #-# ---------------------------------
-
-# #add#
-if $args[0]='': $args[0]=str(args[0]) else $args[0] = $args[0]
-if $args[1]='': $args[1]=str(args[1]) else $args[1] = $args[1]
-args['max_len']=max(len($args[0]),len($args[1]))
-$args[0]=$func('#zero#',args['max_len']-len($args[0]))+$args[0]
-$args[1]=$func('#zero#',args['max_len']-len($args[1]))+$args[1]
-:prev
-$result=''
-args['i'] = args['max_len']
-args['lst_byte'] = 0
-:for
-if args['i']>0:
-	args['res_byte']=val(mid($args[0],args['i'],1))+val(mid($args[1],args['i'],1))+args['lst_byte']
-	args['lst_byte']=args['res_byte']/10
-	args['res_byte']=args['res_byte'] mod 10
-	$result=str(args['res_byte'])+$result
-	args['i']-=1
-	jump 'for'
-elseif args['lst_byte']>0:
-	$args[0]=$result
-	$args[1]=$func('#zero#',args['max_len']-len(str(args['lst_byte'])))+str(args['lst_byte'])
-	jump 'prev'
-end
---- #add# ---------------------------------
-
 # #array.clr#
 $args[0] = $args[0]
 $args[1] = $args[1]
@@ -10646,63 +10464,9 @@ if args['pos']!-1 and arrsize($args[0])>0 and args['size']>0:
 end
 --- #array.clr# ---------------------------------
 
-# #array.dsrt#
-$args[0] = $args[0]
-$args[1] = $replace($args[1],'$')
-if $args[2] = '': $args[2] = $args[0]
-$args[9]=$args[9]
-killvar 'easy_math_sort_array'
-killvar $args['$']+'easy_math_copy_array'
-if instr($args[0],'$')=1: $args['$']='$' else $args['$']=''
-copyarr 'easy_math_sort_array',$args[1]
-args['i']=0
-:for
-if args['i'] < arrsize('easy_math_sort_array'):
-	args['j']=arrpos('easy_math_sort_array',args['i'])
-	dynamic $args['$']+"easy_math_copy_array[args[0]] = "+$args[0]+"[args[1]]",args['i'],args['j']
-	args['i']+=1
-	jump 'for'
-end
-copyarr $args[2],$args['$']+"easy_math_copy_array"
---- #array.dsrt# ---------------------------------
-
-# #array.ins#
-$args[9] = $args[9]
-if instr($args[0],'$')=1:
-	$args[3]='$'
-	$args[5]="'"+$args[1]+"'"
-else 
-	$args[3]=''
-	$args[5]='<<args[1]>>'
-end
-if $args[2]!'':
-	if $args[3]='$': $args[4]="'щЭcmыz9!T7K1АЙ@>FуОk7aСeV0mвзZхaAVSMARKUPDOWN'" else $args[4]='-2147483648'
-	args[2]=dyneval("
-				<<$args[3]>>args[0]=<<$args[0]>>['<<$args[2]>>']
-				<<$args[0]>>['<<$args[2]>>']=<<$args[4]>>
-				result=arrpos('<<$args[0]>>',<<$args[4]>>)
-				<<$args[0]>>[result]=<<$args[3]>>args[0]
-			")
-end
-copyarr "<<$args[3]>>easy_math_copy_array_1",$args[0],0,args[2]
-copyarr "<<$args[3]>>easy_math_copy_array_2",$args[0],args[2]
-copyarr $args[0],"<<$args[3]>>easy_math_copy_array_1"
-dynamic "
-	<<$args[0]>>[]=<<$args[5]>>
-	:for
-	if arrsize('<<$args[3]>>easy_math_copy_array_2')>0:
-		<<$args[0]>>[]=<<$args[3]>>easy_math_copy_array_2[0]
-		killvar '<<$args[3]>>easy_math_copy_array_2',0
-		jump 'for'
-	end
-"
-killvar '<<$args[3]>>easy_math_copy_array_1'
-killvar '<<$args[3]>>easy_math_copy_array_2'
---- #array.ins# ---------------------------------
-
 # #array.prnt#
 $args[9] = $args[9]
-$args[1] = UCASE($args[1])
+$args[1] = $UCASE($args[1])
 if $args[2]='': $args[2]='
 '
 if args[3]<0: args[3]=0
@@ -10720,105 +10484,6 @@ if instr($args[1],'[NOT LAST]')<>0:
 end
 $result=$args['array.prnt']
 --- #array.prnt# ---------------------------------
-
-# #array.prnt.few#
-$args[9]=$args[9]
-args['last']=arrsize('$args')-1
-if $strfind($args[args['last']],'\S+\s+\S+')!'':
-	$args['construct']=UCASE($args[args['last']])
-	if instr($args['construct'],'[NO TABLE]')!0: $args['table']='' else $args['table']='yep'
-	if instr($args['construct'],'[ONLY RESULT]')!0: $args['table']='' & $args['only result']='only result'
-	jump 'print'
-elseif arrcomp('$args','[\s\S]*(\S+\W+\S+)+[\s\S]*')!-1 and arrcomp('$args','[\s\S]*(\S+\W+\S+)+[\s\S]*')!arrsize('$args')-1:
-	$result="Error: array's name is not correct. args pos:<<arrcomp('$args','[\s\S]*(\S+\W+\S+)+[\s\S]*')>>"
-	exit
-else
-	if $args['table']!'' or $strfind($args[args['last']],'\S+\s+\S+')='': $args['table']='<table border=1 cellpadding=5>'
-	:print
-	if $args['table']!'': $args['table']+='<tr><td>#</td>'
-	args['i']=0
-	:mass
-	if args['i']<9 and $strfind($args[args['i']],'\S+\s+\S+')='' and $args[args['i']]!'':
-		$args[args['i']]=$TRIM($args[args['i']])
-		if $args['table']!'': $args['table']+="<td><<$args[args['i']]>></td>"
-		if arrsize($args[args['i']])>args['size']: args['size']=arrsize($args[args['i']])
-		args['i']+=1
-		jump 'mass'
-	end
-	if args['size']=0: $result='All your massives are empty.' & exit
-	if $args['table']!'': $args['table']+='</tr>'
-	args['b']=0
-	:for
-	if args['b']<args['size']:
-		args['i']=0
-		if $args['table']!'': $args['table']+="<tr><td><<args['b']>></td>"
-		:zap
-		if args['i']<9 and $strfind($args[args['i']],'\S+\s+\S+')='' and $args[args['i']]!'':
-			if $args['only result']!'only result' and $args['table']='': $args['cell'] = $args[args['i']]+"[<<args['b']>>]="
-			if $args['table']='yep':
-				$args['cell'] += $dyneval("if <<$args[args['i']]>>[args[0]]!'': $result = $replace(<<$args[args['i']]>>[args[0]],' ','&nbsp;') else $result='&nbsp;'",args['b'])
-			else
-				$args['cell'] += $dyneval("$result = <<$args[args['i']]>>[args[0]]",args['b'])
-			end
-			if $args['table']!'':
-				$args['table']+='<td>'+$args['cell']+'</td>'
-			else
-				$args['result']+=$args['cell']+'	'
-			end
-			$args['cell']=''
-			args['i']+=1
-			jump 'zap'
-		end
-		if $args['table']!'': $args['table']+="</tr>" else $args['result']+='
-'
-		args['b']+=1
-		jump 'for'
-	end
-	if $args['table']!'': $args['table']+='</table>'
-end
-killvar '$result'
-if $args['table']!'':
-	$result=$args['table']
-elseif $args['result']!'':
-	$result=$mid($args['result'],1,len($args['result'])-1)
-else
-	$result='Oops. If you see this message, that so wrong. Save the game and ask me on aleksversus@mail.ru. Error of easy.math.libs in array.prnt.few'
-end
---- #array.prnt.few# ---------------------------------
-
-# #array.rand#
-$args[0] = $args[0]	
-args[1] = args[1]
-args[2] = args[2]
-args[3] = args[3]
-if args[4] = 0: args[4] = 1000
-:for
-if args[1] >0:
-	dynamic $args[0]+'['+str(args[2])+'] = rand('+str(args[3])+','+str(args[4])+')'
-	args[1]-=1
-	args[2]+=1
-	jump 'for'
-end
---- #array.rand# ---------------------------------
-
-# #array.rstd#
-$args[0] = $args[0]
-$args[1] = $replace($args[1],'$')
-if $args[2] = '': $args[2] = $args[0]
-$args[9]=$args[9]
-killvar 'easy_math_sort_array'
-killvar $args['$']+'easy_math_copy_array'
-if instr($args[0],'$')=1: $args['$']='$' else $args['$']=''
-copyarr 'easy_math_sort_array',$args[1]
-args['i']=0
-:for
-if args['i'] < arrsize('easy_math_sort_array'):
-	dynamic $args['$']+"easy_math_copy_array[args[0]] = "+$args[0]+"[args[1]]",args['i'],easy_math_sort_array[args['i']]
-	args['i']+=1
-	jump 'for'
-end
-copyarr $args[2],$args['$']+"easy_math_copy_array"
---- #array.rstd# ---------------------------------
 
 # #array.simp#
 $args[0] = $args[0]
@@ -10914,375 +10579,6 @@ killvar 'easy_math_sort_array'
 killvar $args['$']+'easy_math_copy_array'
 --- #array.sort# ---------------------------------
 
-# #array.srch#
-if $args[0]='': $result='error' & exit
-if $args[1]='': $args[1]='max' else $args[1]=LCASE($args[1])
-if $args[2]='':	args[2]=min($args[0]) else args[2]=val($args[2])
-if $args[3]='': args[3]=max($args[0]) else args[3]=val($args[3])
-if args[4] < 0: args[4]=0
-if args[5] = 0: args[5]=arrsize($args[0])-1
-$args[6] = lcase($args[6])
-$args[9]=$args[9]
-if args[2]>args[3]:
-	args['t']=args[2]
-	args[2]=args[3]
-	args[3]=args['t']
-end
-if args[4]>args[5]:
-	args['t']=args[4]
-	args[4]=args[5]
-	args[5]=args['t']
-end
-$args['result']='false'
-copyarr 'easy_math_copy_array',$args[0]
-:for
-if no args[4]>args[5]:
-	if easy_math_copy_array[args[4]]>=args[2] and easy_math_copy_array[args[4]]<=args[3]:
-		if $args[1]='max':
-			if (args['m']=0 and $args['result']='false') or easy_math_copy_array[args[4]]>args['m']:
-				args['m']=easy_math_copy_array[args[4]]
-				args['pos']=args[4]
-				$args['result']='true'
-			end 
-		elseif $args[1]='min':
-			if (args['m']=0 and $args['result']='false') or easy_math_copy_array[args[4]]<args['m']:
-				args['m']=easy_math_copy_array[args[4]]
-				args['pos']=args[4]
-				$args['result']='true'
-			end 
-		else
-			$result='easy.math''s error. Please, tell me about it: aleksversus@mail.ru'
-		end
-	end
-	args[4]+=1
-	jump 'for'
-end
-killvar 'easy_math_copy_array'
-if $args[6]='pos' and $args['result']='true':
-	$result="<<args['pos']>>"
-elseif $args['result']='true':
-	$result="<<args['m']>>"
-else
-	$result='false'
-end
---- #array.srch# ---------------------------------
-
-# #array.strt#
-args[9] = args[9]
-if args[2]<args[3]:
-	$args['reverse']='yes'
-end
-args['b']=args[3]
-if instr($args[0],'$')=1: $args['q']="'"
-:for
-if args[4]<args[1]:
-	dynamic "<<$args[0]>>[<<args[4]>>]=<<$args['q']>><<args['b']>><<$args['q']>>"
-	args[4]+=1
-	if $args['reverse']!'yes':
-		args['b']+=1
-		if args['b']>args[2] and (args[2]!0 or args[3]!0): args['b']=args[3]
-	else
-		args['b']-=1
-		if args['b']<args[2] and (args[2]!0 or args[3]!0): args['b']=args[3]
-	end
-	jump 'for'
-end
---- #array.strt# ---------------------------------
-
-# #chk.array.word#
-$args[9] = $args[9]
-if args[4] = 0: args[4] = arrsize($args[0])
-if $args[2]='first' or $args[2]='':
-	if instr($AVS_PLAYERTYPE,'[QN]')<>0:
-		args['b']=arrcomp($args[0],'[\s\S]*'+$args[1]+'[\s\S]*',args[3])
-	else
-		args['b']=arrcomp(args[3],$args[0],'[\s\S]*'+$args[1]+'[\s\S]*')
-	end
-	if args['b']>args[4]: result=-1 else result=args['b']
-elseif $args[2]='last':
-	args['i']=args[3]
-	:for
-	if instr($AVS_PLAYERTYPE,'[QN]')<>0:
-		args['b']=arrcomp($args[0],'[\s\S]*'+$args[1]+'[\s\S]*',args['i'])
-	else
-		args['b']=arrcomp(args['i'],$args[0],'[\s\S]*'+$args[1]+'[\s\S]*')
-	end
-	if args['b']!-1 and args['b']<=args[4]:
-		result=args['b']
-		args['i']=result+1
-		jump 'for'
-	else
-		exit
-	end
-end
---- #chk.array.word# ---------------------------------
-
-# #chk.obj.word#
-$args[9]=$args[9]
-args['i'] = 1
-:loop
-if no args['i'] > countobj:
-	if instr($getobj(args['i']),$args[0])!0:
-		result = args['i']
-		exit
-	end
-	args['i']+=1
-	jump 'loop'
-end
---- #chk.obj.word# ---------------------------------
-
-# #col-inv#
-if $args[0]='': exit
-$args['r'] = '-'+$mid($args[0],1,2)
-$args['g'] = '-'+$mid($args[0],3,2)
-$args['b'] = '-'+$mid($args[0],5,2)
-$args['rr'] = $mid($func('#+col#','ffffff',$args['r']),1,2)
-$args['gg'] = $mid($func('#+col#','ffffff',$args['g']),1,2)
-$args['bb'] = $mid($func('#+col#','ffffff',$args['b']),1,2)
-$result = $args['rr']+$args['gg']+$args['bb']
---- #col-inv# ---------------------------------
-
-# #col-rgb#
-! функция преобразует цвет из шестнадцатеричного формата в формат rgb, который использует qsp
-if $args[0]='': result = 0 & exit
-args['result']=rgb(func('#hex-dec#',$mid($args[0],1,2)),func('#hex-dec#',$mid($args[0],3,2)),func('#hex-dec#',$mid($args[0],5,2)))
-result=args['result']
---- #col-rgb# ---------------------------------
-
-# #coords.get#
-args[0] = args[0]
-args[1] = args[1]
-$args[2]=$args[2]
-args['y']=args[0]/args[1]
-args['x']=args[0]-args['y']*args[1]
-if $args[2]="": $result = "x:<<args['x']>> y:<<args['y']>>"
-if UCASE($args[2])="X": result=args['x']
-if UCASE($args[2])="Y": result=args['y']
---- #coords.get# ---------------------------------
-
-# #dec-col#
-$result=''
-:start
-if args[0]>16777215: jump 'end_keep'
-if args[0]<0: args[0]=-args[0] & $args['+']='-' & jump 'start'
-args['основание']=16
-:новое_основание
-if args[0]/args['основание']<16:
-	if args[0]<16:
-		$result=$result+$mid('0123456789abcdef',args[0]+1,1)
-		jump 'end_keep'
-	else
-		$result=$result+$mid('0123456789abcdef',args[0]/args['основание']+1,1)
-		args[0]=args[0] mod args['основание']
-		args['основание']=16
-		jump 'новое_основание'
-	end
-else
-	args['основание']=args['основание']*16
-	jump 'новое_основание'
-end
-:end_keep
-if len($result)=1:
-	$result='0'+$result
-elseif $result='':
-	$result='00'
-end
-$result=$args['+']+$result
---- #dec-col# ---------------------------------
-
-# #dec-hex#
-$result=''
-args[9]=args[9]
-if args[0]<0: args[0]=-args[0] & $args['+']='-'
-args['основание']=16
-:новое_основание
-if args[0]/args['основание']<16:
-	if args[0]<16:
-		$result=$result+$mid('0123456789abcdef',args[0]+1,1)
-		jump 'end_keep'
-	else
-		$result=$result+$mid('0123456789abcdef',args[0]/args['основание']+1,1)
-		args[0]=args[0] mod args['основание']
-		args['основание'] = 16
-		jump 'новое_основание'
-	end
-else
-	args['основание']=args['основание']*16
-	jump 'новое_основание'
-end
-:end_keep
-$result=$args['+']+$result
---- #dec-hex# ---------------------------------
-
-# #dev#
-if $args[0]='': $args[0]=str(args[0]) else $args[0] = $args[0]
-if $args[1]='': $args[1]=str(args[1]) else $args[1] = $args[1]
-args['max_len']=max(len($args[0]),len($args[1]))
-$args[0]=$func('#zero#',args['max_len']-len($args[0]))+$args[0]
-$args[1]=$func('#zero#',args['max_len']-len($args[1]))+$args[1]
-:prev
-$result=''
-args['i'] = args['max_len']
-args['lst_byte'] = 0
-:for
-if args['i']>0:
-	args['res_byte']=val(mid($args[0],args['i'],1))-val(mid($args[1],args['i'],1))+args['lst_byte']
-	if args['res_byte']<0:
-		args['res_byte']=10+args['res_byte']
-		args['lst_byte']=-1
-	else
-		args['lst_byte']=0
-	end
-	$result=str(args['res_byte'])+$result
-	args['i']-=1
-	jump 'for'
-elseif args['lst_byte']=-1:
-	$args[0]=$result
-	$args[1]=$func('#zero#',args['max_len']-1)+'1'
-	jump 'prev'
-end
---- #dev# ---------------------------------
-
-# #dz#
-$args[9] = $args[9]
-if args[1]<1: args[1]=1
-if instr($args[0],'.')=0: $result=$args[0] & exit
-$args['start'] = mid($args[0],1,instr($args[0],'.')-1)
-$args['end'] = mid($args[0],instr($args[0],'.')+1)
-args['len']=len(str(args[1]))-1
-:for
-args['i']=len($args['end'])
-if len($args['end'])>args['len'] and mid($args['end'],args['i'],1)='0':
-	$args['end']=mid($args['end'],1,args['i']-1)
-	jump 'for'
-end
-if $args['end']!'': $result=$args['start']+'.'+$args['end'] else $result=$args['start']
-:for2
-if instr($result,'0')=1 and instr($result,'.')!2:
-	$result=mid($result,2)
-	jump 'for2'
-end
-if $result='': $result='0'
---- #dz# ---------------------------------
-
-# #even#
-$args[9]=$args[9]
-if args[1]=0 or $strfind(str(args[1]),'1[0]+')='': args[1]=100
-if $args[2]='up':
-	:up
-	if args[0]>0: result = val(str(args[0]/args[1]+1)+mid(str(args[1]),2))
-	if args[0]<0: result = val(str(args[0]/args[1]-1)+mid(str(args[1]),2))
-	exit
-elseif $args[2]='down':
-	:down
-	result = args[0]/args[1]*args[1]
-	exit
-elseif $args[2]='' and args[0]>0:
-	if val(mid(str(args[0]-args[0]/args[1]*args[1]),1,1))<5: jump 'down' else jump 'up'
-elseif $args[2]='' and args[0]<0:
-	if val(mid(str(-1*args[0]-(-1*args[0]/args[1]*args[1])),1,1))<5: jump 'down' else jump 'up'
-end
---- #even# ---------------------------------
-
-# #hash#
-! функция, вычисляющая псевдохэш строки
-! работает следующим образом: перебирает символы строки начиная с первого и сравнивает с таблицей символов
-! номер символа в таблице символов умножается на позицию символа в строке и плюсуется к предыдущему значению
-! игнорируются символы пробелов, табуляций, переводов строк и некоторые специальные, а так же все прочие
-! символы не указанные в таблице символов
---- #hash# ---------------------------------
-
-# #hex-dec#
-result=0
-$args[0]=lcase($args[0])
-args['i']=0
-:next
-if args['i']<len($args[0]):
-	args['t']=instr('0123456789abcdef',mid($args[0],len($args[0])-args['i'],1)) - 1
-	args['j']=args['i']
-	:multiple
-	if args['j']>0:
-		args['t']=args['t'] * 16
-		args['j']-=1
-		if args['j']>0: jump 'multiple'
-	end
-	args['i']+=1
-	result+=args['t']
-	if args['i']<len($args[0]): jump 'next'
-end
---- #hex-dec# ---------------------------------
-
-# #indiv#
-args[9] = args[9]
-if (args[0]<0 and args[1]>0) or (args[0]>0 and args[1]<0): $args['+']='-'
-if args[0]<0: args[0]=-args[0]
-if args[1]<0: args[1]=-args[1]
-if args[1]=0: args[1]=100
-if args[2]=0: args[2]=1000000000
-$args[2]=str(args[2])
-args['i']=0
-:for
-args['rez']=args[0]/args[1]
-args['ost']=args[0] mod args[1]
-if args['i']=1: $args['res.indiv']+='.'
-$args['res.indiv']+=str(args['rez'])
-args[0]=args['ost']*10
-args['i']+=1
-if args['i']<len($args[2]): jump 'for'
-$args['res.indiv']=$args['+']+$func('#dz#',$args['res.indiv'])
-$result=$args['res.indiv']
---- #indiv# ---------------------------------
-
-# #invert#
-if instr($args[0],'-')=1: $result=$mid($args[0],2) else $result='-'+$args[0]
-if $result = '-': $result=''
---- #invert# ---------------------------------
-
-# #raz#
-$args[9]=$args[9]
-if args[0]<0: args[0]=-args[0]
-args['10']=1
-:for
-if args[0]/args['10']>9:
-	args['10']=args['10']*10
-	jump 'for'
-else
-	result = args['10']
-	exit
-end
---- #raz# ---------------------------------
-
-# #razdiv#
-$args[9] = $args[9]
-if instr($args[0],'.')=0: result=1 & exit
-args['div'] = len($replace($args[0],$strfind($args[0],'[-\d]+\.')))
-result=1
-:for
-if args['div']>0:
-	result=result*10
-	args['div']-=1
-	jump 'for'
-end
---- #razdiv# ---------------------------------
-
-# #re.rgb#
-! Функция, обратная функции RGB. На основе числового кода получает составляющие
-! -16777216+(r*1)+(g*256)+(b*256*256)
-if args[0]>0: args[0]=-args[0]	&	!	числовой код
-$args[1]=$args[1]				&	!	какую составляющую хотим получить red, green, blue
-args['blue']=(args[0]+16777216)/256/256
-args['green']=(args[0]+16777216-args['blue']*256*256)/256
-args['red']=(args[0]+16777216-args['blue']*256*256-args['green']*256)
-if instr($args[1],'red')<>0: args['c']+=1
-if instr($args[1],'green')<>0: args['c']+=1
-if instr($args[1],'blue')<>0: args['c']+=1
-if $args[1]='' or args['c']>1:
-	$result="<<args['red']>>|<<args['green']>>|<<args['blue']>>"
-else
-	result=args[$trim($args[1])]
-end
---- #re.rgb# ---------------------------------
-
 # #rndstr#
 if args[0]=0: args[0]=rand(1,8)
 $args[9]=$args[9]
@@ -11300,8 +10596,8 @@ if $args[1]<>'':
 	:for
 	if len($args[1])>0 and args['i']>0:
 		if len($args[1])>1:
-			$args['1'] = mid ($args[1],1,1)
-			$args[1] = mid ($args[1],2)
+			$args['1'] = $mid($args[1],1,1)
+			$args[1] = $mid($args[1],2)
 		else
 			$args['1']=$args[1]
 			$args[1]=''
@@ -11314,87 +10610,15 @@ end
 if $args[2]<>'': $args['symbols']+=$args[2]
 :while
 if args[0]>0:
-	$result['rndstr']+=(mid($args['symbols'],rand(1,len($args['symbols'])),1))
+	$result['rndstr']+=($mid($args['symbols'],rand(1,len($args['symbols'])),1))
 	args[0]-=1
 	if args[0]>0: jump 'while'
 end
 --- #rndstr# ---------------------------------
 
-# #rounddiv#
-$args[9] = $args[9]
-if args[1]!0: $args[1] = str(args[1])
-if $args[1]='': $args[1]='1'
-$result=$args[0]
-if instr($args[0],'.')=0: exit
-if instr($args[1],'.')!0:
-	if (func('#razdiv#',$args[0])=<func('#razdiv#',$args[1])): exit
-	args['res'] = func('#even#',val($replace($args[0],'.')),func('#razdiv#',$args[0])/func('#razdiv#',$args[1]),$args[2])
-	$result = $func('#indiv#',args['res'],func('#razdiv#',$args[0]))
-	exit
-else
-	args['res'] = func('#even#',val($replace($args[0],'.')),func('#razdiv#',$args[0])*func('#raz#',val($args[1])),$args[2])
-	$result = $func('#indiv#',args['res'],func('#razdiv#',$args[0]))
-	exit
-end
---- #rounddiv# ---------------------------------
-
-# #rtp#
-$args[0] = $args[0]
-$args[1] = $args[1]
-if instr($args[0],'$')=1: $args[9]='$'
-dynamic "<<$args[9]>>args[0] = <<$args[0]>>
-<<$args[0]>> = <<$args[1]>>
-<<$args[1]>> = <<$args[9]>>args[0]"
---- #rtp# ---------------------------------
-
-# #sim#
-$args[9]=$args[9]
-$args[0]=$func('#dz#',$args[0],'1')
-$args[1]=$func('#dz#',$args[1],'1')
-if instr($args[0],'.')=0: $args[0]+='.0'
-if instr($args[1],'.')=0: $args[1]+='.0'
-if $args[0]=$args[1]: $result=$func('#dz#',$args[0]) & exit
-args['0']=val(mid($args[0],1,instr($args[0],'.')-1))
-args['1']=val(mid($args[1],1,instr($args[1],'.')-1))
-if args['0']>args['1']:
-	$result=$func('#dz#',$args[0])
-	exit
-elseif args['0']<args['1']:
-	$result=$func('#dz#',$args[1])
-	exit
-end
-$args['00']=mid($args[0],instr($args[0],'.')+1)
-if instr($args[0],'-'): $args['00']='-'+$args['00']
-if instr($args[0],'-'): $args['00']='-'+$args['00']
-$args['11']=mid($args[1],instr($args[1],'.')+1)
-args['max']=max(func('#razdiv#',$args['00']),func('#razdiv#',$args['11']))
-if func('#undiv#',$args['00'],args['max'])>func('#undiv#',$args['11'],args['max']):
-	$result=$args[0]
-else
-	$result=$args[1]
-end
-$result=$func('#dz#',$result)
---- #sim# ---------------------------------
-
-# #sqrt#
-$args[9] = $args[9]
-if args[1] = 0: args[1] = 100
-if $args[2]='': $args[2]='1'
-:still
-$args['res']=$func('#:#',$func('#+#',$args[2],$func('#:#',$args[0],$args[2],args[1])),'2',args[1])
-$args['quad'] = $func('#*#',$args['res'],$args['res'])
-if $args['res']!$args[2]:
-	$args[2]=$args['res']
-	jump 'still'
-else
-	$result=$args['res']
-	exit
-end
---- #sqrt# ---------------------------------
-
 # #str.inArray#
 $args[9]=$args[9]
-$args[3] = UCASE($args[3])
+$args[3] = $UCASE($args[3])
 if $args[2] = '':
 $args[2]='
 '
@@ -11426,8 +10650,8 @@ if len($args[0])>0:
 	if ($args['vs']<>'' and $strfind($args[3],'NOTSPACE')<>'') or $strfind($args[3],'NOTSPACE')='':
 		if $strfind($args[3],'LEFT')='LEFT' and $strfind($args[3],'REGULAR')<>'REGULAR': $args['l']=$args[2]
 		if $strfind($args[3],'RIGHT')='RIGHT' and $strfind($args[3],'REGULAR')<>'REGULAR': $args['r']=$args[2]
-		if $strfind($args[3],'LCASE')='LCASE': $args['vs']=LCASE($args['vs'])
-		if $strfind($args[3],'UCASE')='UCASE': $args['vs']=UCASE($args['vs'])
+		if $strfind($args[3],'LCASE')='LCASE': $args['vs']=$LCASE($args['vs'])
+		if $strfind($args[3],'UCASE')='UCASE': $args['vs']=$UCASE($args['vs'])
 		$easy_math_copy_array[]=$args['l']+$args['vs']+$args['r']
 	end
 	jump 'for'
@@ -11444,108 +10668,6 @@ copyarr $args[1],'$easy_math_copy_array'
 killvar '$easy_math_copy_array'
 --- #str.inArray# ---------------------------------
 
-# #str.thin#
-$args[9] = $args[9]
-if args[1] < 1: args[1]=1
-if $args[2] = '': $args[2]=' '
-$args[3]=$UCASE($args[3])
-if instr($args[3],'[UP]')<>0:
-	:for_up
-	if len($args[0])>0:
-		$args['t']=$mid($args[0],len($args[0])-2) 
-		$args[0]=$mid($args[0],1,len($args[0])-3)
-		if instr($args[3],'[LEFT]')<>0 or len($args[0])>0:
-			$args['res']=$args[2]+$args['t']+$args['res']
-		else
-			$args['res']=$args['t']+$args['res']
-		end
-		jump 'for_up'
-	end
-	if instr($args[3],'[RIGHT]')<>0: $args['res']+=$args[2]
-else
-	:for_down
-	if len($args[0])>0:
-		$args['t']=$mid($args[0],1,args[1])
-		$args[0]=$mid($args[0],args[1]+1)
-		if instr($args[3],'[RIGHT]')<>0 or len($args[0])>0:
-			$args['res']+=$args['t']+$args[2]
-		else
-			$args['res']+=$args['t']
-		end
-		jump 'for_down'
-	end
-	if instr($args[3],'[LEFT]')<>0: $args['res']=$args[2]+$args['res']
-end
-$result = $args['res']
---- #str.thin# ---------------------------------
-
-# #sum#
-$args[9]=$args[9]
-if $args[0]='': exit
-if $args[1]='':
-	$args[1] = ' '
-elseif $args[1]='/se':
-	$args[1]=''
-end
-if instr($args[0],'$')=1:
-	$args['$']='$'
-end
-:for
-if args['i']<arrsize($args[0]):
-	if $args['$']='$':
-		$args['result'] += $dyneval ("$result=<<$args[0]>>[<<args['i']>>]")+$args[1]
-	else
-		args['result']	+=	dyneval ("result=<<$args[0]>>[<<args['i']>>]")
-	end
-	args['i'] += 1
-	jump 'for'
-end
-if $args['$']='$':
-	$result	= $args['result']
-else
-	result	= args['result']
-end
---- #sum# ---------------------------------
-
-# #undiv#
-$args[9]=$args[9]
-if isnum($args[0])=-1 and args[1]!0:
-	result=val($args[0])*args[1]
-	exit
-elseif isnum($args[0])=-1 and args[1]=0:
-	result=val($args[0])
-end
-$args[1] = mid(str(args[1]),2)
-if $args[1]='': result=val($replace($args[0],'.')) & exit
-$args['end']=mid($args[0],instr($args[0],'.')+1)
-if len($args['end'])>=len($args[1]):
-	result=val(mid($args[0],1,instr($args[0],'.')-1)+mid($args['end'],1,len($args[1])))
-else
-	result=val(mid($args[0],1,instr($args[0],'.')-1)+$args['end']+mid($args[1],1,len($args[1])-len($args['end'])))
-end
---- #undiv# ---------------------------------
-
-# #widetrim#
-$args[9] = $args[9]
-$args[1] = UCASE($args[1])
-gosub '#str.inArray#',$args[0],'$easy_math_temp_massive','','trim'
-:for1
-if arrsize('$easy_math_temp_massive')>0 and ($easy_math_temp_massive[0]='' or strcomp($easy_math_temp_massive[0],'\s+'))=-1:
-	killvar '$easy_math_temp_massive',0
-	jump 'for1'
-end
-:for2
-if arrsize('$easy_math_temp_massive')>0 and ($easy_math_temp_massive[]='' or strcomp($easy_math_temp_massive[],'\s+'))=-1:
-	killvar '$easy_math_temp_massive',arrsize('$easy_math_temp_massive')-1
-	jump 'for2'
-end
-if instr($args[1],'[TRIM]')<>0: $args['addcomm']='[TRIM]'
-$args['res']=$func('#array.prnt#','$easy_math_temp_massive','[only result]'+$args['addcomm'])
-$args['res']=$mid($args['res'],1,len($args['res'])-1)
-killvar '$easy_math_temp_massive'
-$result=$args['res']
---- #widetrim# ---------------------------------
-
 # #zero#
 args[0] = args[0]
 if $args[1]='': $args[1]='0' else $args[1] = $args[1]
@@ -11556,84 +10678,6 @@ if args[0]>0:
 	jump 'for'
 end
 --- #zero# ---------------------------------
-
-# #^#
-args[9]=args[9]
-result=1
-:for
-if args[1]>0: 
-	result=result*args[0]
-	args[1]-=1
-	jump 'for'
-end
---- #^# ---------------------------------
-
-# #*#
-$args[9]=$args[9]
-i_easy_math_um = 0
-:initial
-if i_easy_math_um<9:
-	if len($args[i_easy_math_um])=0:
-		if args[i_easy_math_um]=0: $args[i_easy_math_um]='1' else $args[i_easy_math_um]=str(args[i_easy_math_um])
-	else
-		$args[i_easy_math_um] = $args[i_easy_math_um]
-		if $args[i_easy_math_um]='0': $result='0' & exit
-	end
-	if instr($args[i_easy_math_um],',')!0: $args[i_easy_math_um]=$replace($args[i_easy_math_um],',','.')
-	if instr($args[i_easy_math_um],'-')=1: $args[i_easy_math_um]=$replace($args[i_easy_math_um],'-')	&	args[11]=1-args[11]
-	if instr($args[i_easy_math_um],'.')!0: args[10]+=len(mid($args[i_easy_math_um],instr($args[i_easy_math_um],'.')+1))
-	$args[i_easy_math_um]=$replace($args[i_easy_math_um],'.')
-	i_easy_math_um+=1
-	jump 'initial'
-end
-$args[9]='1'
-i_easy_math_um=9
-:for
-$args['summ']='0'
-if i_easy_math_um>0:
-	j_easy_math_um=len($args[i_easy_math_um-1])
-	:следующий_разряд
-	if j_easy_math_um>0:
-		a_easy_math_um=len($args[i_easy_math_um])
-		args['last']=0
-		$args['result']=$func('#zero#',len($args[i_easy_math_um-1])-j_easy_math_um)
-		:умножение
-		if a_easy_math_um>0:
-			args['is']=val(mid($args[i_easy_math_um],a_easy_math_um,1))*val(mid($args[i_easy_math_um-1],j_easy_math_um,1))
-			args['is']+=args['last']
-			args['last']=args['is']/10
-			args['is']=args['is'] mod 10
-			$args['result']=str(args['is'])+$args['result']
-			a_easy_math_um-=1
-			if a_easy_math_um=0: $args['result']=str(args['last'])+$args['result']
-			jump 'умножение'
-		end
-		$args['summ']=$func('#+#',$args['summ'],$args['result'])
-		j_easy_math_um-=1
-		jump 'следующий_разряд'
-	end
-	i_easy_math_um-=1
-	$args[i_easy_math_um]=$args['summ']
-	jump 'for'
-end
-$result=$args[i_easy_math_um]
-$result=$func('#dz#',mid($result,1,len($result)-args[10])+'.'+mid($result,len($result)-args[10]+1))
-if args[11]=1: $result='-'+$result
-killvar 'i_easy_math_um'
-killvar 'j_easy_math_um'
-killvar 'a_easy_math_um'
---- #*# ---------------------------------
-
-# #:#
-$args[9]=$args[9]
-$args[0]=$func('#dz#',$args[0],1)
-$args[1]=$func('#dz#',$args[1],1)
-args[2] = args[2]
-args['max']=max(func('#razdiv#',$args[0]),func('#razdiv#',$args[1]))
-args[0] = func('#undiv#',$args[0],args['max'])
-args[1] = func('#undiv#',$args[1],args['max'])
-$result=$func('#indiv#',args[0],args[1],args[2])
---- #:# ---------------------------------
 
 # get.tag.cont
 if $args[1]='<!--!>' and $strfind($args[0],'<!--([\s\S]+?)-->')!'':
@@ -11709,19 +10753,4 @@ if len($args[0])>0 and args[1]>0:
 end
 $result=$replace($args['cs'],$args[2])
 --- get.word.inPos ---------------------------------
-
-# kill.var.olegus
-$args[0]=$args[0]
-if instr($args[0],'$')<>1: $args[0]='$'+$args[0]
-$args[9]=$args[9]
-args['i']=1
-:for
-if $args[args['i']]<>'':
-	$args['rnd']=$func('#rndstr#',32)
-	dynamic "<<$args[0]>>['<<$args[args['i']]>>']=$args[0]",$args['rnd']
-	killvar $args[0],arrpos($args[0],$args['rnd'])
-	args['i']+=1
-	jump 'for'
-end
---- kill.var.olegus ---------------------------------
 
