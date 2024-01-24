@@ -13,16 +13,16 @@ $ongload='onGameLoad'
 $usercom='uc'
 debug=1
 showinput 0
-$AVS_PLAYERTYPE+=$func('player.prv')
+$AVS_PLAYERTYPE += $func('player.prv')
+$qspver
+$qspver('platform')
 gosub 'set.Screen','обложка.чёрный'
-'<qhtml>
-<center><table border=0><tr name=заголовок><td align=center><font color=#dddd00>ОЛЬГА ГОЛОТВИНА<br><font size=+3>ВЕРЕНИЦА МИРОВ</font><br>или<br><font size=+3>ВЫВОДЫ ИЗ ЗАКОНА МЕРФИ</font></font><br><font size=-3>Книга-игра</font></td></tr><tr name=text><td align=right>
+'<center><table border=0><tr name=заголовок><td align=center><font color=#dddd00>ОЛЬГА ГОЛОТВИНА<br><font size=+3>ВЕРЕНИЦА МИРОВ</font><br>или<br><font size=+3>ВЫВОДЫ ИЗ ЗАКОНА МЕРФИ</font></font><br><font size=-3>Книга-игра</font></td></tr><tr name=text><td align=right>
 
 <center><font color=#008888>Каким плеером вы пользуетесь?</font></center>
 </td></tr><tr name=link><td align=center><a href="exec:goto ''[start]''" class="plain">Версия для компьютера</a>
 
-<a href="exec: $AVS_PLAYERTYPE+=''[MINI]'' & goto ''[start]''" class="plain">Версия для мобильника</a></td></tr></table></center>
-</qhtml>'
+<a href="exec: $AVS_PLAYERTYPE+=''[MINI]'' & goto ''[start]''" class="plain">Версия для мобильника</a></td></tr></table></center>'
 --- [launcher] ---------------------------------
 
 QSP-Game локация, рассказывающая о текущей версии порта книги-игры

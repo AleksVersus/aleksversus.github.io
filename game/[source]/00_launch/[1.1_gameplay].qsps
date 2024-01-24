@@ -90,7 +90,7 @@ $args['p6']='Надеюсь, эти сведения хоть немного п�
 $args['p7']='Приятной игры!'
 $args['p8']='С уважением,<br>Aleks Versus'
 !@ if $AVS_PLAYERTYPE['size']<>"MINI":
-	if $AVS_PLAYERTYPE['type']='QN' or $AVS_PLAYERTYPE['type']='qSpider':
+	if $AVS_PLAYERTYPE['html_support'] = 'qSpider':
 		!@ собираем текстовки для quest navigator и qspider
 		if $AVS_PLAYERTYPE['size']<>"MINI":
 			$args["styles.1"]='style="display:flex;align-justify:flex-start;"'

@@ -17,18 +17,11 @@ showinput 0	& !@ отключаем строку ввода на стартов�
 !@ проверка плеера:
 $AVS_PLAYERTYPE += $func('player.prv')
 gosub 'set.Screen','обложка.чёрный'	&	!@ выставляем тему чёрной обложки
-'<qhtml>
-<center><table border=0><tr name=заголовок><td align=center><font color=#dddd00>ОЛЬГА ГОЛОТВИНА<br><font size=+3>ВЕРЕНИЦА МИРОВ</font><br>или<br><font size=+3>ВЫВОДЫ ИЗ ЗАКОНА МЕРФИ</font></font><br><font size=-3>Книга-игра</font></td></tr><tr name=text><td align=right>
+if instr($AVS_PLAYERTYPE, '[MINI]')<>0 or instr($AVS_PLAYERTYPE, '[DESKTOP]')<>0: goto '[start]'
+'<center><table border=0><tr name=заголовок><td align=center><font color=#dddd00>ОЛЬГА ГОЛОТВИНА<br><font size=+3>ВЕРЕНИЦА МИРОВ</font><br>или<br><font size=+3>ВЫВОДЫ ИЗ ЗАКОНА МЕРФИ</font></font><br><font size=-3>Книга-игра</font></td></tr><tr name=text><td align=right>
 
 <center><font color=#008888>Каким плеером вы пользуетесь?</font></center>
 </td></tr><tr name=link><td align=center><a href="exec:goto ''[start]''" class="plain">Версия для компьютера</a>
 
-<a href="exec: $AVS_PLAYERTYPE+=''[MINI]'' & goto ''[start]''" class="plain">Версия для мобильника</a></td></tr></table></center>
-</qhtml>'
-!@pp:if(release):exclude
-! работа со скриптами в QN {
-<a href="javascript:alert('Yo');">Выведет на экран надпись по щелчку на ссылке</a>
-EXEC('JS:alert("Yo");') 	&	!	независимо выведет надпись.
-}
-!@pp:endif
+<a href="exec: $AVS_PLAYERTYPE+=''[MINI]'' & goto ''[start]''" class="plain">Версия для мобильника</a></td></tr></table></center>'
 --- [launcher] ---------------------------------

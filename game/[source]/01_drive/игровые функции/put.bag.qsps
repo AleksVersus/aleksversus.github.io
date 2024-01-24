@@ -1,13 +1,13 @@
 QSP-Game Локация выбрасывания рюкзака
 # put.bag
-args[9]=-1	& !@ стартовая позиция поиска
-if $args[0]='': $args[0]=$curloc	& !@ если не указано, куда выбросить рюкзак, выбрасываем на текущей локации
+args[9] = -1	& !@ стартовая позиция поиска
+if $args[0] = '': $args[0]=$curloc	& !@ если не указано, куда выбросить рюкзак, выбрасываем на текущей локации
 :for
 !@ ищем предмет в рюкзаке
-if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
-	args[9]=arrcomp('$object_array','[\s\S]*\[:место_в_рюкзаке:\][\s\S]*',args[9]+1)
+if $AVS_PLAYERTYPE['func_support'] = '5.8.0':
+	args[9] = arrcomp('$object_array','[\s\S]*\[:место_в_рюкзаке:\][\s\S]*',args[9]+1)
 else
-	args[9]=arrcomp(args[9]+1,'$object_array','[\s\S]*\[:место_в_рюкзаке:\][\s\S]*')
+	args[9] = arrcomp(args[9]+1,'$object_array','[\s\S]*\[:место_в_рюкзаке:\][\s\S]*')
 end
 if args[9]<>-1:
 	!@ если находим предмет в рюкзаке, скидываем предмет на локацию

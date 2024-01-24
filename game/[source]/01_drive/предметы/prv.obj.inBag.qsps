@@ -5,7 +5,7 @@ $args[0]=$args[0]	& !@ идентификатор вида
 if $args[1]='': $args['type']='<body>' else $args['type']=$args[1]	& !@ метка размещения. Идентификатор класса
 args['pit']=-1
 :for
-if $AVS_PLAYERTYPE['type']="QN" or $AVS_PLAYERTYPE['type']="qSpider":
+if $AVS_PLAYERTYPE['func_support'] = '5.8.0':
 	args['pit']=arrcomp('$object_array','[\s\S]*\[:'+$args[0]+':\][\s\S]*',args['pit']+1)
 else
 	args['pit']=arrcomp(args['pit']+1,'$object_array','[\s\S]*\[:'+$args[0]+':\][\s\S]*')
