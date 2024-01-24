@@ -1,21 +1,30 @@
 .qsp-pause-dialog {
   color: black;
-  background: #d9d9d9;
+  background: #eeeeee;
   border: 1px solid #69919d;
-  box-shadow: 0px 0px 16px 7px rgba(108, 202, 229, 0.2)
+  box-shadow: 0px 0px 16px 7px rgba(108, 202, 229, 0.2);
+  font-family: Consolas, monospace;
 }
 
 qsp-player .qsp-button,
 #portal-container .qsp-button {
   cursor: pointer;
-  background-color: #888888;
+  background-color: #eeeeee;
   color: #000000;
+  border: 1px solid #69919d;
 }
 qsp-player .qsp-button:hover,
 #portal-container .qsp-button:hover {
-  background-color: #eeeeee;
+  background-color: #FDFDE6;
   color: #111111;
   border-color: #000000;
+}
+
+qsp-player .qsp-button:focus,
+#portal-container .qsp-button:focus {
+  outline: none;
+  background-color: #FDFDE6;
+  box-shadow: 0 1px 2px 0 black;
 }
 
 .qsp-pause-screen-buttons{
