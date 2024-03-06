@@ -2,16 +2,16 @@
 	"project":
 	[
 		{
-			"build":"..\\merphy_law.qsp",
+			"build": "..\\merphy_law.qsp",
 			"folders":
 			[
 				{
-					"path":"."
+					"path": "."
 				}
 			]
 		}
 	],
-	"start":"..\\merphy_law.qsp",
-	"save_txt2gam":"True",
-	"preprocessor":"On"
+	"start": "..\\merphy_law.qsp",
+	"save_txt2gam": "False",
+	"preprocessor": "On"
 }
