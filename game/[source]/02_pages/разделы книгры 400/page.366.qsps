@@ -1,7 +1,7 @@
 # page.366
 $lvar['заголовок']={Мир Легенд<checkpoint>}
 if здесь_был[$curloc]=0:
-	cube=rand(1,6)
+	cube = rand(1,6)
 end
 if cube=2 or cube=4 or cube=6:
 	$args[9]='9'

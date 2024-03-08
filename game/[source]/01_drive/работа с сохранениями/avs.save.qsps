@@ -89,13 +89,13 @@ elseif args[0]=7:
 	else:
 		$print[]=$func('base.txt','notqck')
 	end
-elseif args[0]=999:
+elseif args[0] = 999:
 	!@ автосохранение
-	if nosave=0:
-		save['check']+=1
-		save['count']+=1
-		$save['type']='auto'
-		if $AVS_PLAYERTYPE['type']='qSpider':
+	if nosave = 0:
+		save['check'] += 1
+		save['count'] += 1
+		$save['type'] = 'auto'
+		if $AVS_PLAYERTYPE['type'] = 'qSpider':
 			savegame 'autosave'
 		else
 			savegame 'save/autosave.sav'
